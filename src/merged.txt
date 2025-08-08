@@ -1,7 +1,3150 @@
 
+C:\Users\User\Desktop\jink-demo\src\api\apiAuth.ts
+
+import api from './axios';
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface UserResponse {
+  id: string;
+  username: string;
+  fullname: string;
+  role: 'admin' | 'teacher' | 'user' | 'student';
+  isActive: boolean;
+}
+
+export interface LoginResponse {
+  success: boolean;
+  message: string;
+  token: string;
+  user: UserResponse;
+}
+
+export const apiLogin = async (payload: LoginRequest) => {
+  const { data } = await api.post<LoginResponse>('/auth/login', payload);
+  return data;
+};
+
+export const apiGetProfile = async () => {
+  const { data } = await api.get<{ success: boolean; user: UserResponse }>(
+    '/auth/profile'
+  );
+  return data.user;
+};
+
+
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+}
+
+export const apiChangeOwnPassword = async (payload: ChangePasswordRequest) => {
+  // The endpoint and HTTP method are typical for this operation
+  const { data } = await api.put<ChangePasswordResponse>(
+    '/auth/password',
+    payload
+  );
+  return data;
+};
+
+// Add this interface at the top with other interfaces
+export interface LogoutAllResponse {
+  success: boolean;
+  message: string;
+}
+
+// Add this function after existing functions
+export const apiLogoutAll = async (): Promise<LogoutAllResponse> => {
+  const { data } = await api.post<LogoutAllResponse>('/auth/logout-all');
+  return data;
+};
+
+
+// Add this interface at the top with other interfaces
+export interface LogoutResponse {
+  success: boolean;
+  message: string;
+}
+
+// Add this function after existing functions
+export const apiLogout = async (): Promise<LogoutResponse> => {
+  const { data } = await api.post<LogoutResponse>('/auth/logout');
+  return data;
+};
+
+C:\Users\User\Desktop\jink-demo\src\api\apiBulk.ts
+
+// src/api/apiBulk.ts
+import api from './axios';
+
+export interface IBulkImportResult {
+  imported: number;
+  errorDetails: Array<{
+    row: number;
+    message: string;
+    data?: any;
+  }>;
+}
+
+export interface IExportFilters {
+  role?: string;
+  isActive?: boolean;
+  createdAfter?: string;
+  createdBefore?: string;
+}
+
+export const apiImportUsersCSV = async (csvFile: File): Promise<IBulkImportResult> => {
+  const formData = new FormData();
+  formData.append('csvFile', csvFile);
+  
+  const { data } = await api.post<IBulkImportResult>('/users/bulk/import', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
+export const apiExportUsersCSV = async (filters?: IExportFilters): Promise<Blob> => {
+  const response = await api.get('/users/bulk/export', {
+    params: filters,
+    responseType: 'blob',
+  });
+  return response.data;
+};
+
+export const apiDownloadCSVTemplate = async (): Promise<Blob> => {
+  const response = await api.get('/users/bulk/template', {
+    responseType: 'blob',
+  });
+  return response.data;
+};
+
+C:\Users\User\Desktop\jink-demo\src\api\apiGroups.ts
+
+// src/api/apiGroups.ts
+import api from './axios';
+
+export interface IStudentGroup {
+  _id?: string;
+  name: string;
+  description?: string;
+  teacherUsername: string;
+  studentUsernames: string[];
+  isActive: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  metadata?: {
+    grade?: string;
+    subject?: string;
+    academicYear?: string;
+  };
+}
+
+export interface IGroupCreate {
+  name: string;
+  description?: string;
+  metadata?: {
+    grade?: string;
+    subject?: string;
+    academicYear?: string;
+  };
+}
+
+export interface IGroupUpdate {
+  name?: string;
+  description?: string;
+  metadata?: {
+    grade?: string;
+    subject?: string;
+    academicYear?: string;
+  };
+}
+
+export const apiListGroups = async (): Promise<IStudentGroup[]> => {
+  const { data } = await api.get<{ groups: IStudentGroup[] }>('/groups');
+  return data.groups;
+};
+
+export const apiCreateGroup = async (groupData: IGroupCreate): Promise<IStudentGroup> => {
+  const { data } = await api.post<{ group: IStudentGroup }>('/groups', groupData);
+  return data.group;
+};
+
+export const apiGetGroup = async (groupId: string): Promise<IStudentGroup> => {
+  const { data } = await api.get<{ group: IStudentGroup }>(`/groups/${groupId}`);
+  return data.group;
+};
+
+export const apiUpdateGroup = async (groupId: string, groupData: IGroupUpdate): Promise<IStudentGroup> => {
+  const { data } = await api.put<{ group: IStudentGroup }>(`/groups/${groupId}`, groupData);
+  return data.group;
+};
+
+export const apiDeleteGroup = async (groupId: string): Promise<{ success: boolean }> => {
+  const { data } = await api.delete<{ success: boolean }>(`/groups/${groupId}`);
+  return data;
+};
+
+export const apiManageGroupMembers = async (
+  groupId: string, 
+  memberData: { add?: string[], remove?: string[] }
+): Promise<IStudentGroup> => {
+  const { data } = await api.put<{ group: IStudentGroup }>(`/groups/${groupId}/members`, memberData);
+  return data.group;
+};
+
+C:\Users\User\Desktop\jink-demo\src\api\apiUsers.ts
+
+// src/api/apiUsers.ts
+import api from './axios';
+
+export interface IUser {
+  username: string;
+  fullname: string;
+  role: 'admin' | 'teacher' | 'student' | 'user';
+  isActive: boolean;
+  email?: string;
+}
+
+export interface IUserCreate {
+  username: string;
+  fullname: string;
+  email?: string;
+  password: string;
+  role?: 'admin' | 'teacher' | 'student' | 'user';
+  isActive?: boolean;
+}
+
+export interface IUserUpdate {
+  username?: string;
+  fullname?: string;
+  email?: string;
+  role?: 'admin' | 'teacher' | 'student' | 'user';
+  isActive?: boolean;
+}
+
+// Existing functions (enhanced)
+export const apiListUsers = async (): Promise<IUser[]> => {
+  const { data } = await api.get<{ users: IUser[] }>('/users');
+  return data.users;
+};
+
+export const apiGetUserByUsername = async (username: string): Promise<IUser> => {
+  const { data } = await api.get<{ user: IUser }>(`/users/${username}`);
+  return data.user;
+};
+
+// NEW: Enhanced user management functions
+export const apiCreateUser = async (userData: IUserCreate): Promise<IUser> => {
+  const { data } = await api.post<{ user: IUser }>('/users', userData);
+  return data.user;
+};
+
+export const apiUpdateUser = async (username: string, userData: IUserUpdate): Promise<IUser> => {
+  const { data } = await api.put<{ user: IUser }>(`/users/${username}`, userData);
+  return data.user;
+};
+
+export const apiDeleteUser = async (username: string): Promise<{ success: boolean }> => {
+  const { data } = await api.delete<{ success: boolean }>(`/users/${username}`);
+  return data;
+};
+
+
+
+export const apiToggleUserStatus = async (username: string): Promise<IUser> => {
+  const { data } = await api.patch<{ user: IUser }>(`/users/${username}/status`);
+  return data.user;
+};
+
+export const apiResetPassword = async (username: string, newPassword: string): Promise<{ success: boolean }> => {
+  const { data } = await api.put<{ success: boolean }>(`/users/${username}/password`, { newPassword });
+  return data;
+};
+
+C:\Users\User\Desktop\jink-demo\src\api\axios.ts
+
+// src/api/axios.ts
+import axios from 'axios';
+import { getAuthToken, clearAuthToken } from '../utils/auth';
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api',
+});
+
+// Request interceptor: attach JWT token
+api.interceptors.request.use(
+  (config) => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor: handle 401/403 by redirecting to login
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      // Token expired or invalid - clear and redirect to login
+      clearAuthToken();
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+
 C:\Users\User\Desktop\jink-demo\src\assets\react.svg
 
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+
+C:\Users\User\Desktop\jink-demo\src\components\auth\LogoutAllConfirmModal.tsx
+
+import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+
+interface LogoutAllConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => Promise<void>;
+}
+
+export const LogoutAllConfirmModal: React.FC<LogoutAllConfirmModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+}) => {
+  const { user } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsLoggingOut(true);
+    try {
+      await onConfirm();
+    } catch (error) {
+      console.error('Logout all failed:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 w-10 h-10 mx-auto bg-orange-100 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-4a2 2 0 00-2-2H6a2 2 0 00-2 2v4a2 2 0 002 2zM11 5V3a2 2 0 112 0v2M7 7h10" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <h3 className="text-lg font-medium text-gray-900">Logout All Devices</h3>
+              <p className="text-sm text-gray-500">End all active sessions</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={isLoggingOut}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="p-6">
+          <div className="mb-4">
+            <p className="text-gray-700 mb-3">
+              Are you sure you want to logout from all devices signed in to{' '}
+              <span className="font-semibold">{user?.fullname || 'your account'}</span>?
+            </p>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mb-4">
+              <div className="flex">
+                <svg className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium">This will:</p>
+                  <ul className="mt-1 list-disc list-inside space-y-1">
+                    <li>End your session on all devices and browsers</li>
+                    <li>Require you to log in again everywhere</li>
+                    <li>Invalidate all existing login tokens</li>
+                    <li>Take effect immediately</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-600">
+              This is useful if you think someone else may have access to your account or if you want to ensure all old sessions are terminated.
+            </p>
+          </div>
+
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={onClose}
+              disabled={isLoggingOut}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirm}
+              disabled={isLoggingOut}
+              className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors disabled:opacity-50 flex items-center"
+            >
+              {isLoggingOut ? (
+                <>
+                  <LoadingSpinner size="small" />
+                  <span className="ml-2">Logging out...</span>
+                </>
+              ) : (
+                'Logout All Devices'
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\bulk\BulkExport.tsx
+
+// src/components/bulk/BulkExport.tsx
+import React, { useState } from 'react';
+import { useExportUsersCSV } from '../../hooks/useBulk';
+import type { IExportFilters } from '../../api/apiBulk';
+
+interface BulkExportProps {
+  onCancel: () => void;
+}
+
+export const BulkExport: React.FC<BulkExportProps> = ({ onCancel }) => {
+  const exportMutation = useExportUsersCSV();
+  const [filters, setFilters] = useState<IExportFilters>({
+    role: '',
+    isActive: undefined,
+    createdAfter: '',
+    createdBefore: ''
+  });
+
+  const handleExport = async () => {
+    try {
+      const blob = await exportMutation.mutateAsync(filters);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `users-export-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      onCancel();
+    } catch (error) {
+      alert('Export failed. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="p-4">
+      <div className="mb-4">
+        <label className="mr-3">
+          Role Filter:
+          <select
+            value={filters.role || ''}
+            onChange={e => setFilters(f => ({ ...f, role: e.target.value || undefined }))}
+            className="ml-2 border"
+          >
+            <option value="">All</option>
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+            <option value="user">User</option>
+          </select>
+        </label>
+      </div>
+      <div className="mb-4">
+        <label className="mr-3">
+          Status:
+          <select
+            value={
+              filters.isActive === undefined
+                ? ''
+                : filters.isActive
+                ? 'true'
+                : 'false'
+            }
+            onChange={e =>
+              setFilters(f => ({
+                ...f,
+                isActive: e.target.value === ''
+                  ? undefined
+                  : e.target.value === 'true'
+              }))
+            }
+            className="ml-2 border"
+          >
+            <option value="">All</option>
+            <option value="true">Active Only</option>
+            <option value="false">Inactive Only</option>
+          </select>
+        </label>
+      </div>
+      <button
+        onClick={handleExport}
+        disabled={exportMutation.isPending}
+        className="mr-2 px-4 py-2 bg-green-600 text-white rounded"
+      >
+        Export CSV
+      </button>
+      <button
+        onClick={onCancel}
+        disabled={exportMutation.isPending}
+        className="px-4 py-2 border border-gray-400 rounded"
+      >
+        Cancel
+      </button>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\bulk\BulkImport.tsx
+
+import React, { useState, useRef } from 'react';
+import { useImportUsersCSV } from '../../hooks/useBulk';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+
+interface BulkImportProps {
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const BulkImport: React.FC<BulkImportProps> = ({
+  onSuccess,
+  onCancel
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const importMutation = useImportUsersCSV();
+
+  const handleFileSelect = (file: File) => {
+    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+      alert('Please select a CSV file');
+      return;
+    }
+    setSelectedFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  };
+
+  const handleImport = async () => {
+    if (!selectedFile) return;
+
+    try {
+      const result = await importMutation.mutateAsync(selectedFile);
+      
+      // console.log(result);
+
+      if (result.errorDetails.length > 0) {
+        alert(`Import completed with issues:\n- Imported: ${result.imported}\n- Errors: ${result.errorDetails.length}\n\nCheck console for error details.`);
+        console.log('Import errors:', result.errorDetails);
+      } else {
+        alert(`Successfully imported ${result.imported} users!`);
+      }
+      
+      onSuccess();
+    } catch (error) {
+      console.error('Import failed:', error);
+      alert('Import failed. Please check the file format and try again.');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <h2 className="text-xl font-bold mb-4">Bulk Import Users</h2>
+
+        <div
+          className={`border-2 border-dashed rounded-lg p-8 text-center mb-4 transition-colors ${
+            dragOver
+              ? 'border-blue-400 bg-blue-50'
+              : selectedFile
+              ? 'border-green-400 bg-green-50'
+              : 'border-gray-300'
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          {selectedFile ? (
+            <div>
+              <div className="text-green-600 mb-2">
+                <svg className="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <p className="font-medium text-green-700">{selectedFile.name}</p>
+              <p className="text-sm text-gray-500">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+              <button
+                onClick={() => setSelectedFile(null)}
+                className="text-sm text-red-600 hover:text-red-800 mt-2"
+              >
+                Remove file
+              </button>
+            </div>
+          ) : (
+            <div>
+              <div className="text-gray-400 mb-2">
+                <svg className="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <p className="text-gray-600">Drag & drop your CSV file here</p>
+              <p className="text-sm text-gray-500 mt-1">or</p>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                browse files
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                onChange={handleFileInputChange}
+                className="hidden"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="text-sm text-gray-600 mb-4">
+          <p><strong>CSV Format:</strong> username, fullname, role, password (optional)</p>
+          <p>Supported roles: admin, teacher, student, user</p>
+        </div>
+
+        {importMutation.isPending && (
+          <div className="mb-4">
+            <LoadingSpinner message="Importing users..." size="small" />
+          </div>
+        )}
+
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+            disabled={importMutation.isPending}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleImport}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            disabled={!selectedFile || importMutation.isPending}
+          >
+            {importMutation.isPending ? 'Importing...' : 'Import Users'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\bulk\CSVTemplateDownload.tsx
+
+import React from 'react';
+import { useDownloadCSVTemplate } from '../../hooks/useBulk';
+
+export const CSVTemplateDownload: React.FC = () => {
+  const downloadTemplateMutation = useDownloadCSVTemplate();
+
+  const handleDownload = async () => {
+    try {
+      const blob = await downloadTemplateMutation.mutateAsync();
+      
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'users-import-template.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Template download failed:', error);
+      alert('Template download failed. Please try again.');
+    }
+  };
+
+  return (
+    <button
+      onClick={handleDownload}
+      className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+      disabled={downloadTemplateMutation.isPending}
+    >
+      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      {downloadTemplateMutation.isPending ? 'Downloading...' : 'Download Template'}
+    </button>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\common\ConfirmDialog.tsx
+
+import React from 'react';
+
+interface ConfirmDialogProps {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  type?: 'danger' | 'warning' | 'info';
+}
+
+export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+  isOpen,
+  title,
+  message,
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  onConfirm,
+  onCancel,
+  type = 'warning'
+}) => {
+  if (!isOpen) return null;
+
+  const typeStyles = {
+    danger: 'bg-red-600 hover:bg-red-700',
+    warning: 'bg-yellow-600 hover:bg-yellow-700',
+    info: 'bg-blue-600 hover:bg-blue-700'
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <h3 className="text-lg font-semibold mb-2">{title}</h3>
+        <p className="text-gray-600 mb-4">{message}</p>
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+          >
+            {cancelText}
+          </button>
+          <button
+            onClick={onConfirm}
+            className={`px-4 py-2 text-white rounded-md ${typeStyles[type]}`}
+          >
+            {confirmText}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\common\LoadingSpinner.tsx
+
+import React from 'react';
+
+interface LoadingSpinnerProps {
+  message?: string;
+  size?: 'small' | 'medium' | 'large';
+}
+
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  message = 'Loading...',
+  size = 'medium'
+}) => {
+  const sizeClasses = {
+    small: 'w-4 h-4',
+    medium: 'w-8 h-8', 
+    large: 'w-12 h-12'
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center p-4">
+      <div className={`animate-spin rounded-full border-2 border-gray-300 border-t-blue-600 ${sizeClasses[size]}`}></div>
+      {message && <p className="mt-2 text-sm text-gray-600">{message}</p>}
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\common\RoleBasedComponent.tsx
+
+import React from 'react';
+import { useAuth } from '../../context/AuthContext';
+
+interface RoleBasedComponentProps {
+  allowedRoles: Array<'admin' | 'teacher' | 'student' | 'user'>;
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+}
+
+export const RoleBasedComponent: React.FC<RoleBasedComponentProps> = ({
+  allowedRoles,
+  children,
+  fallback = null
+}) => {
+  const { user } = useAuth();
+
+  if (!user || !allowedRoles.includes(user.role)) {
+    return <>{fallback}</>;
+  }
+
+  return <>{children}</>;
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\groups\GroupDetail.tsx
+
+// src/components/groups/GroupDetail.tsx
+import React, { useState } from 'react';
+import { useUsers } from '../../hooks/useUsers';
+import { useAuth } from '../../context/AuthContext';
+import { useManageGroupMembers } from '../../hooks/useGroups';
+import { RoleBasedComponent } from '../common/RoleBasedComponent';
+import { ConfirmDialog } from '../common/ConfirmDialog';
+import { MemberPicker } from './MemberPicker';
+import type { IStudentGroup } from '../../api/apiGroups';
+
+interface GroupDetailProps {
+  group: IStudentGroup;
+  onClose: () => void;
+  onEdit: () => void;
+}
+
+export const GroupDetail: React.FC<GroupDetailProps> = ({
+  group,
+  onClose,
+  onEdit
+}) => {
+  const { user } = useAuth();
+  const { data: allUsers } = useUsers();
+  const manageGroupMembers = useManageGroupMembers();
+  const [showMemberPicker, setShowMemberPicker] = useState(false);
+  const [removeDialog, setRemoveDialog] = useState<{
+    isOpen: boolean;
+    username: string | null;
+    fullname: string | null;
+  }>({ isOpen: false, username: null, fullname: null });
+
+  // Filter users for members in this group
+  const groupMembers = allUsers?.filter(
+    u => group.studentUsernames?.includes(u.username)
+  ) || [];
+
+  const canManage =
+    user &&
+    (user.role === 'admin' ||
+      (user.role === 'teacher' && user.username === group.teacherUsername));
+
+  const handleRemoveConfirm = async () => {
+    if (removeDialog.username) {
+      await manageGroupMembers.mutateAsync({
+        groupId: group._id!,
+        memberData: { remove: [removeDialog.username] }
+      });
+      setRemoveDialog({ isOpen: false, username: null, fullname: null });
+    }
+  };
+
+  return (
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded p-6 max-w-4xl w-full max-h-[90vh] overflow-auto">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">{group.name}</h2>
+            <button onClick={onClose} aria-label="Close">&times;</button>
+          </div>
+          <p>{group.description}</p>
+          <div className="grid grid-cols-2 gap-4 my-4">
+            <span>Teacher: {group.teacherUsername}</span>
+            {group.metadata?.grade && <span>Grade: {group.metadata.grade}</span>}
+            {group.metadata?.subject && <span>Subject: {group.metadata.subject}</span>}
+            {group.metadata?.academicYear && <span>Year: {group.metadata.academicYear}</span>}
+          </div>
+          <div className="mb-4">
+            <div className="flex justify-between mb-2">
+              <h3 className="font-medium">Members</h3>
+              <RoleBasedComponent allowedRoles={['admin', 'teacher']}>
+                {canManage && (
+                  <button onClick={() => setShowMemberPicker(true)} className="text-blue-600">
+                    Add Students
+                  </button>
+                )}
+              </RoleBasedComponent>
+            </div>
+            <ul>
+              {groupMembers.map(m => (
+                <li key={m.username} className="flex justify-between items-center">
+                  <span>
+                    {m.fullname} ({m.username})
+                  </span>
+                  {canManage && (
+                    <button
+                      className="text-red-600 text-sm"
+                      onClick={() => setRemoveDialog({
+                        isOpen: true,
+                        username: m.username,
+                        fullname: m.fullname
+                      })}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </li>
+              ))}
+              {groupMembers.length === 0 && <li className="text-gray-500">No students yet.</li>}
+            </ul>
+          </div>
+          <div className="mt-4 flex justify-end space-x-2">
+            <button onClick={onClose} className="border px-4 py-2 rounded">Close</button>
+            {canManage && (
+              <button onClick={onEdit} className="bg-blue-600 text-white px-4 py-2 rounded">Edit Group</button>
+            )}
+          </div>
+        </div>
+      </div>
+      {/* MemberPicker Modal */}
+      {showMemberPicker && (
+        <MemberPicker
+          group={group}
+          onSuccess={() => setShowMemberPicker(false)}
+          onCancel={() => setShowMemberPicker(false)}
+        />
+      )}
+      {/* Remove member confirmation */}
+      <ConfirmDialog
+        isOpen={removeDialog.isOpen}
+        title="Remove Student"
+        message={`Are you sure you want to remove "${removeDialog.fullname}" from this group?`}
+        confirmText="Remove"
+        cancelText="Cancel"
+        type="warning"
+        onConfirm={handleRemoveConfirm}
+        onCancel={() => setRemoveDialog({ isOpen: false, username: null, fullname: null })}
+      />
+    </>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\groups\GroupForm.tsx
+
+import React, { useState, useEffect } from 'react';
+import { useCreateGroup, useUpdateGroup } from '../../hooks/useGroups';
+import type { IStudentGroup, IGroupCreate, IGroupUpdate } from '../../api/apiGroups';
+
+interface GroupFormProps {
+  group?: IStudentGroup;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const GroupForm: React.FC<GroupFormProps> = ({
+  group,
+  onSuccess,
+  onCancel
+}) => {
+  const createGroupMutation = useCreateGroup();
+  const updateGroupMutation = useUpdateGroup();
+  const isEditing = !!group;
+
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    grade: '',
+    subject: '',
+    academicYear: ''
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (group) {
+      setFormData({
+        name: group.name || '',
+        description: group.description || '',
+        grade: group.metadata?.grade || '',
+        subject: group.metadata?.subject || '',
+        academicYear: group.metadata?.academicYear || ''
+      });
+    }
+  }, [group]);
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Group name is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    try {
+      const groupData = {
+        name: formData.name.trim(),
+        description: formData.description.trim() || undefined,
+        metadata: {
+          grade: formData.grade.trim() || undefined,
+          subject: formData.subject.trim() || undefined,
+          academicYear: formData.academicYear.trim() || undefined
+        }
+      };
+
+      if (isEditing) {
+        await updateGroupMutation.mutateAsync({
+          groupId: group!._id!,
+          groupData: groupData as IGroupUpdate
+        });
+      } else {
+        await createGroupMutation.mutateAsync(groupData as IGroupCreate);
+      }
+
+      onSuccess();
+    } catch (error) {
+      console.error('Error saving group:', error);
+    }
+  };
+
+  const isSubmitting = createGroupMutation.isPending || updateGroupMutation.isPending;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <h2 className="text-xl font-bold mb-4">
+          {isEditing ? 'Edit Group' : 'Create New Group'}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Group Name *
+            </label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              className={`w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+              placeholder="Enter group name"
+            />
+            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              rows={3}
+              placeholder="Enter group description (optional)"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Grade
+              </label>
+              <input
+                type="text"
+                value={formData.grade}
+                onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="e.g., 10th"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Subject
+              </label>
+              <input
+                type="text"
+                value={formData.subject}
+                onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="e.g., Mathematics"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Academic Year
+            </label>
+            <input
+              type="text"
+              value={formData.academicYear}
+              onChange={(e) => setFormData(prev => ({ ...prev, academicYear: e.target.value }))}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="e.g., 2024-2025"
+            />
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-4">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Saving...' : isEditing ? 'Update Group' : 'Create Group'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\groups\GroupsList.tsx
+
+import React, { useState } from 'react';
+import { useGroups, useDeleteGroup } from '../../hooks/useGroups';
+import { useAuth } from '../../context/AuthContext';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import { ConfirmDialog } from '../common/ConfirmDialog';
+import { RoleBasedComponent } from '../common/RoleBasedComponent';
+import type { IStudentGroup } from '../../api/apiGroups';
+
+interface GroupsListProps {
+  onCreateGroup: () => void;
+  onEditGroup: (group: IStudentGroup) => void;
+  onViewGroup: (group: IStudentGroup) => void;
+}
+
+export const GroupsList: React.FC<GroupsListProps> = ({
+  onCreateGroup,
+  onEditGroup,
+  onViewGroup
+}) => {
+  const { user } = useAuth();
+  const { data: groups, isLoading, error } = useGroups();
+  const deleteGroupMutation = useDeleteGroup();
+  const [deleteDialog, setDeleteDialog] = useState<{
+    isOpen: boolean;
+    group: IStudentGroup | null;
+  }>({ isOpen: false, group: null });
+
+  const handleDeleteClick = (group: IStudentGroup) => {
+    setDeleteDialog({ isOpen: true, group });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteDialog.group) {
+      await deleteGroupMutation.mutateAsync(deleteDialog.group._id!);
+      setDeleteDialog({ isOpen: false, group: null });
+    }
+  };
+
+  const canEditGroup = (group: IStudentGroup) => {
+    if (user?.role === 'admin') return true;
+    if (user?.role === 'teacher' && group.teacherUsername === user.username) return true;
+    return false;
+  };
+
+  if (isLoading) return <LoadingSpinner message="Loading groups..." />;
+  if (error) return <div className="text-red-600">Error loading groups: {(error as Error).message}</div>;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Groups</h2>
+        <RoleBasedComponent allowedRoles={['admin', 'teacher']}>
+          <button
+            onClick={onCreateGroup}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Create Group
+          </button>
+        </RoleBasedComponent>
+      </div>
+
+      {!groups || groups.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">
+          No groups found. Create your first group to get started.
+        </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {groups.map((group) => (
+            <div key={group._id} className="bg-white rounded-lg shadow border p-4">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg font-semibold">{group.name}</h3>
+                <span className="text-sm text-gray-500">
+                  {group.studentUsernames?.length || 0} students
+                </span>
+              </div>
+              
+              {group.description && (
+                <p className="text-gray-600 text-sm mb-2">{group.description}</p>
+              )}
+              
+              <div className="text-xs text-gray-500 mb-3">
+                Teacher: {group.teacherUsername}
+                {group.metadata?.grade && ` ??Grade: ${group.metadata.grade}`}
+                {group.metadata?.subject && ` ??Subject: ${group.metadata.subject}`}
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => onViewGroup(group)}
+                  className="text-blue-600 hover:text-blue-800 text-sm"
+                >
+                  View
+                </button>
+                {canEditGroup(group) && (
+                  <>
+                    <button
+                      onClick={() => onEditGroup(group)}
+                      className="text-green-600 hover:text-green-800 text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(group)}
+                      className="text-red-600 hover:text-red-800 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <ConfirmDialog
+        isOpen={deleteDialog.isOpen}
+        title="Delete Group"
+        message={`Are you sure you want to delete "${deleteDialog.group?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteDialog({ isOpen: false, group: null })}
+      />
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\groups\MemberPicker.tsx
+
+import React, { useState, useMemo } from 'react';
+import { useUsers } from '../../hooks/useUsers';
+import { useManageGroupMembers } from '../../hooks/useGroups';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import type { IStudentGroup } from '../../api/apiGroups';
+
+interface MemberPickerProps {
+  group: IStudentGroup;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const MemberPicker: React.FC<MemberPickerProps> = ({
+  group,
+  onSuccess,
+  onCancel,
+}) => {
+  const { data: allUsers, isLoading } = useUsers();
+  const manageGroupMembers = useManageGroupMembers();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+
+  const availableStudents = useMemo(() => {
+    if (!allUsers) return [];
+    return allUsers
+      .filter(
+        (user) =>
+          user.role === 'student' &&
+          !group.studentUsernames?.includes(user.username)
+      )
+      .filter(
+        (user) =>
+          searchTerm === '' ||
+          user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  }, [allUsers, group.studentUsernames, searchTerm]);
+
+  const handleUserToggle = (username: string) => {
+    setSelectedUsers((prev) =>
+      prev.includes(username)
+        ? prev.filter((u) => u !== username)
+        : [...prev, username]
+    );
+  };
+
+  const handleAddMembers = async () => {
+    if (selectedUsers.length === 0) return;
+    try {
+      await manageGroupMembers.mutateAsync({
+        groupId: group._id!,
+        memberData: { add: selectedUsers },
+      });
+      onSuccess();
+    } catch (error) {
+      alert('Failed to add members');
+    }
+  };
+
+  if (isLoading) return <LoadingSpinner message="Loading students..." />;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+        <h2 className="text-xl font-bold mb-4">Add Students to "{group.name}"</h2>
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search students..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto mb-4">
+          {availableStudents.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              {searchTerm ? 'No students found matching your search.' : 'No students available to add.'}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {availableStudents.map((student) => (
+                <label
+                  key={student.username}
+                  className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedUsers.includes(student.username)}
+                    onChange={() => handleUserToggle(student.username)}
+                    className="mr-3"
+                  />
+                  <div className="flex-1">
+                    <div className="font-medium">{student.fullname}</div>
+                    <div className="text-sm text-gray-500">@{student.username}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-between items-center pt-4 border-t">
+          <div className="text-sm text-gray-600">
+            {selectedUsers.length} student{selectedUsers.length !== 1 ? 's' : ''} selected
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={onCancel}
+              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+              disabled={manageGroupMembers.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAddMembers}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              disabled={selectedUsers.length === 0 || manageGroupMembers.isPending}
+            >
+              {manageGroupMembers.isPending
+                ? 'Adding...'
+                : `Add ${selectedUsers.length} Student${selectedUsers.length !== 1 ? 's' : ''}`}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\groups\StudentPicker.tsx
+
+import React, { useState, useMemo } from 'react';
+import { useUsers } from '../../hooks/useUsers';
+import { useManageGroupMembers } from '../../hooks/useGroups';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import type { IStudentGroup } from '../../api/apiGroups';
+
+interface StudentPickerProps {
+  group: IStudentGroup;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const StudentPicker: React.FC<StudentPickerProps> = ({
+  group,
+  onSuccess,
+  onCancel,
+}) => {
+  const { data: allUsers, isLoading } = useUsers();
+  const manageGroupMembers = useManageGroupMembers();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+
+  const availableStudents = useMemo(() => {
+    if (!allUsers) return [];
+    return allUsers
+      .filter(
+        (user) =>
+          user.role === 'student' &&
+          !group.studentUsernames?.includes(user.username)
+      )
+      .filter(
+        (user) =>
+          searchTerm === '' ||
+          user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  }, [allUsers, group.studentUsernames, searchTerm]);
+
+  const handleUserToggle = (username: string) => {
+    setSelectedUsers((prev) =>
+      prev.includes(username)
+        ? prev.filter((u) => u !== username)
+        : [...prev, username]
+    );
+  };
+
+  const handleAddMembers = async () => {
+    if (selectedUsers.length === 0) return;
+    try {
+      await manageGroupMembers.mutateAsync({
+        groupId: group._id!,
+        memberData: { add: selectedUsers },
+      });
+      onSuccess();
+    } catch (error) {
+      alert('Failed to add members');
+    }
+  };
+
+  if (isLoading) return <LoadingSpinner message="Loading students..." />;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+        <h2 className="text-xl font-bold mb-4">Add Students to "{group.name}"</h2>
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search students..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto mb-4">
+          {availableStudents.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              {searchTerm ? 'No students found matching your search.' : 'No students available to add.'}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {availableStudents.map((student) => (
+                <label
+                  key={student.username}
+                  className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedUsers.includes(student.username)}
+                    onChange={() => handleUserToggle(student.username)}
+                    className="mr-3"
+                  />
+                  <div className="flex-1">
+                    <div className="font-medium">{student.fullname}</div>
+                    <div className="text-sm text-gray-500">@{student.username}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-between items-center pt-4 border-t">
+          <div className="text-sm text-gray-600">
+            {selectedUsers.length} student{selectedUsers.length !== 1 ? 's' : ''} selected
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={onCancel}
+              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+              disabled={manageGroupMembers.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAddMembers}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+              disabled={selectedUsers.length === 0 || manageGroupMembers.isPending}
+            >
+              {manageGroupMembers.isPending
+                ? 'Adding...'
+                : `Add ${selectedUsers.length} Student${selectedUsers.length !== 1 ? 's' : ''}`}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\user\ChangePasswordModal.tsx
+
+import React, { useState } from 'react';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import { apiChangeOwnPassword } from '../../api/apiAuth';
+
+interface ChangePasswordModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
+  isOpen,
+  onClose,
+  onSuccess,
+}) => {
+  const [formData, setFormData] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.oldPassword.trim())
+      newErrors.oldPassword = 'Current password is required';
+
+    if (!formData.newPassword.trim())
+      newErrors.newPassword = 'New password is required';
+    else if (formData.newPassword.length < 6)
+      newErrors.newPassword = 'Password must be at least 6 characters long';
+
+    if (!formData.confirmPassword.trim())
+      newErrors.confirmPassword = 'Please confirm the new password';
+    else if (formData.newPassword !== formData.confirmPassword)
+      newErrors.confirmPassword = 'Passwords do not match';
+
+    if (
+      formData.oldPassword === formData.newPassword &&
+      formData.oldPassword.trim()
+    )
+      newErrors.newPassword =
+        'New password must be different from current password';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await apiChangeOwnPassword({
+        oldPassword: formData.oldPassword,
+        newPassword: formData.newPassword,
+      });
+
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to change password');
+      }
+
+      setFormData({
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+      setErrors({});
+      onSuccess();
+      onClose();
+    } catch (error: any) {
+      setErrors({
+        general:
+          error?.response?.data?.message ||
+          error?.message ||
+          'Failed to change password. Please try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (
+    field: keyof typeof formData,
+    value: string
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Change Password
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={isSubmitting}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+              {errors.general}
+            </div>
+          )}
+
+          {/* Current Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Current Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={formData.oldPassword}
+              onChange={(e) =>
+                handleInputChange('oldPassword', e.target.value)
+              }
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.oldPassword
+                  ? 'border-red-500 bg-red-50'
+                  : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter current password"
+              disabled={isSubmitting}
+            />
+            {errors.oldPassword && (
+              <p className="mt-1 text-sm text-red-600">{errors.oldPassword}</p>
+            )}
+          </div>
+
+          {/* New Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={formData.newPassword}
+              onChange={(e) =>
+                handleInputChange('newPassword', e.target.value)
+              }
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.newPassword
+                  ? 'border-red-500 bg-red-50'
+                  : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter new password (min. 6 characters)"
+              disabled={isSubmitting}
+            />
+            {errors.newPassword && (
+              <p className="mt-1 text-sm text-red-600">{errors.newPassword}</p>
+            )}
+          </div>
+
+          {/* Confirm New Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                handleInputChange('confirmPassword', e.target.value)
+              }
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.confirmPassword
+                  ? 'border-red-500 bg-red-50'
+                  : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Confirm new password"
+              disabled={isSubmitting}
+            />
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 flex items-center"
+            >
+              {isSubmitting ? (
+                <>
+                  <LoadingSpinner size="small" />
+                  <span className="ml-2">Changing...</span>
+                </>
+              ) : (
+                'Change Password'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\user\CreateUserModal.tsx
+
+import React, { useState } from 'react';
+import { useCreateUser } from '../../hooks/useUsers';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import type { IUserCreate } from '../../api/apiUsers';
+
+interface CreateUserModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export const CreateUserModal: React.FC<CreateUserModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSuccess 
+}) => {
+  const createUserMutation = useCreateUser();
+  
+  const [formData, setFormData] = useState<IUserCreate>({
+    username: '',
+    fullname: '',
+    email: '',
+    password: '',
+    role: 'student',
+    isActive: true
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.username)) {
+      newErrors.username = 'Username must be 3-20 characters with letters, numbers, and underscores only';
+    }
+
+    if (!formData.fullname.trim()) {
+      newErrors.fullname = 'Full name is required';
+    } else if (formData.fullname.length < 2) {
+      newErrors.fullname = 'Full name must be at least 2 characters long';
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please provide a valid email address';
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters long';
+    }
+
+    if (!formData.role) {
+      newErrors.role = 'Role is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    try {
+      await createUserMutation.mutateAsync(formData);
+      
+      // Reset form
+      setFormData({
+        username: '',
+        fullname: '',
+        email: '',
+        password: '',
+        role: 'student',
+        isActive: true
+      });
+      setErrors({});
+      
+      onSuccess();
+      onClose();
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        setErrors({ username: 'Username already exists' });
+      } else {
+        setErrors({ general: 'Failed to create user. Please try again.' });
+      }
+    }
+  };
+
+  const handleInputChange = (field: keyof IUserCreate, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-900">Create New User</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={createUserMutation.isPending}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+              {errors.general}
+            </div>
+          )}
+
+          {/* Username Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.username ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter username"
+              disabled={createUserMutation.isPending}
+            />
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-600">{errors.username}</p>
+            )}
+          </div>
+
+          {/* Full Name Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.fullname}
+              onChange={(e) => handleInputChange('fullname', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.fullname ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter full name"
+              disabled={createUserMutation.isPending}
+            />
+            {errors.fullname && (
+              <p className="mt-1 text-sm text-red-600">{errors.fullname}</p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email (Optional)
+            </label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter email address"
+              disabled={createUserMutation.isPending}
+            />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+            )}
+          </div>
+
+          {/* Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter password (min. 6 characters)"
+              disabled={createUserMutation.isPending}
+            />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+            )}
+          </div>
+
+          {/* Role Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Role <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={formData.role}
+              onChange={(e) => handleInputChange('role', e.target.value as any)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.role ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              disabled={createUserMutation.isPending}
+            >
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+            {errors.role && (
+              <p className="mt-1 text-sm text-red-600">{errors.role}</p>
+            )}
+          </div>
+
+          {/* Active Status Field */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isActive"
+              checked={formData.isActive}
+              onChange={(e) => handleInputChange('isActive', e.target.checked)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              disabled={createUserMutation.isPending}
+            />
+            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
+              User is active
+            </label>
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={createUserMutation.isPending}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={createUserMutation.isPending}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 flex items-center"
+            >
+              {createUserMutation.isPending ? (
+                <>
+                  <LoadingSpinner size="small" />
+                  <span className="ml-2">Creating...</span>
+                </>
+              ) : (
+                'Create User'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\user\EditUserModal.tsx
+
+import React, { useState, useEffect } from 'react';
+import { useUpdateUser } from '../../hooks/useUsers';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+import type { IUser, IUserUpdate } from '../../api/apiUsers';
+
+interface EditUserModalProps {
+  isOpen: boolean;
+  user: IUser | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export const EditUserModal: React.FC<EditUserModalProps> = ({ 
+  isOpen, 
+  user, 
+  onClose, 
+  onSuccess 
+}) => {
+  const updateUserMutation = useUpdateUser();
+  
+  const [formData, setFormData] = useState<IUserUpdate>({
+    username: '',
+    fullname: '',
+    email: '',
+    role: 'student',
+    isActive: true
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username,
+        fullname: user.fullname,
+        email: user.email || '',
+        role: user.role,
+        isActive: user.isActive
+      });
+    }
+  }, [user]);
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.username?.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.username)) {
+      newErrors.username = 'Username must be 3-20 characters with letters, numbers, and underscores only';
+    }
+
+    if (!formData.fullname?.trim()) {
+      newErrors.fullname = 'Full name is required';
+    } else if (formData.fullname.length < 2) {
+      newErrors.fullname = 'Full name must be at least 2 characters long';
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please provide a valid email address';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!user || !validateForm()) return;
+
+    try {
+      await updateUserMutation.mutateAsync({
+        username: user.username,
+        userData: formData
+      });
+      
+      setErrors({});
+      onSuccess();
+      onClose();
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        setErrors({ username: 'Username already exists' });
+      } else {
+        setErrors({ general: 'Failed to update user. Please try again.' });
+      }
+    }
+  };
+
+  const handleInputChange = (field: keyof IUserUpdate, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  if (!isOpen || !user) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-900">Edit User: {user.username}</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={updateUserMutation.isPending}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+              {errors.general}
+            </div>
+          )}
+
+          {/* Username Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.username ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter username"
+              disabled={updateUserMutation.isPending}
+            />
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-600">{errors.username}</p>
+            )}
+          </div>
+
+          {/* Full Name Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.fullname}
+              onChange={(e) => handleInputChange('fullname', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.fullname ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter full name"
+              disabled={updateUserMutation.isPending}
+            />
+            {errors.fullname && (
+              <p className="mt-1 text-sm text-red-600">{errors.fullname}</p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter email address"
+              disabled={updateUserMutation.isPending}
+            />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+            )}
+          </div>
+
+          {/* Role Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Role <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={formData.role}
+              onChange={(e) => handleInputChange('role', e.target.value as any)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-gray-400 transition-colors"
+              disabled={updateUserMutation.isPending}
+            >
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          {/* Active Status Field */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isActive"
+              checked={formData.isActive}
+              onChange={(e) => handleInputChange('isActive', e.target.checked)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              disabled={updateUserMutation.isPending}
+            />
+            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
+              User is active
+            </label>
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={updateUserMutation.isPending}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={updateUserMutation.isPending}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 flex items-center"
+            >
+              {updateUserMutation.isPending ? (
+                <>
+                  <LoadingSpinner size="small" />
+                  <span className="ml-2">Updating...</span>
+                </>
+              ) : (
+                'Update User'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\user\PasswordResetModal.tsx
+
+import React, { useState } from 'react';
+import { useResetPassword } from '../../hooks/useUsers';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+
+interface PasswordResetModalProps {
+  isOpen: boolean;
+  username: string;
+  fullname: string;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export const PasswordResetModal: React.FC<PasswordResetModalProps> = ({ 
+  isOpen, 
+  username, 
+  fullname, 
+  onClose, 
+  onSuccess 
+}) => {
+  const resetPasswordMutation = useResetPassword();
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!newPassword.trim()) {
+      newErrors.newPassword = 'New password is required';
+    } else if (newPassword.length < 6) {
+      newErrors.newPassword = 'Password must be at least 6 characters long';
+    }
+
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = 'Please confirm the new password';
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    try {
+      await resetPasswordMutation.mutateAsync({
+        username,
+        newPassword
+      });
+      
+      setNewPassword('');
+      setConfirmPassword('');
+      setErrors({});
+      
+      onSuccess();
+      onClose();
+    } catch (error: any) {
+      setErrors({ 
+        general: error.response?.data?.message || 'Failed to reset password. Please try again.' 
+      });
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    if (field === 'newPassword') {
+      setNewPassword(value);
+    } else {
+      setConfirmPassword(value);
+    }
+    
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Reset Password</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Reset password for <span className="font-medium">{fullname}</span> ({username})
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={resetPasswordMutation.isPending}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+              {errors.general}
+            </div>
+          )}
+
+          <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-md text-sm">
+            <div className="flex">
+              <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <p className="font-medium">Important:</p>
+                <p>This will reset the user's password and invalidate all their existing sessions. The user will need to log in again with the new password.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* New Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => handleInputChange('newPassword', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.newPassword ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Enter new password (min. 6 characters)"
+              disabled={resetPasswordMutation.isPending}
+            />
+            {errors.newPassword && (
+              <p className="mt-1 text-sm text-red-600">{errors.newPassword}</p>
+            )}
+          </div>
+
+          {/* Confirm Password Field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="Confirm new password"
+              disabled={resetPasswordMutation.isPending}
+            />
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+            )}
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={resetPasswordMutation.isPending}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={resetPasswordMutation.isPending}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors disabled:opacity-50 flex items-center"
+            >
+              {resetPasswordMutation.isPending ? (
+                <>
+                  <LoadingSpinner size="small" />
+                  <span className="ml-2">Resetting...</span>
+                </>
+              ) : (
+                'Reset Password'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\user\UserStatusToggle.tsx
+
+import React, { useState } from 'react';
+import { useToggleUserStatus } from '../../hooks/useUsers';
+
+interface UserStatusToggleProps {
+  username: string;
+  isActive: boolean;
+  onSuccess?: () => void;
+  size?: 'small' | 'medium';
+}
+
+export const UserStatusToggle: React.FC<UserStatusToggleProps> = ({ 
+  username, 
+  isActive, 
+  onSuccess,
+  size = 'medium'
+}) => {
+  const toggleStatusMutation = useToggleUserStatus();
+  const [isToggling, setIsToggling] = useState(false);
+
+  const handleToggle = async () => {
+    setIsToggling(true);
+    try {
+      await toggleStatusMutation.mutateAsync(username);
+      onSuccess?.();
+    } catch (error) {
+      console.error('Failed to toggle user status:', error);
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
+  const sizeClasses = {
+    small: 'h-5 w-9',
+    medium: 'h-6 w-11'
+  };
+
+  const switchClasses = {
+    small: 'h-4 w-4',
+    medium: 'h-5 w-5'
+  };
+
+  return (
+    <div className="flex items-center space-x-2">
+      <button
+        onClick={handleToggle}
+        disabled={isToggling || toggleStatusMutation.isPending}
+        className={`${sizeClasses[size]} bg-gray-200 relative inline-flex flex-shrink-0 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed ${
+          isActive ? 'bg-green-500' : 'bg-gray-200'
+        }`}
+      >
+        <span className="sr-only">Toggle user status</span>
+        <span
+          className={`${switchClasses[size]} bg-white shadow-lg rounded-full transition-transform ease-in-out duration-200 transform ${
+            isActive ? 'translate-x-5' : 'translate-x-0'
+          }`}
+        />
+      </button>
+      
+      <span className={`text-sm font-medium ${
+        isActive ? 'text-green-700' : 'text-red-700'
+      }`}>
+        {isToggling ? (
+          <span className="text-gray-500">Updating...</span>
+        ) : (
+          isActive ? 'Active' : 'Inactive'
+        )}
+      </span>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\Navbar.tsx
+
+// 1. Import dependencies at the top
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Adjust path if needed
+import { useState } from 'react';
+import { LogoutAllConfirmModal } from './auth/LogoutAllConfirmModal'; // Adjust path if needed
+
+
+export default function Navbar() {
+  const { user, logout, loading, logoutAll } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  // Add these states inside the Navbar component
+  const [showLogoutAllConfirm, setShowLogoutAllConfirm] = useState(false);
+
+  if (loading)return null;
+  if (!user) return null; // Or show a minimal login link
+
+  return (
+    <nav className="bg-white border-b border-gray-200 h-16 flex items-center px-6 justify-between">
+      <Link to={`/${user.role}`} className="text-xl font-bold text-blue-700">Your App</Link>
+
+      {/* Right side: User profile menu */}
+      <div className="relative ml-auto">
+        <button
+          onClick={() => setShowUserMenu(v => !v)}
+          className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <span className="sr-only">Open user menu</span>
+          <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
+            <span className="text-white font-medium text-sm">
+              {user.fullname?.charAt(0).toUpperCase()}
+            </span>
+          </div>
+        </button>
+        {/* // Update the user menu dropdown section to include logout all option: */}
+        {showUserMenu && (
+          <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+            <div className="py-1">
+              <Link
+                to="/profile"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={() => setShowUserMenu(false)}
+              >
+                Your Profile
+              </Link>
+              <button
+                onClick={() => {
+                  alert('Password change modal not yet wired up!');
+                  setShowUserMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Change Password
+              </button>
+              <hr className="my-1" />
+              <button
+                onClick={() => {
+                  setShowLogoutAllConfirm(true);
+                  setShowUserMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <div className="flex items-center">
+                  <svg className="w-4 h-4 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-4a2 2 0 00-2-2H6a2 2 0 00-2 2v4a2 2 0 002 2zM11 5V3a2 2 0 112 0v2M7 7h10" />
+                  </svg>
+                  Logout All Devices
+                </div>
+              </button>
+              <button
+                onClick={logout}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showLogoutAllConfirm && (
+          <LogoutAllConfirmModal
+            isOpen={showLogoutAllConfirm}
+            onClose={() => setShowLogoutAllConfirm(false)}
+            onConfirm={async () => {
+              await logoutAll();
+              setShowLogoutAllConfirm(false);
+            }}
+          />
+        )}
+
+
+      </div>
+    </nav>
+  );
+}
+
+C:\Users\User\Desktop\jink-demo\src\context\AuthContext.tsx
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { setAuthToken, clearAuthToken, getAuthToken, isTokenValid } from '../utils/auth';
+import { apiLogin, apiLogoutAll, apiLogout } from '../api/apiAuth';
+import { apiGetUserByUsername } from '../api/apiUsers';
+
+interface User {
+  username: string;
+  fullname: string;
+  role: 'admin' | 'teacher' | 'student' | 'user';
+  isActive?: boolean;
+  // ...other properties
+}
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+  logoutAll: () => Promise<void>; // Add this line
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // On cold app load, check for a JWT and fetch user profile if present.
+  useEffect(() => {
+    const initAuth = async () => {
+      setLoading(true);
+      const token = getAuthToken();
+      if (token && isTokenValid()) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          // Use the username from the JWT to fetch the fresh profile
+          const freshUser = await apiGetUserByUsername(payload.username);
+          setUser(freshUser);
+        } catch (error) {
+          console.error('Failed to fetch user profile from token:', error);
+          clearAuthToken();
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+    initAuth();
+  }, []);
+
+  // Login: authenticate, store token, and fetch updated user profile
+  const login = async (username: string, password: string) => {
+    const response = await apiLogin({ username, password });
+    setAuthToken(response.token);
+    // Always fetch the full, up-to-date user profile from the API
+    const fullUser = await apiGetUserByUsername(response.user.username);
+    setUser(fullUser);
+  };
+
+  const logout = async() => {
+    try{
+      const logoutMe = await apiLogout();
+
+    }catch (error) 
+    {
+      console.error('Logout failed:', error);   
+
+    // Redirect will be handled by axios interceptor or route guards
+    }finally {
+      clearAuthToken();
+      setUser(null);
+    }
+  };
+
+  // Add the logoutAll function in the AuthProvider component
+  const logoutAll = async () => {
+    try {
+      // Call the logout-all API endpoint
+      const logoutAllUser = await apiLogoutAll();
+      // await fetch('/api/auth/logout-all', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${getAuthToken()}`
+      //   }
+      // });
+    } catch (error) {
+      // Even if the API call fails, we should clear local state
+      console.error('Failed to logout all sessions:', error);
+    } finally {
+      // Clear local state and redirect
+      clearAuthToken();
+      setUser(null);
+      window.location.href = '/login';
+    }
+  };
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout, logoutAll }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useBulk.ts
+
+// src/hooks/useBulk.ts
+import { useMutation } from '@tanstack/react-query';
+import { 
+  apiImportUsersCSV, 
+  apiExportUsersCSV, 
+  apiDownloadCSVTemplate,
+} from '../api/apiBulk';
+import type { 
+  IExportFilters 
+} from '../api/apiBulk';
+
+// Import users from CSV
+export const useImportUsersCSV = () => {
+  return useMutation({
+    mutationFn: (csvFile: File) => apiImportUsersCSV(csvFile),
+  });
+};
+
+// Export users to CSV
+export const useExportUsersCSV = () => {
+  return useMutation({
+    mutationFn: (filters?: IExportFilters) => apiExportUsersCSV(filters),
+  });
+};
+
+// Download CSV template
+export const useDownloadCSVTemplate = () => {
+  return useMutation({
+    mutationFn: () => apiDownloadCSVTemplate(),
+  });
+};
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useGroups.ts
+
+// src/hooks/useGroups.ts
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { 
+  apiListGroups, 
+  apiGetGroup, 
+  apiCreateGroup, 
+  apiUpdateGroup, 
+  apiDeleteGroup,
+  apiManageGroupMembers,
+
+} from '../api/apiGroups';
+import type { 
+
+  IGroupCreate,
+  IGroupUpdate 
+} from '../api/apiGroups';
+import { useAuth } from '../context/AuthContext';
+
+// List groups with caching
+export const useGroups = () => {
+  const { user } = useAuth();
+  
+  return useQuery({
+    queryKey: ['groups'],
+    queryFn: apiListGroups,
+    enabled: !!user && ['admin', 'teacher'].includes(user.role),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000,   // 10 minutes
+  });
+};
+
+// Get single group
+export const useGroup = (groupId?: string) => {
+  return useQuery({
+    queryKey: ['group', groupId],
+    queryFn: () => apiGetGroup(groupId!),
+    enabled: !!groupId,
+  });
+};
+
+// Create group mutation
+export const useCreateGroup = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (groupData: IGroupCreate) => apiCreateGroup(groupData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
+    },
+  });
+};
+
+// Update group mutation
+export const useUpdateGroup = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ groupId, groupData }: { groupId: string; groupData: IGroupUpdate }) =>
+      apiUpdateGroup(groupId, groupData),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
+      queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
+    },
+  });
+};
+
+// Delete group mutation
+export const useDeleteGroup = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (groupId: string) => apiDeleteGroup(groupId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
+    },
+  });
+};
+
+// Manage group members mutation
+export const useManageGroupMembers = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ 
+      groupId, 
+      memberData 
+    }: { 
+      groupId: string; 
+      memberData: { add?: string[], remove?: string[] } 
+    }) => apiManageGroupMembers(groupId, memberData),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
+      queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
+    },
+  });
+};
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useUsers.ts
+
+// src/hooks/useUsers.ts
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { 
+  apiListUsers, 
+  apiGetUserByUsername, 
+  apiCreateUser, 
+  apiUpdateUser, 
+  apiDeleteUser, 
+  apiToggleUserStatus,
+  apiResetPassword,
+} from '../api/apiUsers';
+import type { 
+  IUserCreate,
+  IUserUpdate 
+} from '../api/apiUsers';
+import { useAuth } from '../context/AuthContext';
+
+// List users with caching
+export const useUsers = () => {
+  const { user } = useAuth();
+  
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: apiListUsers,
+    enabled: !!user && ['admin', 'teacher'].includes(user.role),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000,   // 10 minutes (was cacheTime in v4)
+  });
+};
+
+// Get single user
+export const useUser = (username?: string) => {
+  return useQuery({
+    queryKey: ['user', username],
+    queryFn: () => apiGetUserByUsername(username!),
+    enabled: !!username,
+  });
+};
+
+// Create user mutation
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (userData: IUserCreate) => apiCreateUser(userData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+};
+
+// Update user mutation
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ username, userData }: { username: string; userData: IUserUpdate }) =>
+      apiUpdateUser(username, userData),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['user', variables.username] });
+    },
+  });
+};
+
+// // Delete user mutation
+// export const useDeleteUser = () => {
+//   const queryClient = useQueryClient();
+  
+//   return useMutation({
+//     mutationFn: (username: string) => apiDeleteUser(username),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ['users'] });
+//     },
+//   });
+// };
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: apiDeleteUser, // (username: string) => apiDeleteUser(username) works too
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: (error) => {
+      console.error('Delete user error:', error);
+    },
+  });
+};
+
+
+
+// Toggle user status mutation
+export const useToggleUserStatus = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (username: string) => apiToggleUserStatus(username),
+    onSuccess: (data, username) => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['user', username] });
+    },
+  });
+};
+
+// Reset password mutation
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: ({ username, newPassword }: { username: string; newPassword: string }) =>
+      apiResetPassword(username, newPassword),
+  });
+};
+
+C:\Users\User\Desktop\jink-demo\src\pages\admin\BulkOperations.tsx
+
+// src/pages/admin/BulkOperations.tsx
+import React, { useState } from 'react';
+import { BulkImport } from '../../components/bulk/BulkImport';
+import { BulkExport } from '../../components/bulk/BulkExport';
+import { CSVTemplateDownload } from '../../components/bulk/CSVTemplateDownload';
+
+const BulkOperations: React.FC = () => {
+  const [active, setActive] = useState<'import' | 'export' | null>(null);
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-semibold mb-4">Bulk User Operations</h1>
+      <p className="mb-8">Import and export users using CSV files.</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-medium mb-4">Import Users</h2>
+          <BulkImport onSuccess={() => setActive(null)} onCancel={() => setActive(null)} />
+          <div className="mt-4">
+            <CSVTemplateDownload />
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-medium mb-4">Export Users</h2>
+          <BulkExport onCancel={() => setActive(null)} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BulkOperations;
+
+C:\Users\User\Desktop\jink-demo\src\pages\admin\Groups.tsx
+
+import React, { useState } from 'react';
+import { GroupsList } from '../../components/groups/GroupsList';
+import { GroupForm } from '../../components/groups/GroupForm';
+import { GroupDetail } from '../../components/groups/GroupDetail';
+import type { IStudentGroup } from '../../api/apiGroups';
+
+const Groups: React.FC = () => {
+  const [currentView, setCurrentView] = useState<'list' | 'create' | 'edit' | 'detail'>('list');
+  const [selectedGroup, setSelectedGroup] = useState<IStudentGroup | null>(null);
+
+  const handleCreateGroup = () => {
+    setSelectedGroup(null);
+    setCurrentView('create');
+  };
+
+  const handleEditGroup = (group: IStudentGroup) => {
+    setSelectedGroup(group);
+    setCurrentView('edit');
+  };
+
+  const handleViewGroup = (group: IStudentGroup) => {
+    setSelectedGroup(group);
+    setCurrentView('detail');
+  };
+
+  const handleFormSuccess = () => {
+    setCurrentView('list');
+    setSelectedGroup(null);
+  };
+
+  const handleFormCancel = () => {
+    setCurrentView('list');
+    setSelectedGroup(null);
+  };
+
+  return (
+    <div className="p-6 max-w-7xl mx-auto">
+      {currentView === 'list' && (
+        <GroupsList
+          onCreateGroup={handleCreateGroup}
+          onEditGroup={handleEditGroup}
+          onViewGroup={handleViewGroup}
+        />
+      )}
+
+      {(currentView === 'create' || currentView === 'edit') && (
+        <GroupForm
+          group={selectedGroup || undefined}
+          onSuccess={handleFormSuccess}
+          onCancel={handleFormCancel}
+        />
+      )}
+
+      {currentView === 'detail' && selectedGroup && (
+        <GroupDetail
+          group={selectedGroup}
+          onClose={() => setCurrentView('list')}
+          onEdit={() => setCurrentView('edit')}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Groups;
 
 C:\Users\User\Desktop\jink-demo\src\pages\About.tsx
 
@@ -10,6 +3153,222 @@ function About() {
 }
 export default About;
 
+C:\Users\User\Desktop\jink-demo\src\pages\AdminDashboard.tsx
+
+import React, { useState } from 'react';
+import { useUsers } from '../hooks/useUsers';
+import { useGroups } from '../hooks/useGroups';
+import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { BulkImport } from '../components/bulk/BulkImport';
+import { BulkExport } from '../components/bulk/BulkExport';
+import { CSVTemplateDownload } from '../components/bulk/CSVTemplateDownload';
+import { CreateUserModal } from '../components/user/CreateUserModal';
+
+const AdminDashboard: React.FC = () => {
+  const { data: users, isLoading: usersLoading } = useUsers();
+  const { data: groups, isLoading: groupsLoading } = useGroups();
+  const [showBulkImport, setShowBulkImport] = useState(false);
+  const [showBulkExport, setShowBulkExport] = useState(false);
+  const [showCreateUser, setShowCreateUser] = useState(false);
+  
+  
+  if (usersLoading || groupsLoading) {
+    return <LoadingSpinner message="Loading dashboard..." />;
+  }
+
+  const userStats = users ? {
+    total: users.length,
+    active: users.filter(u => u.isActive).length,
+    inactive: users.filter(u => !u.isActive).length,
+    admins: users.filter(u => u.role === 'admin').length,
+    teachers: users.filter(u => u.role === 'teacher').length,
+    students: users.filter(u => u.role === 'student').length,
+    users: users.filter(u => u.role === 'user').length,
+  } : null;
+
+  const groupStats = groups ? {
+    total: groups.length,
+    totalStudents: groups.reduce((sum, g) => sum + (g.studentUsernames?.length || 0), 0)
+  } : null;
+
+
+  
+
+  return (
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-gray-600">System overview and management</p>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Total Users</p>
+              <p className="text-2xl font-semibold text-gray-900">{userStats?.total || 0}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Active Users</p>
+              <p className="text-2xl font-semibold text-gray-900">{userStats?.active || 0}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Total Groups</p>
+              <p className="text-2xl font-semibold text-gray-900">{groupStats?.total || 0}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Students in Groups</p>
+              <p className="text-2xl font-semibold text-gray-900">{groupStats?.totalStudents || 0}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <h3 className="font-medium mb-2">Bulk Operations</h3>
+            <p className="text-sm text-gray-600 mb-3">Import or export users in bulk using CSV files.</p>
+            <div className="space-y-2">
+              <button
+                onClick={() => setShowBulkImport(true)}
+                className="w-full bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+              >
+                Import Users (CSV)
+              </button>
+              <button
+                onClick={() => setShowBulkExport(true)}
+                className="w-full bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+              >
+                Export Users (CSV)
+              </button>
+              <CSVTemplateDownload />
+            </div>
+          </div>
+{/* 
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <h3 className="font-medium mb-2">User Management</h3>
+            <p className="text-sm text-gray-600 mb-3">Manage users, roles, and permissions.</p>
+            <div className="space-y-2">
+              <a
+                href="/admin/users"
+                className="block w-full bg-indigo-600 text-white px-3 py-2 rounded text-sm hover:bg-indigo-700 text-center"
+              >
+                Manage Users
+              </a>
+            </div>
+          </div> */}
+
+          {/* // Add this button in the dashboard (replace the existing user management section): */}
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <h3 className="font-medium mb-2">User Management</h3>
+            <p className="text-sm text-gray-600 mb-3">Manage users, roles, and permissions.</p>
+            <div className="space-y-2">
+              <button
+                onClick={() => setShowCreateUser(true)}
+                className="w-full bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700 transition-colors flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Create New User
+              </button>
+              <a href="/admin/users" className="block w-full bg-indigo-600 text-white px-3 py-2 rounded text-sm hover:bg-indigo-700 text-center transition-colors">
+                Manage Users
+              </a>
+            </div>
+          </div>
+
+
+
+          <div className="p-4 border border-gray-200 rounded-lg">
+            <h3 className="font-medium mb-2">Group Management</h3>
+            <p className="text-sm text-gray-600 mb-3">Manage student groups and assignments.</p>
+            <div className="space-y-2">
+              <a
+                href="/admin/groups"
+                className="block w-full bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700 text-center"
+              >
+                Manage Groups
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Bulk Operation Modals */}
+      {showBulkImport && (
+        <BulkImport
+          onSuccess={() => setShowBulkImport(false)}
+          onCancel={() => setShowBulkImport(false)}
+        />
+      )}
+
+      {showBulkExport && (
+        <BulkExport
+          onCancel={() => setShowBulkExport(false)}
+        />
+      )}
+
+      {showCreateUser && (
+        <CreateUserModal
+          isOpen={showCreateUser}
+          onClose={() => setShowCreateUser(false)}
+          onSuccess={() => {
+            // Refresh any data if needed
+            console.log('User created successfully');
+          }}
+        />
+      )}
+
+    </div>
+  );
+};
+
+export default AdminDashboard;
+
 C:\Users\User\Desktop\jink-demo\src\pages\Home.tsx
 
 function Home() {
@@ -17,52 +3376,748 @@ function Home() {
 }
 export default Home;
 
+C:\Users\User\Desktop\jink-demo\src\pages\Login.tsx
+
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+          await login(username, password);
+          if(user)
+            {
+              switch(user.role) {
+                case "admin":
+                  navigate("/admin");
+                  break;
+                case "teacher":
+                  navigate("/teacher");
+                  break;
+                case "student":
+                  navigate("/student");
+                  break;
+                default:
+                  navigate("/login");
+              }
+            }
+
+    } catch (err: any) {
+      setError(err?.response?.data?.message ?? 'Login failed');
+    }
+  };
+
+  // return (
+  //   <div style={{ maxWidth: 360, margin: '2rem auto' }}>
+  //     <h2>Login</h2>
+  //     {error && <p style={{ color: 'crimson' }}>{error}</p>}
+  //     <form onSubmit={handleSubmit}>
+  //       <label>
+  //         Username
+  //         <input
+  //           required
+  //           value={username}
+  //           onChange={e => setUsername(e.target.value)}
+  //         />
+  //       </label>
+  //       <br />
+  //       <label>
+  //         Password
+  //         <input
+  //           type="password"
+  //           required
+  //           value={password}
+  //           onChange={e => setPassword(e.target.value)}
+  //         />
+  //       </label>
+  //       <br />
+  //       <button type="submit">Sign in</button>
+  //     </form>
+  //   </div>
+  // );
+
+
+  return (
+    <div className="max-w-sm mx-auto mt-8 p-6 bg-white rounded-lg shadow">
+      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+      {error && (
+        <p className="text-red-600 mb-4 text-sm text-center">{error}</p>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block mb-1 font-medium">Username</label>
+          <input
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block mb-1 font-medium">Password</label>
+          <input
+            type="password"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-semibold transition-colors"
+        >
+          Sign in
+        </button>
+      </form>
+    </div>
+  );
+
+
+}
+
 C:\Users\User\Desktop\jink-demo\src\pages\NotFound.tsx
 
-function NotFound() {
-  return <h2>404: Page Not Found</h2>;
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export default function NotFound() {
+  const navigate = useNavigate();
+
+  return (
+    <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <h2>404 - Page Not Found</h2>
+      <p>Sorry, the page you are looking for does not exist.</p>
+      <button onClick={() => navigate('/')}>Go to Home</button>
+      <button style={{ marginLeft: '1rem' }} onClick={() => navigate('/login')}>
+        Go to Login
+      </button>
+    </div>
+  );
 }
-export default NotFound;
+
+C:\Users\User\Desktop\jink-demo\src\pages\StudentDashboard.tsx
+
+import React from 'react';
+
+const StudentDashboard = () => {
+  return (
+    <div>
+      <h1>Student Dashboard Placeholder</h1>
+      <p>This is a temporary placeholder component as StudentDashboard is not yet implemented.</p>
+    </div>
+  );
+};
+
+export default StudentDashboard;
+
+C:\Users\User\Desktop\jink-demo\src\pages\TeacherDashboard.tsx
+
+import React from 'react';
+
+const TeacherDashboard = () => {
+  return (
+    <div>
+      <h1>Teacher Dashboard Placeholder</h1>
+      <p>This is a temporary placeholder component as TeacherDashboard is not yet implemented.</p>
+    </div>
+  );
+};
+
+export default TeacherDashboard;
+
+C:\Users\User\Desktop\jink-demo\src\pages\Unauthorized.tsx
+
+import React from 'react';
+
+const UnauthorizedDashboard = () => {
+  return (
+    <div>
+      <h1>Unauthorized Dashboard Placeholder</h1>
+      <p>This is a temporary placeholder component as UnauthorizedDashboard is not yet implemented.</p>
+    </div>
+  );
+};
+
+export default UnauthorizedDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\UserDetail.tsx
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { apiGetUserByUsername } from '../api/apiUsers';
 
-function UserDetail() {
-  const { id } = useParams<{ id: string }>();
+export default function UserDetail() {
+  const { username } = useParams<{ username: string }>();
+
+
+  // const {
+  //   data: user,
+  //   error,
+  //   isLoading,
+  // } = useQuery(['user', username], () => apiGetUserByUsername(username!), {
+  //   enabled: !!username,
+  // });
+  const {
+      data: user,
+      error,
+      isLoading,
+  } = useQuery({
+      queryKey: ['user', username],
+      queryFn: () => apiGetUserByUsername(username!),
+      enabled: !!username,
+  });
+
+
+  if (isLoading) return <p>Loading profile??/p>;
+  if (error) return <p>Error fetching user.</p>;
+
   return (
     <div>
-      <h2>User Detail</h2>
-      <p>User ID: {id}</p>
+      <h2>{user!.fullname}</h2>
+      <p>
+        <b>Username:</b> {user!.username}
+      </p>
+      <p>
+        <b>Role:</b> {user!.role}
+      </p>
+      <p>
+        <b>Status:</b> {user!.isActive ? 'Active' : 'Inactive'}
+      </p>
     </div>
   );
 }
-export default UserDetail;
+
+C:\Users\User\Desktop\jink-demo\src\pages\UserProfile.tsx
+
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { ChangePasswordModal } from '../components/user/ChangePasswordModal';
+
+const UserProfile: React.FC = () => {
+  const { user } = useAuth();
+  const [showChangePassword, setShowChangePassword] = useState(false);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Access Denied</h2>
+          <p className="text-gray-600">You need to be logged in to view this page.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const handlePasswordChangeSuccess = () => {
+    // Show success notification
+    alert('Password changed successfully! Please log in again.');
+    // In a real app, you might want to logout the user or show a toast notification
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
+          <p className="text-gray-600 mt-2">Manage your account settings and preferences</p>
+        </div>
+
+        <div className="space-y-6">
+          {/* Profile Information Card */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
+            </div>
+            <div className="px-6 py-4">
+              <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Username</dt>
+                  <dd className="mt-1 text-sm text-gray-900">{user.username}</dd>
+                </div>
+                
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Full Name</dt>
+                  <dd className="mt-1 text-sm text-gray-900">{user.fullname}</dd>
+                </div>
+                
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Role</dt>
+                  <dd className="mt-1">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user.role === 'admin' ? 'bg-red-100 text-red-800' :
+                      user.role === 'teacher' ? 'bg-blue-100 text-blue-800' :
+                      user.role === 'student' ? 'bg-green-100 text-green-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    </span>
+                  </dd>
+                </div>
+                
+                <div>
+                  <dt className="text-sm font-medium text-gray-500">Status</dt>
+                  <dd className="mt-1">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {user.isActive ? 'Active' : 'Inactive'}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          {/* Security Settings Card */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">Security Settings</h2>
+            </div>
+            <div className="px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900">Password</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Change your password to keep your account secure
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowChangePassword(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm font-medium"
+                >
+                  Change Password
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Account Information Card */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">Account Information</h2>
+            </div>
+            <div className="px-6 py-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                <div className="flex">
+                  <svg className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <div className="text-sm text-blue-700">
+                    <p className="font-medium">Account Management</p>
+                    <p className="mt-1">
+                      For changes to your profile information, role, or account status, 
+                      please contact your system administrator.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions Card */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
+            </div>
+            <div className="px-6 py-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {user.role === 'admin' && (
+                  <>
+                    <a
+                      href="/admin/users"
+                      className="flex items-center p-3 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
+                    >
+                      <svg className="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                      </svg>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Manage Users</p>
+                        <p className="text-xs text-gray-500">Create, edit, and manage user accounts</p>
+                      </div>
+                    </a>
+                    
+                    <a
+                      href="/admin/groups"
+                      className="flex items-center p-3 bg-green-50 rounded-md hover:bg-green-100 transition-colors"
+                    >
+                      <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Manage Groups</p>
+                        <p className="text-xs text-gray-500">Create and manage student groups</p>
+                      </div>
+                    </a>
+                  </>
+                )}
+
+                {user.role === 'teacher' && (
+                  <a
+                    href="/teacher/groups"
+                    className="flex items-center p-3 bg-green-50 rounded-md hover:bg-green-100 transition-colors"
+                  >
+                    <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">My Groups</p>
+                      <p className="text-xs text-gray-500">Manage your student groups</p>
+                    </div>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Change Password Modal */}
+      {showChangePassword && (
+        <ChangePasswordModal
+          isOpen={showChangePassword}
+          onClose={() => setShowChangePassword(false)}
+          onSuccess={handlePasswordChangeSuccess}
+        />
+      )}
+    </div>
+  );
+};
+
+export default UserProfile;
 
 C:\Users\User\Desktop\jink-demo\src\pages\Users.tsx
 
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useUsers } from '../hooks/useUsers';
+import { useAuth } from '../context/AuthContext';
+import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import { EditUserModal } from '../components/user/EditUserModal';
+import { PasswordResetModal } from '../components/user/PasswordResetModal';
+import { UserStatusToggle } from '../components/user/UserStatusToggle';
+import { ConfirmDialog } from '../components/common/ConfirmDialog';
+import { useDeleteUser } from '../hooks/useUsers';
+import type { IUser } from '../api/apiUsers';
 
-const USERS = [
-  { id: "1", name: "Alice" },
-  { id: "2", name: "Bob" }
-];
+const Users: React.FC = () => {
+  const { user: currentUser } = useAuth();
+  const { data: users, isLoading, error, refetch } = useUsers();
+  const deleteUserMutation = useDeleteUser();
 
-function Users() {
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState<{
+    isOpen: boolean;
+    user: IUser | null;
+  }>({ isOpen: false, user: null });
+
+  const handleEditUser = (user: IUser) => {
+    setSelectedUser(user);
+    setShowEditModal(true);
+  };
+
+  const handleResetPassword = (user: IUser) => {
+    setSelectedUser(user);
+    setShowPasswordResetModal(true);
+  };
+
+  const handleDeleteClick = (user: IUser) => {
+    setDeleteDialog({ isOpen: true, user });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteDialog.user) {
+      try {
+        await deleteUserMutation.mutateAsync(deleteDialog.user.username);
+        setDeleteDialog({ isOpen: false, user: null });
+        refetch();
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+      }
+    }
+  };
+
+  const handleModalSuccess = () => {
+    refetch();
+    setShowEditModal(false);
+    setShowPasswordResetModal(false);
+  };
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin': return 'bg-red-100 text-red-800';
+      case 'teacher': return 'bg-blue-100 text-blue-800';
+      case 'student': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingSpinner message="Loading users..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Error Loading Users</h2>
+          <p className="text-red-600 mb-4">{(error as Error).message}</p>
+          <button
+            onClick={() => refetch()}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h2>User List</h2>
-      <ul>
-        {USERS.map(user => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>{user.name}'s Page</Link>
-          </li>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
+          <p className="text-gray-600 mt-2">
+            Manage all users in the system ({users?.length || 0} total users)
+          </p>
+        </div>
+
+        {/* Users Table */}
+        <div className="bg-white shadow overflow-hidden rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium text-gray-900">All Users</h2>
+          </div>
+
+          {!users || users.length === 0 ? (
+            <div className="text-center py-12">
+              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">No users found</h3>
+              <p className="mt-1 text-sm text-gray-500">Get started by creating a new user.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      User
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {users.map((user) => (
+                    <tr key={user.username} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
+                              <span className="text-white font-medium text-sm">
+                                {user.fullname.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {user.fullname}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              @{user.username}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}>
+                          {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <UserStatusToggle
+                          username={user.username}
+                          isActive={user.isActive}
+                          onSuccess={() => refetch()}
+                          size="small"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex items-center justify-end space-x-2">
+                          <Link
+                            to={`/admin/users/${user.username}`}
+                            className="text-blue-600 hover:text-blue-900 transition-colors px-2 py-1 rounded hover:bg-blue-50"
+                          >
+                            View
+                          </Link>
+                          <button
+                            onClick={() => handleEditUser(user)}
+                            className="text-green-600 hover:text-green-900 transition-colors px-2 py-1 rounded hover:bg-green-50"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleResetPassword(user)}
+                            className="text-yellow-600 hover:text-yellow-900 transition-colors px-2 py-1 rounded hover:bg-yellow-50"
+                          >
+                            Reset Pwd
+                          </button>
+                          {currentUser?.username !== user.username && (
+                            <button
+                              onClick={() => handleDeleteClick(user)}
+                              className="text-red-600 hover:text-red-900 transition-colors px-2 py-1 rounded hover:bg-red-50"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Modals */}
+      {showEditModal && selectedUser && (
+        <EditUserModal
+          isOpen={showEditModal}
+          user={selectedUser}
+          onClose={() => setShowEditModal(false)}
+          onSuccess={handleModalSuccess}
+        />
+      )}
+
+      {showPasswordResetModal && selectedUser && (
+        <PasswordResetModal
+          isOpen={showPasswordResetModal}
+          username={selectedUser.username}
+          fullname={selectedUser.fullname}
+          onClose={() => setShowPasswordResetModal(false)}
+          onSuccess={handleModalSuccess}
+        />
+      )}
+
+      <ConfirmDialog
+        isOpen={deleteDialog.isOpen}
+        title="Delete User"
+        message={`Are you sure you want to delete ${deleteDialog.user?.fullname}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteDialog({ isOpen: false, user: null })}
+      />
     </div>
   );
-}
+};
+
 export default Users;
+
+C:\Users\User\Desktop\jink-demo\src\routes\guards\RoleGuard.tsx
+
+// src/routes/guards/RoleGuard.tsx
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
+interface Props { 
+  allow?: Array<'admin' | 'teacher' | 'student'| 'user'>; 
+}
+
+export const RoleGuard = ({ allow }: Props) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="loading-spinner">Loading session...</div>;
+  }
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // if (!allow.includes(user.role)) {
+  //   return <Navigate to="/unauthorized" replace />;
+  // }
+
+
+    // If allow prop is provided, perform role checking
+  if (allow && !allow.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return <Outlet />;
+};
+
+C:\Users\User\Desktop\jink-demo\src\routes\ProtectedRoute.tsx
+
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export default function ProtectedRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading...</p>;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
+}
+
+C:\Users\User\Desktop\jink-demo\src\utils\auth.ts
+
+// src/utils/auth.ts
+const TOKEN_KEY = 'authToken';
+
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+export const setAuthToken = (token: string): void => {
+  localStorage.setItem(TOKEN_KEY, token);
+};
+
+export const clearAuthToken = (): void => {
+  localStorage.removeItem(TOKEN_KEY);
+};
+
+export const isTokenValid = (): boolean => {
+  const token = getAuthToken();
+  if (!token) return false;
+  
+  try {
+    // Simple JWT payload decode (without verification)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const now = Date.now() / 1000;
+    return payload.exp > now;
+  } catch {
+    return false;
+  }
+};
 
 C:\Users\User\Desktop\jink-demo\src\App.css
 
@@ -111,41 +4166,80 @@ C:\Users\User\Desktop\jink-demo\src\App.css
 
 C:\Users\User\Desktop\jink-demo\src\App.tsx
 
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { RoleGuard } from './routes/guards/RoleGuard';
+
+// Import your existing pages
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import TeacherDashboard from './pages/TeacherDashboard';
+import StudentDashboard from './pages/StudentDashboard';
+import Users from './pages/Users';
+import Unauthorized from './pages/Unauthorized';
+import NotFound from './pages/NotFound';
+
+// Import new admin pages
+import Groups from './pages/admin/Groups';
+import BulkOperations from './pages/admin/BulkOperations';
+
+import UserDetail from './pages/UserDetail';
+import UserProfile from './pages/UserProfile';
+import Navbar from './components/Navbar';
+import { useLocation } from 'react-router-dom';
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  const location = useLocation();
+  const hideNavbar = ["/login", "/unauthorized"].includes(location.pathname);
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {!hideNavbar && <Navbar />}
+      <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+
+
+        <Route element={<RoleGuard />}>
+          <Route path="/profile" element={<UserProfile />} />
+        </Route>
+
+        {/* Admin routes */}
+        <Route element={<RoleGuard allow={["admin"]} />}>
+          {/* <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/groups" element={<Groups />} />
+          <Route path="/admin/bulk-operations" element={<BulkOperations />} /> */}
+
+
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/users/:username" element={<UserDetail />} />
+            <Route path="/admin/groups" element={<Groups />} />
+            <Route path="/admin/bulk-operations" element={<BulkOperations />} />
+        </Route>
+
+        {/* Teacher routes */}
+        <Route element={<RoleGuard allow={["teacher"]} />}>
+          <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/teacher/groups" element={<Groups />} />
+        </Route>
+
+        {/* Student routes */}
+        <Route element={<RoleGuard allow={["student"]} />}>
+          <Route path="/student" element={<StudentDashboard />} />
+        </Route>
+
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>    
     </>
-  )
+
+  );
 }
 
-export default App
+export default App;
 
 C:\Users\User\Desktop\jink-demo\src\App2.css
 
@@ -421,7 +4515,13 @@ export default Square;
 
 C:\Users\User\Desktop\jink-demo\src\index.css
 
-:root {
+@import "tailwindcss";
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -488,65 +4588,111 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
 
 C:\Users\User\Desktop\jink-demo\src\main.tsx
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-// import App from './App.tsx'
-import App2 from './App2.tsx'
-import RouterApp from './RouterApp.tsx'
+// src/main.tsx (update your existing file)
+import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AuthProvider } from './context/AuthContext';
+import App from './App';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <RouterApp />
-  </StrictMode>,
-)
+
+
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error: any) => {
+        // Don't retry on 401/403 errors
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
+          return false;
+        }
+        return failureCount < 3;
+      },
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000,   // 10 minutes
+    },
+  },
+});
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
 
 C:\Users\User\Desktop\jink-demo\src\RouterApp.tsx
 
-import React from "react";
-import { BrowserRouter, Routes, Route, Link, Outlet, useParams } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Users from "./pages/Users";
-import UserDetail from "./pages/UserDetail";
-import NotFound from "./pages/NotFound";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+} from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+
+import Home from './pages/Home';
+import About from './pages/About';
+import Users from './pages/Users';
+import UserDetail from './pages/UserDetail';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 function Layout() {
   return (
     <>
       <nav>
-        <Link to="/">Home</Link> |{" "}
-        <Link to="/about">About</Link> |{" "}
+        <Link to="/">Home</Link> | <Link to="/about">About</Link> |{' '}
         <Link to="/users">Users</Link>
       </nav>
       <hr />
-      {/* Outlet renders nested routes */}
       <Outlet />
     </>
   );
 }
 
-function RouterApp() {
+export default function RouterApp() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Nested under Layout */}
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="users" element={<Users />} />
-          <Route path="users/:id" element={<UserDetail />} />
-          <Route path="*" element={<NotFound />} /> {/* 404 */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+
+            {/* Public route */}
+            <Route path="login" element={<Login />} />
+
+            {/* Private routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="users" element={<Users />} />
+              <Route path="users/:username" element={<UserDetail />} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default RouterApp;
 
 C:\Users\User\Desktop\jink-demo\src\vite-env.d.ts
 

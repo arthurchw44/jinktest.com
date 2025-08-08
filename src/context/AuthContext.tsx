@@ -1,69 +1,108 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import type {  ReactNode} from 'react';
-import { apiLogin, apiGetProfile } from '../api/apiAuth';
-import type { UserResponse } from '../api/apiAuth';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { setAuthToken, clearAuthToken, getAuthToken, isTokenValid } from '../utils/auth';
+import { apiLogin, apiLogoutAll, apiLogout } from '../api/apiAuth';
+import { apiGetUserByUsername } from '../api/apiUsers';
 
-interface AuthState {
-  user: UserResponse | null;
-  token: string | null;
-  login: (u: string, p: string) => Promise<void>;
-  logout: () => void;
-  loading: boolean;
+interface User {
+  username: string;
+  fullname: string;
+  role: 'admin' | 'teacher' | 'student' | 'user';
+  isActive?: boolean;
+  // ...other properties
 }
 
-const AuthContext = createContext<AuthState | undefined>(undefined);
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+  logoutAll: () => Promise<void>; // Add this line
+}
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<UserResponse | null>(null);
-  const [token, setToken] = useState<string | null>(
-    () => localStorage.getItem('token') ?? null
-  );
-  const [loading, setLoading] = useState<boolean>(true);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-  // bootstrap – validate token on first load
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // On cold app load, check for a JWT and fetch user profile if present.
   useEffect(() => {
-    const bootstrap = async () => {
-      if (!token) return setLoading(false);
-      try {
-        const u = await apiGetProfile();
-        setUser(u);
-      } catch {
-        localStorage.removeItem('token');
-        setToken(null);
-      } finally {
-        setLoading(false);
+    const initAuth = async () => {
+      setLoading(true);
+      const token = getAuthToken();
+      if (token && isTokenValid()) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          // Use the username from the JWT to fetch the fresh profile
+          const freshUser = await apiGetUserByUsername(payload.username);
+          setUser(freshUser);
+        } catch (error) {
+          console.error('Failed to fetch user profile from token:', error);
+          clearAuthToken();
+          setUser(null);
+        }
       }
+      setLoading(false);
     };
-    bootstrap();
-  }, [token]);
+    initAuth();
+  }, []);
 
+  // Login: authenticate, store token, and fetch updated user profile
   const login = async (username: string, password: string) => {
-    const res = await apiLogin({ username, password });
-    setUser(res.user);
-    setToken(res.token);
-    localStorage.setItem('token', res.token);
+    const response = await apiLogin({ username, password });
+    setAuthToken(response.token);
+    // Always fetch the full, up-to-date user profile from the API
+    const fullUser = await apiGetUserByUsername(response.user.username);
+    setUser(fullUser);
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
+  const logout = async() => {
+    try{
+      const logoutMe = await apiLogout();
+
+    }catch (error) 
+    {
+      console.error('Logout failed:', error);   
+
+    // Redirect will be handled by axios interceptor or route guards
+    }finally {
+      clearAuthToken();
+      setUser(null);
+    }
   };
 
+  // Add the logoutAll function in the AuthProvider component
+  const logoutAll = async () => {
+    try {
+      // Call the logout-all API endpoint
+      const logoutAllUser = await apiLogoutAll();
+      // await fetch('/api/auth/logout-all', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${getAuthToken()}`
+      //   }
+      // });
+    } catch (error) {
+      // Even if the API call fails, we should clear local state
+      console.error('Failed to logout all sessions:', error);
+    } finally {
+      // Clear local state and redirect
+      clearAuthToken();
+      setUser(null);
+      window.location.href = '/login';
+    }
+  };
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, logoutAll }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-  return ctx;
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
