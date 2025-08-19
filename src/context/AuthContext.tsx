@@ -58,7 +58,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async() => {
     try{
-      const logoutMe = await apiLogout();
+      // const logoutMe = 
+      await apiLogout();
 
     }catch (error) 
     {
@@ -75,7 +76,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logoutAll = async () => {
     try {
       // Call the logout-all API endpoint
-      const logoutAllUser = await apiLogoutAll();
+      // const logoutAllUser = 
+      await apiLogoutAll();
       // await fetch('/api/auth/logout-all', {
       //   method: 'POST',
       //   headers: {

@@ -20,7 +20,7 @@ const BulkOperations: React.FC = () => {
           </div>
         </div>
         <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-medium mb-4">Export Users</h2>
+          <h2 className="text-xl font-medium mb-4">Export Users{active?"":""}</h2>
           <BulkExport onCancel={() => setActive(null)} />
         </div>
       </div>

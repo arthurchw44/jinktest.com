@@ -312,6 +312,675 @@ C:\Users\User\Desktop\jink-demo\src\assets\react.svg
 
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
 
+C:\Users\User\Desktop\jink-demo\src\components\articles\ArticleNameInput.tsx
+
+// src/components/articles/ArticleNameInput.tsx
+import React, { useEffect } from 'react';
+import { validateArticleName, suggestArticleNameFromTitle } from '../../utils/sentenceFragmentSplitter';
+
+interface ArticleNameInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  title?: string; // For auto-suggestion
+  className?: string;
+}
+
+export const ArticleNameInput: React.FC<ArticleNameInputProps> = ({
+  value,
+  onChange,
+  title = '',
+  className = ''
+}) => {
+  const isValid = validateArticleName(value);
+  const suggestion = title ? suggestArticleNameFromTitle(title) : '';
+
+  // Auto-suggest article name when title changes (only if current value is empty)
+  useEffect(() => {
+    if (title && !value && suggestion) {
+      onChange(suggestion);
+    }
+  }, [title, value, suggestion, onChange]);
+
+  const handleSuggestionClick = () => {
+    if (suggestion) {
+      onChange(suggestion);
+    }
+  };
+
+  const getValidationMessage = () => {
+    if (!value) return null;
+    
+    if (value.length < 3) return 'Article name must be at least 3 characters';
+    if (value.length > 50) return 'Article name must be 50 characters or less';
+    if (!/^[a-zA-Z0-9_\-\(\)]+$/.test(value)) {
+      return 'Only letters, numbers, underscore, dash, and parentheses allowed';
+    }
+    return null;
+  };
+
+  const validationMessage = getValidationMessage();
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">
+        Article Name *
+      </label>
+      
+      <div className="relative">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Enter unique article identifier..."
+          className={`w-full p-3 border rounded-lg focus:outline-none transition-colors ${
+            !value
+              ? 'border-gray-300 focus:border-blue-500'
+              : isValid
+              ? 'border-green-300 focus:border-green-500 bg-green-50'
+              : 'border-red-300 focus:border-red-500 bg-red-50'
+          } ${className}`}
+          required
+        />
+        
+        {isValid && value && (
+          <div className="absolute right-3 top-3 text-green-600">
+            ??
+          </div>
+        )}
+      </div>
+
+      {/* Auto-suggestion */}
+      {suggestion && suggestion !== value && (
+        <div className="flex items-center space-x-2">
+          <span className="text-xs text-gray-600">Suggested:</span>
+          <button
+            type="button"
+            onClick={handleSuggestionClick}
+            className="text-xs text-blue-600 hover:text-blue-800 underline"
+          >
+            {suggestion}
+          </button>
+        </div>
+      )}
+
+      {/* Validation message */}
+      {validationMessage && (
+        <div className="text-xs text-red-600">
+          {validationMessage}
+        </div>
+      )}
+
+      {/* Help text */}
+      <div className="text-xs text-gray-500">
+        Used for file naming and identification. Must be unique and contain only letters, 
+        numbers, underscore, dash, or parentheses.
+      </div>
+
+      {/* Preview of generated filenames */}
+      {value && isValid && (
+        <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+          <div className="font-medium mb-1">Generated files:</div>
+          <div>??{value}_full_audio.mp3</div>
+          <div>??{value}_sentence_1.mp3, {value}_sentence_2.mp3, ...</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\articles\SentencePreview.tsx
+
+// src/components/articles/SentencePreview.tsx
+import React, { useState } from 'react';
+import { splitFragmentAt, mergeFragments, findAllSplitPoints, validateFragmentMerge, FragmentEditor } from '../../utils/sentenceFragmentSplitter';
+
+interface SentencePreviewProps {
+  sentences: string[];
+  articleName?: string;
+  showSentenceIds?: boolean;
+  editable?: boolean;
+  onSentencesChange?: (sentences: string[]) => void;
+  originalText?: string; // For validation
+}
+
+export const SentencePreview: React.FC<SentencePreviewProps> = ({
+  sentences: initialSentences,
+  articleName,
+  showSentenceIds = false,
+  editable = true,
+  onSentencesChange,
+  originalText
+}) => {
+  const [sentences, setSentences] = useState<string[]>(initialSentences);
+  const [editor] = useState(() => new FragmentEditor(initialSentences));
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editText, setEditText] = useState('');
+  const [showSplitUI, setShowSplitUI] = useState<number | null>(null);
+
+  // Update sentences when prop changes
+  React.useEffect(() => {
+    setSentences(initialSentences);
+  }, [initialSentences]);
+
+  const handleSentencesUpdate = (newSentences: string[]) => {
+    setSentences(newSentences);
+    onSentencesChange?.(newSentences);
+  };
+
+  const handleMerge = (index: number) => {
+    if (index >= sentences.length - 1) return;
+    const result = editor.merge(sentences, index);
+    handleSentencesUpdate(result);
+  };
+
+  const handleSplit = (fragmentIndex: number, splitPosition: number) => {
+    const result = editor.split(sentences, fragmentIndex, splitPosition);
+    handleSentencesUpdate(result);
+    setShowSplitUI(null);
+  };
+
+  const handleUndo = () => {
+    const result = editor.undo();
+    if (result) {
+      handleSentencesUpdate(result);
+    }
+  };
+
+  const handleRedo = () => {
+    const result = editor.redo();
+    if (result) {
+      handleSentencesUpdate(result);
+    }
+  };
+
+  const startEditing = (index: number) => {
+    setEditingIndex(index);
+    setEditText(sentences[index]);
+  };
+
+  const saveEdit = () => {
+    if (editingIndex === null) return;
+    const newSentences = [...sentences];
+    newSentences[editingIndex] = editText.trim();
+    handleSentencesUpdate(newSentences);
+    setEditingIndex(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+    setEditText('');
+  };
+
+  const WordSplitter: React.FC<{ text: string; fragmentIndex: number }> = ({ text, fragmentIndex }) => {
+    const splitPoints = findAllSplitPoints(text);
+    const words = text.split(/(\s+)/);
+    
+    let charPosition = 0;
+    const elements: React.ReactNode[] = [];
+    
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      const isSpace = i % 2 === 1;
+      
+      if (!isSpace && i > 0) {
+        // Add split button before each word (except the first)
+        const splitPoint = splitPoints.find(sp => sp.position === charPosition);
+        if (splitPoint) {
+          elements.push(
+            <button
+              key={`split-${charPosition}`}
+              onClick={() => handleSplit(fragmentIndex, charPosition)}
+              className="inline-block w-px h-4 bg-blue-400 hover:bg-blue-600 hover:w-0.5 transition-all cursor-pointer mx-0.5"
+              title={splitPoint.reason}
+            />
+          );
+        }
+      }
+      
+      elements.push(
+        <span key={`word-${i}`} className={isSpace ? '' : 'hover:bg-yellow-100'}>
+          {word}
+        </span>
+      );
+      
+      charPosition += word.length;
+    }
+    
+    return <span className="relative">{elements}</span>;
+  };
+
+  const getFragmentStats = (fragment: string) => {
+    const wordCount = fragment.split(/\s+/).filter(w => w.length > 0).length;
+    return {
+      words: wordCount,
+      chars: fragment.length,
+      isLong: wordCount > 20,
+      isShort: wordCount < 3 && wordCount > 0
+    };
+  };
+
+  const validateMergeResult = () => {
+    if (!originalText) return null;
+    const isValid = validateFragmentMerge(sentences, originalText);
+    return isValid;
+  };
+
+  const mergeValidation = validateMergeResult();
+
+  return (
+    <div className="space-y-4">
+      {/* Control Panel */}
+      {editable && (
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleUndo}
+              disabled={!editor.canUndo()}
+              className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              ??Undo
+            </button>
+            <button
+              onClick={handleRedo}
+              disabled={!editor.canRedo()}
+              className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              ??Redo
+            </button>
+            <div className="text-sm text-gray-600">
+              {sentences.length} fragments
+            </div>
+          </div>
+          
+          {/* Merge Validation */}
+          {mergeValidation !== null && (
+            <div className={`text-sm px-3 py-1 rounded ${
+              mergeValidation 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-red-100 text-red-700'
+            }`}>
+              {mergeValidation 
+                ? '??Fragments can recreate original text' 
+                : '??Fragments may not recreate original text exactly'}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Fragments */}
+      <div className="space-y-3">
+        {sentences.map((sentence, index) => {
+          const stats = getFragmentStats(sentence);
+          const isEditing = editingIndex === index;
+          const isShowingSplit = showSplitUI === index;
+          
+          return (
+            <div
+              key={index}
+              className={`p-4 border rounded-lg transition-all ${
+                stats.isLong ? 'border-yellow-300 bg-yellow-50' :
+                stats.isShort ? 'border-blue-300 bg-blue-50' :
+                'border-gray-200 bg-white'
+              } ${isShowingSplit ? 'ring-2 ring-blue-500' : ''}`}
+            >
+              {/* Fragment Header */}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  {showSentenceIds && (
+                    <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
+                      #{index + 1}
+                    </span>
+                  )}
+                  <span className="text-xs text-gray-500">
+                    {stats.words} words, {stats.chars} chars
+                  </span>
+                  {stats.isLong && <span className="text-xs text-yellow-600">??Long</span>}
+                  {stats.isShort && <span className="text-xs text-blue-600">??Short</span>}
+                </div>
+                
+                {editable && !isEditing && (
+                  <div className="flex items-center space-x-1">
+                    {/* Split Button */}
+                    <button
+                      onClick={() => setShowSplitUI(isShowingSplit ? null : index)}
+                      className={`text-xs px-2 py-1 rounded transition-colors ${
+                        isShowingSplit 
+                          ? 'bg-blue-500 text-white' 
+                          : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                      }`}
+                      title="Click to show split points"
+                    >
+                      ?��? Split
+                    </button>
+                    
+                    {/* Merge Button */}
+                    {index < sentences.length - 1 && (
+                      <button
+                        onClick={() => handleMerge(index)}
+                        className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200"
+                        title="Merge with next fragment"
+                      >
+                        ?? Merge
+                      </button>
+                    )}
+                    
+                    {/* Edit Button */}
+                    <button
+                      onClick={() => startEditing(index)}
+                      className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                    >
+                      ?��? Edit
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Fragment Content */}
+              <div className="text-sm text-gray-800">
+                {isEditing ? (
+                  <div className="space-y-2">
+                    <textarea
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                      rows={3}
+                      autoFocus
+                    />
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={saveEdit}
+                        className="px-3 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={cancelEdit}
+                        className="px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : isShowingSplit ? (
+                  <div className="space-y-2">
+                    <div className="text-xs text-blue-600 mb-2">
+                      ?? Click on the blue lines to split at that position
+                    </div>
+                    <div className="leading-relaxed">
+                      <WordSplitter text={sentence} fragmentIndex={index} />
+                    </div>
+                  </div>
+                ) : (
+                  <p className="leading-relaxed">{sentence}</p>
+                )}
+              </div>
+              
+              {/* Audio Preview (if available) */}
+              {articleName && (
+                <div className="mt-2 pt-2 border-t border-gray-100">
+                  <div className="text-xs text-gray-500">
+                    Audio: {articleName}_sentence_{index + 1}.mp3
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary */}
+      <div className="text-xs text-gray-500 text-center pt-2 border-t">
+        Total: {sentences.length} fragments, {' '}
+        {sentences.reduce((sum, s) => sum + s.split(/\s+/).filter(w => w.length > 0).length, 0)} words
+      </div>
+    </div>
+  );
+};
+
+C:\Users\User\Desktop\jink-demo\src\components\articles\TextInput.tsx
+
+// src/components/articles/TextInput.tsx
+import React from 'react';
+import { getFragmentStats } from '../../utils/sentenceFragmentSplitter';
+
+interface TextInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+}
+
+export const TextInput: React.FC<TextInputProps> = ({
+  value,
+  onChange,
+  placeholder = "Enter your article text here...",
+  className = ""
+}) => {
+  const getStats = () => {
+    if (!value.trim()) {
+      return {
+        text: { characters: 0, words: 0, estimatedReadingTime: 0 },
+        fragments: { 
+          count: 0, 
+          validation: { 
+            totalFragments: 0,
+            optimalRange: false,
+            longFragments: 0,
+            shortFragments: 0,
+            emptyFragments: 0,
+            averageWordCount: 0
+          }, 
+          list: [] 
+        },
+        error: null
+      };
+    }
+
+    try {
+      return { ...getFragmentStats(value), error: null };
+    } catch (error) {
+      return {
+        text: { 
+          characters: value.length, 
+          words: value.split(/\s+/).filter(w => w.length > 0).length, 
+          estimatedReadingTime: Math.ceil(value.split(/\s+/).filter(w => w.length > 0).length / 200) 
+        },
+        fragments: { 
+          count: 0, 
+          validation: { 
+            totalFragments: 0,
+            optimalRange: false,
+            longFragments: 0,
+            shortFragments: 0,
+            emptyFragments: 0,
+            averageWordCount: 0
+          }, 
+          list: [] 
+        },
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  };
+
+  const stats = getStats();
+
+  const getWordCountClass = () => {
+    const count = stats.text.words;
+    if (count === 0) return 'text-gray-500';
+    if (count < 20) return 'text-red-600'; // Below minimum
+    if (count > 1500) return 'text-red-600'; // Above maximum  
+    if (count < 50) return 'text-yellow-600'; // Very short but acceptable
+    if (count > 1000) return 'text-yellow-600'; // Long but acceptable
+    return 'text-green-600';
+  };
+
+  const getFragmentCountClass = () => {
+    const count = stats.fragments.count;
+    if (count === 0) return 'text-gray-500';
+    if (count < 10) return 'text-yellow-600';
+    if (count > 40) return 'text-yellow-600';
+    return 'text-green-600';
+  };
+
+  const hasError = !!stats.error;
+  const canProceed = !hasError && stats.text.words >= 20 && stats.text.words <= 1500;
+
+  return (
+    <div className="space-y-4">
+      {/* Main Text Area */}
+      <div className="relative">
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`w-full p-4 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none resize-none transition-colors ${
+            hasError ? 'border-red-300 bg-red-50' : ''
+          } ${className}`}
+          rows={12}
+        />
+        
+        {/* Character count overlay */}
+        <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-white px-2 py-1 rounded">
+          {stats.text.characters} chars
+        </div>
+      </div>
+
+      {/* Error Display */}
+      {hasError && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-red-600">??/span>
+            <span className="text-sm text-red-700 font-medium">Article Validation Error</span>
+          </div>
+          <div className="text-sm text-red-600 mt-1">{stats.error}</div>
+        </div>
+      )}
+
+      {/* Statistics Panel */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Text Statistics */}
+        <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <h4 className="font-medium text-gray-700 mb-3">Text Statistics</h4>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Word Count:</span>
+              <span className={`font-mono font-bold ${getWordCountClass()}`}>
+                {stats.text.words}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Characters:</span>
+              <span className="font-mono text-sm">{stats.text.characters}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Est. Reading Time:</span>
+              <span className="font-mono text-sm">{stats.text.estimatedReadingTime}min</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Fragment Statistics */}
+        <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <h4 className="font-medium text-gray-700 mb-3">Fragment Analysis</h4>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Fragments:</span>
+              <span className={`font-mono font-bold ${getFragmentCountClass()}`}>
+                {stats.fragments.count}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Avg Words:</span>
+              <span className="font-mono text-sm">{stats.fragments.validation.averageWordCount}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Long Fragments:</span>
+              <span className={`font-mono text-sm ${
+                stats.fragments.validation.longFragments > 0 ? 'text-yellow-600' : 'text-green-600'
+              }`}>
+                {stats.fragments.validation.longFragments}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Optimal Range:</span>
+              <span className={`font-mono text-sm ${
+                stats.fragments.validation.optimalRange ? 'text-green-600' : 'text-yellow-600'
+              }`}>
+                {stats.fragments.validation.optimalRange ? '??Yes' : '??No'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Guidelines */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h4 className="font-medium text-blue-800 mb-2">Article Guidelines</h4>
+        <div className="text-sm text-blue-700 space-y-1">
+          <div className="flex items-center space-x-2">
+            <span className={stats.text.words >= 20 && stats.text.words <= 1500 ? '?? : '??}>
+            </span>
+            <span>Word count: 20-1500 words (currently {stats.text.words})</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className={stats.fragments.validation.optimalRange ? '?? : '?��?'}>
+            </span>
+            <span>Optimal fragments: 15-25 (currently {stats.fragments.count})</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className={stats.fragments.validation.longFragments === 0 ? '?? : '?��?'}>
+            </span>
+            <span>Long fragments (&gt;20 words): {stats.fragments.validation.longFragments}</span>
+          </div>
+        </div>
+        
+        {!hasError && stats.text.words > 0 && (
+          <div className="mt-3 pt-3 border-t border-blue-200">
+            <div className="text-xs text-blue-600">
+              ?�� <strong>Tip:</strong> After creating the article, you can manually split and merge fragments using the editor.
+              {stats.fragments.validation.longFragments > 0 && 
+                " Some fragments are long - you can split them for better dictation pacing."
+              }
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Validation Status */}
+      {!hasError && (
+        <div className={`p-3 rounded-lg border ${
+          canProceed 
+            ? 'bg-green-50 border-green-200' 
+            : 'bg-yellow-50 border-yellow-200'
+        }`}>
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">
+              {canProceed ? '?? : '?��?'}
+            </span>
+            <span className={`text-sm font-medium ${
+              canProceed ? 'text-green-800' : 'text-yellow-800'
+            }`}>
+              {canProceed 
+                ? 'Article is ready to be processed!' 
+                : 'Article needs adjustments before processing'
+              }
+            </span>
+          </div>
+          {!canProceed && (
+            <div className={`text-sm mt-2 ${
+              stats.text.words < 20 || stats.text.words > 1500 ? 'text-yellow-700' : 'text-green-700'
+            }`}>
+              {stats.text.words < 20 && 'Article is too short. Add more content.'}
+              {stats.text.words > 1500 && 'Article is too long. Consider shortening or splitting into multiple articles.'}
+              {stats.text.words >= 20 && stats.text.words <= 1500 && 'Ready to proceed - you can fine-tune fragments after creation.'}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 C:\Users\User\Desktop\jink-demo\src\components\auth\LogoutAllConfirmModal.tsx
 
 import React, { useState } from 'react';
@@ -2747,7 +3416,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async() => {
     try{
-      const logoutMe = await apiLogout();
+      // const logoutMe = 
+      await apiLogout();
 
     }catch (error) 
     {
@@ -2764,7 +3434,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logoutAll = async () => {
     try {
       // Call the logout-all API endpoint
-      const logoutAllUser = await apiLogoutAll();
+      // const logoutAllUser = 
+      await apiLogoutAll();
       // await fetch('/api/auth/logout-all', {
       //   method: 'POST',
       //   headers: {
@@ -2794,6 +3465,277 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
+};
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useArticles.ts
+
+// src/hooks/useArticles.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import api from '../api/axios';
+import type {
+  // IArticle,
+  ISentence,
+  CreateArticleRequest,
+  ArticleResponse,
+  ArticlesResponse,
+  SuggestNameRequest,
+  SuggestNameResponse,
+  CheckNameResponse,
+  UpdateArticleRequest,
+  UpdateSentencesRequest,
+  SentenceResponse,
+  TeacherStatsResponse
+} from '../types/article.types';
+
+// API functions
+const articleAPI = {
+  // Suggest article name from title
+  suggestName: async (data: SuggestNameRequest): Promise<SuggestNameResponse> => {
+    const response = await api.post('/articles/suggest-name', data);
+    return response.data;
+  },
+
+  // Check if article name is available
+  checkNameAvailability: async (articleName: string): Promise<CheckNameResponse> => {
+    const response = await api.get(`/articles/check-name/${articleName}`);
+    return response.data;
+  },
+
+  // Create new article
+  create: async (data: CreateArticleRequest): Promise<ArticleResponse> => {
+    const response = await api.post('/articles', data);
+    return response.data;
+  },
+
+  // Get all articles for teacher
+  getAll: async (): Promise<ArticlesResponse> => {
+    const response = await api.get('/articles');
+    return response.data;
+  },
+
+  // Get single article by articleName
+  getByName: async (articleName: string): Promise<ArticleResponse> => {
+    const response = await api.get(`/articles/${articleName}`);
+    return response.data;
+  },
+
+  // Update article metadata
+  updateMetadata: async (articleName: string, data: UpdateArticleRequest): Promise<ArticleResponse> => {
+    const response = await api.put(`/articles/${articleName}`, data);
+    return response.data;
+  },
+
+  // Update article sentences
+  updateSentences: async (articleName: string, data: UpdateSentencesRequest): Promise<ArticleResponse> => {
+    const response = await api.put(`/articles/${articleName}/sentences`, data);
+    return response.data;
+  },
+
+  // Delete article
+  delete: async (articleName: string): Promise<{ success: boolean; message: string }> => {
+    const response = await api.delete(`/articles/${articleName}`);
+    return response.data;
+  },
+
+  // Get teacher stats
+  getStats: async (): Promise<TeacherStatsResponse> => {
+    const response = await api.get('/articles/stats');
+    return response.data;
+  }
+};
+
+const sentenceAPI = {
+  // Get single sentence by sentenceId
+  getById: async (sentenceId: string): Promise<SentenceResponse> => {
+    const response = await api.get(`/articles/sentences/${sentenceId}`);
+    return response.data;
+  },
+
+  // Update single sentence
+  update: async (sentenceId: string, data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>>): Promise<SentenceResponse> => {
+    const response = await api.put(`/articles/sentences/${sentenceId}`, data);
+    return response.data;
+  }
+};
+
+// React Query Hooks
+
+/**
+ * Suggest article name from title
+ */
+export const useSuggestArticleName = () => {
+  return useMutation({
+    mutationFn: articleAPI.suggestName,
+    onError: (error: any) => {
+      console.error('Suggest name error:', error);
+    }
+  });
+};
+
+/**
+ * Check article name availability
+ */
+export const useCheckArticleNameAvailability = (articleName: string) => {
+  return useQuery({
+    queryKey: ['articleNameAvailability', articleName],
+    queryFn: () => articleAPI.checkNameAvailability(articleName),
+    enabled: !!articleName && articleName.length >= 3,
+    staleTime: 30000 // Cache for 30 seconds
+  });
+};
+
+/**
+ * Get all articles for teacher
+ */
+export const useArticles = () => {
+  return useQuery({
+    queryKey: ['articles'],
+    queryFn: async () => {
+      const result = await articleAPI.getAll();
+      return result.articles;
+    }
+  });
+};
+
+/**
+ * Get single article by articleName
+ */
+export const useArticle = (articleName: string) => {
+  return useQuery({
+    queryKey: ['article', articleName],
+    queryFn: async () => {
+      const result = await articleAPI.getByName(articleName);
+      return result.article;
+    },
+    enabled: !!articleName
+  });
+};
+
+/**
+ * Create new article
+ */
+export const useCreateArticle = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: articleAPI.create,
+    onSuccess: (data) => {
+      // Invalidate articles list to show new article
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      queryClient.invalidateQueries({ queryKey: ['articleStats'] });
+      
+      // Set the new article in cache
+      queryClient.setQueryData(['article', data.article.articleName], data.article);
+    },
+    onError: (error: any) => {
+      console.error('Create article error:', error);
+    }
+  });
+};
+
+/**
+ * Update article metadata
+ */
+export const useUpdateArticleMetadata = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ articleName, data }: { articleName: string; data: UpdateArticleRequest }) => 
+      articleAPI.updateMetadata(articleName, data),
+    onSuccess: (response, variables) => {
+      // Update specific article and articles list
+      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+    }
+  });
+};
+
+/**
+ * Update article sentences
+ */
+export const useUpdateArticleSentences = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ articleName, sentences }: { 
+      articleName: string; 
+      sentences: Omit<ISentence, 'sentenceId'>[] 
+    }) => articleAPI.updateSentences(articleName, { sentences }),
+    onSuccess: (response, variables) => {
+      // Update specific article and articles list
+      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+    }
+  });
+};
+
+/**
+ * Delete article
+ */
+export const useDeleteArticle = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: articleAPI.delete,
+    onSuccess: (_, articleName) => {
+      // Remove from articles list and individual cache
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      queryClient.invalidateQueries({ queryKey: ['articleStats'] });
+      queryClient.removeQueries({ queryKey: ['article', articleName] });
+    }
+  });
+};
+
+/**
+ * Get teacher statistics
+ */
+export const useArticleStats = () => {
+  return useQuery({
+    queryKey: ['articleStats'],
+    queryFn: async () => {
+      const result = await articleAPI.getStats();
+      return result.stats;
+    }
+  });
+};
+
+/**
+ * Get single sentence by sentenceId
+ */
+export const useSentence = (sentenceId: string) => {
+  return useQuery({
+    queryKey: ['sentence', sentenceId],
+    queryFn: async () => {
+      const result = await sentenceAPI.getById(sentenceId);
+      return result.sentence;
+    },
+    enabled: !!sentenceId
+  });
+};
+
+/**
+ * Update single sentence
+ */
+export const useUpdateSentence = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ sentenceId, data }: { 
+      sentenceId: string; 
+      data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>> 
+    }) => sentenceAPI.update(sentenceId, data),
+    onSuccess: (response, variables) => {
+      // Update sentence in cache
+      queryClient.setQueryData(['sentence', variables.sentenceId], response.sentence);
+      
+      // Parse articleName from sentenceId to invalidate article
+      const lastUnderscoreIndex = variables.sentenceId.lastIndexOf('_');
+      if (lastUnderscoreIndex !== -1) {
+        const articleName = variables.sentenceId.substring(0, lastUnderscoreIndex);
+        queryClient.invalidateQueries({ queryKey: ['article', articleName] });
+      }
+    }
+  });
 };
 
 C:\Users\User\Desktop\jink-demo\src\hooks\useBulk.ts
@@ -2891,7 +3833,7 @@ export const useUpdateGroup = () => {
   return useMutation({
     mutationFn: ({ groupId, groupData }: { groupId: string; groupData: IGroupUpdate }) =>
       apiUpdateGroup(groupId, groupData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['groups'] });
       queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
     },
@@ -2922,7 +3864,7 @@ export const useManageGroupMembers = () => {
       groupId: string; 
       memberData: { add?: string[], remove?: string[] } 
     }) => apiManageGroupMembers(groupId, memberData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['groups'] });
       queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
     },
@@ -2989,7 +3931,7 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ username, userData }: { username: string; userData: IUserUpdate }) =>
       apiUpdateUser(username, userData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', variables.username] });
     },
@@ -3029,7 +3971,7 @@ export const useToggleUserStatus = () => {
   
   return useMutation({
     mutationFn: (username: string) => apiToggleUserStatus(username),
-    onSuccess: (data, username) => {
+    onSuccess: (_data, username) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', username] });
     },
@@ -3068,7 +4010,7 @@ const BulkOperations: React.FC = () => {
           </div>
         </div>
         <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-medium mb-4">Export Users</h2>
+          <h2 className="text-xl font-medium mb-4">Export Users{active?"":""}</h2>
           <BulkExport onCancel={() => setActive(null)} />
         </div>
       </div>
@@ -3145,6 +4087,1382 @@ const Groups: React.FC = () => {
 };
 
 export default Groups;
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleDetail.tsx
+
+// src/pages/teacher/ArticleDetail.tsx
+import React, { useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
+import { SentencePreview } from '../../components/articles/SentencePreview';
+import type { IArticle } from '../../types/article.types';
+
+const ArticleDetail: React.FC = () => {
+  const { articleName } = useParams<{ articleName: string }>();
+  const navigate = useNavigate();
+  const { data: article, isLoading, error } = useArticle(articleName!);
+  const deleteArticleMutation = useDeleteArticle();
+  
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+  const handleDelete = async () => {
+    if (!article) return;
+    
+    try {
+      await deleteArticleMutation.mutateAsync(article.articleName);
+      navigate('/teacher/articles');
+    } catch (error) {
+      console.error('Failed to delete article:', error);
+      alert('Failed to delete article. Please try again.');
+    }
+  };
+
+  const getStatusDisplay = (status: IArticle['status']) => {
+    const statusConfig = {
+      editing: { 
+        bg: 'bg-yellow-100', 
+        text: 'text-yellow-800', 
+        icon: '?��?',
+        label: 'Editing',
+        description: 'Article is being edited and not ready for students yet.'
+      },
+      processing: { 
+        bg: 'bg-blue-100', 
+        text: 'text-blue-800', 
+        icon: '??,
+        label: 'Processing',
+        description: 'Audio files are being generated. This may take a few minutes.'
+      },
+      ready: { 
+        bg: 'bg-green-100', 
+        text: 'text-green-800', 
+        icon: '??,
+        label: 'Ready',
+        description: 'Article is complete and ready for student dictation exercises.'
+      },
+      error: { 
+        bg: 'bg-red-100', 
+        text: 'text-red-800', 
+        icon: '??,
+        label: 'Error',
+        description: 'There was an error processing this article.'
+      }
+    };
+    
+    return statusConfig[status];
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleString();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-2 text-gray-600">Loading article...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !article) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="text-center py-12">
+          <div className="text-red-600 mb-4">Article not found</div>
+          <Link
+            to="/teacher/articles"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Articles
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const statusDisplay = getStatusDisplay(article.status);
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <div className="flex items-center space-x-2 mb-2">
+            <Link
+              to="/teacher/articles"
+              className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+            >
+              ??Back to Articles
+            </Link>
+          </div>
+          
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {article.title}
+          </h1>
+          
+          <div className="flex items-center space-x-4 text-sm text-gray-600">
+            <span className="font-mono bg-gray-100 px-3 py-1 rounded">
+              {article.articleName}
+            </span>
+            <span>By {article.teacherUsername}</span>
+            <span>Created {formatDate(article.createdAt)}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          {article.status === 'editing' && (
+            <Link
+              to={`/teacher/articles/${article.articleName}/edit`}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Edit Article
+            </Link>
+          )}
+          
+          <button
+            onClick={() => setDeleteConfirm(true)}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+
+      {/* Status Card */}
+      <div className={`p-4 rounded-lg border ${statusDisplay.bg} ${statusDisplay.text}`}>
+        <div className="flex items-center space-x-3">
+          <span className="text-2xl">{statusDisplay.icon}</span>
+          <div>
+            <div className="font-semibold">{statusDisplay.label}</div>
+            <div className="text-sm opacity-90">{statusDisplay.description}</div>
+            {article.processingError && (
+              <div className="text-sm mt-1 font-mono bg-white bg-opacity-50 p-2 rounded">
+                Error: {article.processingError}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Article Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Metadata */}
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <h3 className="text-lg font-semibold mb-4">Article Details</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">Grade Level</label>
+                <div className="mt-1 text-sm text-gray-900">
+                  {article.metadata.grade || 'Not specified'}
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-700">Subject</label>
+                <div className="mt-1 text-sm text-gray-900">
+                  {article.metadata.subject || 'Not specified'}
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-700">Difficulty Level</label>
+                <div className="mt-1">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {article.metadata.difficulty || 'Not specified'}
+                  </span>
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-700">Estimated Time</label>
+                <div className="mt-1 text-sm text-gray-900">
+                  {article.metadata.estimatedTime ? `${article.metadata.estimatedTime} minutes` : 'Auto-calculated'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Original Text */}
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <h3 className="text-lg font-semibold mb-4">Original Text</h3>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                {article.originalText}
+              </p>
+            </div>
+            <div className="mt-2 text-xs text-gray-500">
+              {article.originalText.length} characters, {article.originalText.split(/\s+/).length} words
+            </div>
+          </div>
+
+          {/* Sentences */}
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <h3 className="text-lg font-semibold mb-4">
+              Sentences ({article.sentences.length})
+            </h3>
+            <SentencePreview
+              sentences={article.sentences.map(s => s.text)}
+              articleName={article.articleName}
+              showSentenceIds={true}
+              editable={false}
+            />
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Quick Stats */}
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <h3 className="text-lg font-semibold mb-4">Statistics</h3>
+            
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Total Sentences:</span>
+                <span className="text-sm font-medium">{article.sentences.length}</span>
+              </div>
+              
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Avg Words/Sentence:</span>
+                <span className="text-sm font-medium">
+                  {Math.round(article.sentences.reduce((sum, s) => sum + s.wordCount, 0) / article.sentences.length) || 0}
+                </span>
+              </div>
+              
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Long Sentences:</span>
+                <span className="text-sm font-medium text-yellow-600">
+                  {article.sentences.filter(s => s.isLong).length}
+                </span>
+              </div>
+              
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Ready Sentences:</span>
+                <span className="text-sm font-medium text-green-600">
+                  {article.sentences.filter(s => s.status === 'ready').length}
+                </span>
+              </div>
+              
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Has Audio:</span>
+                <span className="text-sm font-medium">
+                  {article.sentences.filter(s => s.individualAudioUrl).length}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Audio Files */}
+          {article.fullAudioUrl && (
+            <div className="bg-white p-6 rounded-lg shadow border">
+              <h3 className="text-lg font-semibold mb-4">Audio Files</h3>
+              
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Full Article Audio:</label>
+                  <div className="mt-1">
+                    <audio controls className="w-full">
+                      <source src={article.fullAudioUrl} type="audio/mpeg" />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <h3 className="text-lg font-semibold mb-4">Actions</h3>
+            
+            <div className="space-y-3">
+              {article.status === 'ready' && (
+                <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                  Start Dictation Exercise
+                </button>
+              )}
+              
+              {article.status === 'editing' && (
+                <Link
+                  to={`/teacher/articles/${article.articleName}/edit`}
+                  className="block w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-center"
+                >
+                  Continue Editing
+                </Link>
+              )}
+              
+              <button
+                onClick={() => navigator.clipboard.writeText(article.articleName)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Copy Article Name
+              </button>
+              
+              <button
+                onClick={() => setDeleteConfirm(true)}
+                className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Delete Article
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">Delete Article</h3>
+            <p className="text-gray-600 mb-4">
+              Are you sure you want to delete "{article.title}"? This action cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setDeleteConfirm(false)}
+                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                disabled={deleteArticleMutation.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+                disabled={deleteArticleMutation.isPending}
+              >
+                {deleteArticleMutation.isPending ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ArticleDetail;
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleList.tsx
+
+// src/pages/teacher/ArticleList.tsx
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useArticles, useDeleteArticle, useArticleStats } from '../../hooks/useArticles';
+import type { IArticle } from '../../types/article.types';
+
+const ArticleList: React.FC = () => {
+  // const navigate = useNavigate();
+  const { data: articles, isLoading, error, refetch } = useArticles();
+  const { data: stats } = useArticleStats();
+  const deleteArticleMutation = useDeleteArticle();
+  
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    article: IArticle | null;
+  }>({ isOpen: false, article: null });
+
+  const handleDeleteClick = (article: IArticle) => {
+    setDeleteConfirm({ isOpen: true, article });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteConfirm.article) {
+      try {
+        await deleteArticleMutation.mutateAsync(deleteConfirm.article.articleName);
+        setDeleteConfirm({ isOpen: false, article: null });
+        refetch();
+      } catch (error) {
+        console.error('Failed to delete article:', error);
+        alert('Failed to delete article. Please try again.');
+      }
+    }
+  };
+
+  const getStatusBadge = (status: IArticle['status']) => {
+    const statusConfig = {
+      editing: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Editing' },
+      processing: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Processing' },
+      ready: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ready' },
+      error: { bg: 'bg-red-100', text: 'text-red-800', label: 'Error' }
+    };
+    
+    const config = statusConfig[status];
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+        {config.label}
+      </span>
+    );
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-2 text-gray-600">Loading articles...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="text-center py-12">
+          <div className="text-red-600 mb-4">Failed to load articles</div>
+          <button
+            onClick={() => refetch()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">My Articles</h1>
+          <p className="text-gray-600 mt-1">Manage your dictation exercises</p>
+        </div>
+        
+        <Link
+          to="/teacher/articles/create"
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Create Article
+        </Link>
+      </div>
+
+      {/* Stats Cards */}
+      {stats && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white p-4 rounded-lg shadow border">
+            <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
+            <div className="text-sm text-gray-600">Total Articles</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border">
+            <div className="text-2xl font-bold text-green-600">{stats.byStatus.ready || 0}</div>
+            <div className="text-sm text-gray-600">Ready</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border">
+            <div className="text-2xl font-bold text-yellow-600">{stats.byStatus.editing || 0}</div>
+            <div className="text-sm text-gray-600">Editing</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border">
+            <div className="text-2xl font-bold text-blue-600">{stats.byStatus.processing || 0}</div>
+            <div className="text-sm text-gray-600">Processing</div>
+          </div>
+        </div>
+      )}
+
+      {/* Articles List */}
+      <div className="bg-white shadow rounded-lg overflow-hidden">
+        {!articles || articles.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-500 mb-4">
+              <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p className="text-lg font-medium">No articles yet</p>
+              <p className="text-sm">Create your first dictation exercise to get started</p>
+            </div>
+            <Link
+              to="/teacher/articles/create"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create First Article
+            </Link>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Article
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Details
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Created
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {articles.map((article) => (
+                  <tr key={article.articleName} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div>
+                        <div className="text-sm font-medium text-gray-900 mb-1">
+                          {article.title}
+                        </div>
+                        <div className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded inline-block">
+                          {article.articleName}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        <div>{article.sentences.length} sentences</div>
+                        <div className="text-xs text-gray-500">
+                          {article.metadata.grade && `${article.metadata.grade} ??`}
+                          {article.metadata.subject && `${article.metadata.subject} ??`}
+                          {article.metadata.difficulty}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {getStatusBadge(article.status)}
+                      {article.processingError && (
+                        <div className="text-xs text-red-600 mt-1" title={article.processingError}>
+                          Error occurred
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatDate(article.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex items-center justify-end space-x-2">
+                        <Link
+                          to={`/teacher/articles/${article.articleName}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                        >
+                          View
+                        </Link>
+                        {article.status === 'editing' && (
+                          <Link
+                            to={`/teacher/articles/${article.articleName}/edit`}
+                            className="text-green-600 hover:text-green-800 transition-colors"
+                          >
+                            Edit
+                          </Link>
+                        )}
+                        <button
+                          onClick={() => handleDeleteClick(article)}
+                          className="text-red-600 hover:text-red-800 transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">Delete Article</h3>
+            <p className="text-gray-600 mb-4">
+              Are you sure you want to delete "{deleteConfirm.article?.title}"? 
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setDeleteConfirm({ isOpen: false, article: null })}
+                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                disabled={deleteArticleMutation.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+                disabled={deleteArticleMutation.isPending}
+              >
+                {deleteArticleMutation.isPending ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ArticleList;
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleUpload.tsx
+
+// src/pages/teacher/ArticleUpload.tsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { TextInput } from '../../components/articles/TextInput';
+import { SentencePreview } from '../../components/articles/SentencePreview';
+import { ArticleNameInput } from '../../components/articles/ArticleNameInput';
+import { useCreateArticle } from '../../hooks/useArticles';
+import { splitIntoSentenceFragments } from '../../utils/sentenceFragmentSplitter';
+
+// Local metadata type that matches the API expectations
+type ArticleMetadataUI = {
+  grade?: string;
+  subject?: string;
+  difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+  estimatedTime?: number;
+};
+
+const ArticleUpload: React.FC = () => {
+  const navigate = useNavigate();
+  const createArticleMutation = useCreateArticle();
+
+  // Form state
+  const [currentStep, setCurrentStep] = useState(1);
+  const [articleName, setArticleName] = useState('');
+  const [title, setTitle] = useState('');
+  const [originalText, setOriginalText] = useState('');
+  const [fragments, setFragments] = useState<string[]>([]);
+  const [metadata, setMetadata] = useState<ArticleMetadataUI>({
+    difficulty: 'B1'
+  });
+
+  // Auto-generate fragments when text changes
+  useEffect(() => {
+    if (originalText.trim()) {
+      try {
+        const autoFragments = splitIntoSentenceFragments(originalText);
+        setFragments(autoFragments);
+      } catch (error) {
+        console.error('Error splitting text:', error);
+        setFragments([]);
+      }
+    } else {
+      setFragments([]);
+    }
+  }, [originalText]);
+
+  const handleNext = () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+const handleSubmit = async () => {
+  if (!articleName || !title || !originalText || fragments.length === 0) {
+    alert('Please complete all required fields');
+    return;
+  }
+
+  try {
+    // Convert fragments to sentences format for API
+    const sentences = fragments.map((text, index) => ({
+      order: index + 1,
+      text: text.trim(),
+      wordCount: text.split(/\s+/).filter(w => w.length > 0).length,
+      isLong: text.split(/\s+/).filter(w => w.length > 0).length > 20,
+      status: 'pending' as const
+    }));
+
+    await createArticleMutation.mutateAsync({
+      articleName,
+      title,
+      originalText,
+      metadata,
+      sentences
+    });
+
+    navigate('/teacher/articles');
+  } catch (error) {
+    console.error('Failed to create article:', error);
+    alert('Failed to create article. Please try again.');
+  }
+};
+
+
+  const isStepValid = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return originalText.trim().length > 0 && 
+               originalText.split(/\s+/).filter(w => w.length > 0).length >= 20 &&
+               originalText.split(/\s+/).filter(w => w.length > 0).length <= 1500;
+      case 2:
+        return fragments.length > 0;
+      case 3:
+        return articleName.trim().length > 0 && title.trim().length > 0;
+      default:
+        return false;
+    }
+  };
+
+  const canProceed = isStepValid(currentStep);
+
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Article</h1>
+        <p className="text-gray-600">Create a dictation exercise from your article</p>
+      </div>
+
+      {/* Progress Steps */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          {[1, 2, 3].map((step) => (
+            <div key={step} className="flex items-center">
+              <div className={`
+                w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
+                ${currentStep === step 
+                  ? 'bg-blue-600 text-white' 
+                  : currentStep > step 
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
+                }
+              `}>
+                {currentStep > step ? '?? : step}
+              </div>
+              <div className="ml-3">
+                <div className={`text-sm font-medium ${
+                  currentStep >= step ? 'text-gray-900' : 'text-gray-500'
+                }`}>
+                  {step === 1 && 'Article Text'}
+                  {step === 2 && 'Review Fragments'}
+                  {step === 3 && 'Article Details'}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {step === 1 && 'Enter your article content'}
+                  {step === 2 && 'Split and merge fragments'}
+                  {step === 3 && 'Name and metadata'}
+                </div>
+              </div>
+              {step < 3 && (
+                <div className={`flex-1 h-px mx-4 ${
+                  currentStep > step ? 'bg-green-500' : 'bg-gray-200'
+                }`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Step Content */}
+      <div className="bg-white rounded-lg shadow border p-6 min-h-[500px]">
+        {/* Step 1: Article Text */}
+        {currentStep === 1 && (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Enter Article Text</h3>
+              <p className="text-gray-600 mb-6">
+                Paste or type your article content. The system will automatically split it into fragments 
+                that you can review and adjust in the next step.
+              </p>
+            </div>
+
+            <TextInput
+              value={originalText}
+              onChange={setOriginalText}
+              placeholder="Paste your article text here. Minimum 20 words, maximum 1500 words..."
+            />
+
+            {originalText && (
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">Preview: Auto-Generated Fragments</h4>
+                <p className="text-sm text-blue-700 mb-3">
+                  {fragments.length} fragments will be created. You can fine-tune them in the next step.
+                </p>
+                {fragments.length > 0 && (
+                  <div className="text-xs text-blue-600 space-y-1 max-h-32 overflow-y-auto">
+                    {fragments.slice(0, 5).map((fragment, index) => (
+                      <div key={index} className="truncate">
+                        {index + 1}. {fragment}
+                      </div>
+                    ))}
+                    {fragments.length > 5 && (
+                      <div className="italic">... and {fragments.length - 5} more fragments</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Step 2: Fragment Review */}
+        {currentStep === 2 && (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Review and Edit Fragments</h3>
+              <p className="text-gray-600 mb-6">
+                Review the automatically generated fragments. You can split long fragments, 
+                merge short ones, or edit the text directly. Use the Split button to see split points 
+                between words.
+              </p>
+            </div>
+
+            <SentencePreview
+              sentences={fragments}
+              editable={true}
+              onSentencesChange={setFragments}
+              originalText={originalText}
+              showSentenceIds={true}
+            />
+
+            {fragments.length === 0 && (
+              <div className="text-center py-12 text-gray-500">
+                <div className="text-4xl mb-4">??</div>
+                <p className="text-lg font-medium mb-2">No fragments to display</p>
+                <p>Go back to add article text first.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Step 3: Article Details */}
+        {currentStep === 3 && (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Article Details</h3>
+              <p className="text-gray-600 mb-6">
+                Provide a name and metadata for your article. The article name will be used 
+                for identification and file naming.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Article Title *
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter a descriptive title..."
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                    required
+                  />
+                </div>
+
+                <ArticleNameInput
+                  value={articleName}
+                  onChange={setArticleName}
+                  title={title}
+                />
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    value={metadata.subject || ''}
+                    onChange={(e) => setMetadata({ ...metadata, subject: e.target.value })}
+                    placeholder="e.g., Science, History, Literature..."
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Grade Level
+                  </label>
+                  <select
+                    value={metadata.grade || ''}
+                    onChange={(e) => setMetadata({ ...metadata, grade: e.target.value })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="">Select grade level...</option>
+                    <option value="elementary">Elementary</option>
+                    <option value="middle">Middle School</option>
+                    <option value="high">High School</option>
+                    <option value="university">University</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Difficulty Level *
+                  </label>
+                  <select
+                    value={metadata.difficulty || 'B1'}
+                    onChange={(e) => setMetadata({ 
+                      ...metadata, 
+                      difficulty: e.target.value as 'A1'|'A2'|'B1'|'B2'|'C1'|'C2' 
+                    })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                    required
+                  >
+                    <option value="A1">A1 (Beginner)</option>
+                    <option value="A2">A2 (Elementary)</option>
+                    <option value="B1">B1 (Intermediate)</option>
+                    <option value="B2">B2 (Upper-Intermediate)</option>
+                    <option value="C1">C1 (Advanced)</option>
+                    <option value="C2">C2 (Proficient)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Estimated Time (minutes)
+                  </label>
+                  <input
+                    type="number"
+                    min="5"
+                    max="120"
+                    value={metadata.estimatedTime || ''}
+                    onChange={(e) => setMetadata({ 
+                      ...metadata, 
+                      estimatedTime: e.target.value ? parseInt(e.target.value) : undefined 
+                    })}
+                    placeholder="Leave blank for auto-calculation"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-gray-800 mb-3">Article Summary</h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">Fragments:</span>
+                  <div className="font-medium">{fragments.length}</div>
+                </div>
+                <div>
+                  <span className="text-gray-600">Words:</span>
+                  <div className="font-medium">{originalText.split(/\s+/).filter(w => w.length > 0).length}</div>
+                </div>
+                <div>
+                  <span className="text-gray-600">Avg Words/Fragment:</span>
+                  <div className="font-medium">
+                    {fragments.length > 0 
+                      ? Math.round(originalText.split(/\s+/).filter(w => w.length > 0).length / fragments.length)
+                      : 0
+                    }
+                  </div>
+                </div>
+                <div>
+                  <span className="text-gray-600">Est. Time:</span>
+                  <div className="font-medium">
+                    {metadata.estimatedTime || Math.ceil(originalText.split(/\s+/).filter(w => w.length > 0).length / 200)} min
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Navigation */}
+      <div className="flex justify-between items-center mt-8">
+        <div>
+          {currentStep > 1 && (
+            <button
+              onClick={handlePrevious}
+              className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              ??Previous
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center space-x-4">
+          {/* Validation Message */}
+          {!canProceed && (
+            <div className="text-sm text-red-600">
+              {currentStep === 1 && 'Please enter valid article text (20-1500 words)'}
+              {currentStep === 2 && 'No fragments available. Check your article text.'}
+              {currentStep === 3 && 'Please fill in required fields (title and article name)'}
+            </div>
+          )}
+
+          {currentStep < 3 ? (
+            <button
+              onClick={handleNext}
+              disabled={!canProceed}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Next ??
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={!canProceed || createArticleMutation.isPending}
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {createArticleMutation.isPending ? 'Creating...' : 'Create Article'}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ArticleUpload;
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\index.ts
+
+// src/pages/teacher/index.ts
+
+// Export all teacher-related components for easy importing
+export { default as TeacherDashboard } from './TeacherDashboard';
+export { default as ArticleUpload } from './ArticleUpload';
+export { default as ArticleList } from './ArticleList';
+export { default as ArticleDetail } from './ArticleDetail';
+
+// Re-export article components for convenience
+export * from '../../components/articles/TextInput';
+export * from '../../components/articles/SentencePreview';
+export * from '../../components/articles/ArticleNameInput';
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\TeacherDashboard.tsx
+
+// src/pages/teacher/TeacherDashboard.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useArticles, useArticleStats } from '../../hooks/useArticles';
+import type { IArticle } from '../../types/article.types';
+
+const TeacherDashboard: React.FC = () => {
+  // const navigate = useNavigate();
+  const { user } = useAuth();
+  const { data: articles, isLoading: articlesLoading } = useArticles();
+  const { data: stats, isLoading: statsLoading } = useArticleStats();
+
+  const recentArticles = articles?.slice(0, 5) || [];
+  
+  const getStatusBadge = (status: IArticle['status']) => {
+    const statusConfig = {
+      editing: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Editing' },
+      processing: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Processing' },
+      ready: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ready' },
+      error: { bg: 'bg-red-100', text: 'text-red-800', label: 'Error' }
+    };
+    
+    const config = statusConfig[status];
+    return (
+      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+        {config.label}
+      </span>
+    );
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Welcome back, {user?.fullname || user?.username}!
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Manage your dictation exercises and track student progress
+          </p>
+        </div>
+        
+        <Link
+          to="/teacher/articles/create"
+          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Create New Article
+        </Link>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statsLoading ? (
+          // Loading skeletons
+          Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-white p-6 rounded-lg shadow border">
+              <div className="animate-pulse">
+                <div className="h-8 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <>
+            <div className="bg-white p-6 rounded-lg shadow border">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <div className="text-2xl font-bold text-gray-900">{stats?.total || 0}</div>
+                  <div className="text-sm text-gray-600">Total Articles</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow border">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <div className="text-2xl font-bold text-green-600">{stats?.byStatus.ready || 0}</div>
+                  <div className="text-sm text-gray-600">Ready for Use</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow border">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <div className="text-2xl font-bold text-yellow-600">{stats?.byStatus.editing || 0}</div>
+                  <div className="text-sm text-gray-600">In Progress</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow border">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <div className="text-2xl font-bold text-purple-600">{stats?.byStatus.processing || 0}</div>
+                  <div className="text-sm text-gray-600">Processing</div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Recent Articles */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-lg shadow border">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900">Recent Articles</h3>
+                <Link
+                  to="/teacher/articles"
+                  className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  View all ??
+                </Link>
+              </div>
+            </div>
+            
+            <div className="divide-y divide-gray-200">
+              {articlesLoading ? (
+                // Loading skeletons
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="p-6 animate-pulse">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                        <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                      </div>
+                      <div className="h-6 bg-gray-200 rounded w-16 ml-4"></div>
+                    </div>
+                  </div>
+                ))
+              ) : recentArticles.length === 0 ? (
+                <div className="p-8 text-center">
+                  <div className="text-gray-400 mb-4">
+                    <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600 mb-4">No articles created yet</p>
+                  <Link
+                    to="/teacher/articles/create"
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Create Your First Article
+                  </Link>
+                </div>
+              ) : (
+                recentArticles.map((article) => (
+                  <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h4 className="text-sm font-medium text-gray-900 truncate">
+                            {article.title}
+                          </h4>
+                          {getStatusBadge(article.status)}
+                        </div>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span className="font-mono bg-gray-100 px-2 py-1 rounded">
+                            {article.articleName}
+                          </span>
+                          <span>{article.sentences.length} sentences</span>
+                          {article.metadata.difficulty && (
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                              {article.metadata.difficulty}
+                            </span>
+                          )}
+                          <span>Created {formatDate(article.createdAt)}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2 ml-4">
+                        <Link
+                          to={`/teacher/articles/${article.articleName}`}
+                          className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+                        >
+                          View
+                        </Link>
+                        {article.status === 'editing' && (
+                          <Link
+                            to={`/teacher/articles/${article.articleName}/edit`}
+                            className="text-green-600 hover:text-green-800 text-sm transition-colors"
+                          >
+                            Edit
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="space-y-6">
+          {/* Actions Card */}
+          <div className="bg-white rounded-lg shadow border">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+            </div>
+            <div className="p-6 space-y-4">
+              <Link
+                to="/teacher/articles/create"
+                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm font-medium text-gray-900">Create Article</div>
+                  <div className="text-xs text-gray-500">Start a new dictation exercise</div>
+                </div>
+              </Link>
+
+              <Link
+                to="/teacher/articles"
+                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm font-medium text-gray-900">Manage Articles</div>
+                  <div className="text-xs text-gray-500">View and edit existing articles</div>
+                </div>
+              </Link>
+
+              <div className="flex items-center p-3 border border-gray-200 rounded-lg opacity-50">
+                <div className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm font-medium text-gray-400">Student Progress</div>
+                  <div className="text-xs text-gray-400">Coming in Sprint 2</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tips Card */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+            <div className="p-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h4 className="text-sm font-medium text-blue-900 mb-2">?�� Pro Tips</h4>
+                  <ul className="text-xs text-blue-800 space-y-1">
+                    <li>??Aim for 15-25 sentences per article</li>
+                    <li>??Keep sentences under 15 words for clarity</li>
+                    <li>??Use descriptive article names like "climate_change_2024"</li>
+                    <li>??Review sentence splitting before creating</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TeacherDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\About.tsx
 
@@ -3487,7 +5805,7 @@ export default function Login() {
 
 C:\Users\User\Desktop\jink-demo\src\pages\NotFound.tsx
 
-import React from 'react';
+// import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function NotFound() {
@@ -3507,7 +5825,7 @@ export default function NotFound() {
 
 C:\Users\User\Desktop\jink-demo\src\pages\StudentDashboard.tsx
 
-import React from 'react';
+// import React from 'react';
 
 const StudentDashboard = () => {
   return (
@@ -3522,7 +5840,7 @@ export default StudentDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\TeacherDashboard.tsx
 
-import React from 'react';
+// import React from 'react';
 
 const TeacherDashboard = () => {
   return (
@@ -3537,7 +5855,7 @@ export default TeacherDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\Unauthorized.tsx
 
-import React from 'react';
+// import React from 'react';
 
 const UnauthorizedDashboard = () => {
   return (
@@ -3809,6 +6127,8 @@ import { UserStatusToggle } from '../components/user/UserStatusToggle';
 import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { useDeleteUser } from '../hooks/useUsers';
 import type { IUser } from '../api/apiUsers';
+// Add this import at the top
+
 
 const Users: React.FC = () => {
   const { user: currentUser } = useAuth();
@@ -3822,6 +6142,7 @@ const Users: React.FC = () => {
     isOpen: boolean;
     user: IUser | null;
   }>({ isOpen: false, user: null });
+  
 
   const handleEditUser = (user: IUser) => {
     setSelectedUser(user);
@@ -4088,6 +6409,138 @@ export default function ProtectedRoute() {
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
+C:\Users\User\Desktop\jink-demo\src\types\article.types.ts
+
+// src/types/article.types.ts
+
+// Article interface - matches backend, NO id field
+export interface IArticle {
+  articleName: string;          // Unique user-assigned identifier
+  title: string;
+  originalText: string;
+  teacherUsername: string;
+  metadata: {
+    grade?: string;
+    subject?: string;
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    estimatedTime?: number;
+  };
+  status: 'editing' | 'processing' | 'ready' | 'error';
+  processingError?: string;
+  fullAudioUrl?: string;
+  sentences: ISentence[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// Sentence interface - NO id field, uses sentenceId
+export interface ISentence {
+  sentenceId: string;           // Generated: articleName + "_" + order
+  order: number;
+  text: string;
+  wordCount: number;
+  startTime?: number;
+  endTime?: number;
+  individualAudioUrl?: string;
+  status: 'pending' | 'ready' | 'error';
+  isLong: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// API Request Types
+export interface CreateArticleRequest {
+  articleName: string;
+  title: string;
+  originalText: string;
+  metadata?: IArticle['metadata'];
+  sentences: Omit<ISentence, 'sentenceId'>[];
+}
+
+export interface UpdateArticleRequest {
+  title?: string;
+  metadata?: IArticle['metadata'];
+}
+
+export interface UpdateSentencesRequest {
+  sentences: Omit<ISentence, 'sentenceId'>[];
+}
+
+export interface SuggestNameRequest {
+  title: string;
+}
+
+// API Response Types
+export interface ArticleResponse {
+  success: boolean;
+  article: IArticle;
+  message?: string;
+}
+
+export interface ArticlesResponse {
+  success: boolean;
+  count: number;
+  articles: IArticle[];
+}
+
+export interface SuggestNameResponse {
+  success: boolean;
+  suggestedName: string;
+}
+
+export interface CheckNameResponse {
+  success: boolean;
+  isAvailable: boolean;
+  articleName: string;
+}
+
+export interface SentenceResponse {
+  success: boolean;
+  sentence: ISentence;
+  message?: string;
+}
+
+export interface TeacherStatsResponse {
+  success: boolean;
+  stats: {
+    total: number;
+    byStatus: Record<string, number>;
+    recentActivity: IArticle[];
+  };
+}
+
+// Form Types for React Components
+export interface ArticleFormData {
+  articleName: string;
+  title: string;
+  originalText: string;
+  metadata: {
+    grade: string;
+    subject: string;
+    difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+  };
+}
+
+export interface SentenceFormData {
+  order: number;
+  text: string;
+  wordCount: number;
+  isLong: boolean;
+}
+
+
+export interface IArticleMetadata {
+grade?: string;
+subject?: string;
+difficulty: 'easy' | 'medium' | 'hard';
+estimatedTime?: number;
+}
+
+// Utility Types
+export type ArticleStatus = IArticle['status'];
+export type SentenceStatus = ISentence['status'];
+export type DifficultyLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
 C:\Users\User\Desktop\jink-demo\src\utils\auth.ts
 
 // src/utils/auth.ts
@@ -4118,6 +6571,1102 @@ export const isTokenValid = (): boolean => {
     return false;
   }
 };
+
+C:\Users\User\Desktop\jink-demo\src\utils\sentenceFragmentSplitter copy.ts
+
+// // src/utils/sentenceFragmentSplitter.ts
+
+// export interface FragmentData {
+//   text: string;
+//   wordCount: number;
+//   isLong: boolean;
+//   isShort: boolean;
+//   isEmpty: boolean;
+//   canSplit: boolean; // Whether this fragment has potential split points
+// }
+
+// export interface SplitPoint {
+//   position: number;
+//   character: string;
+//   reason: string; // Why this is a good split point
+//   priority: 'high' | 'medium' | 'low';
+// }
+
+// export interface FragmentValidation {
+//   totalFragments: number;
+//   optimalRange: boolean; // 15-25 fragments
+//   longFragments: number; // >12 words
+//   shortFragments: number; // <4 words
+//   emptyFragments: number;
+//   averageWordCount: number;
+// }
+
+// /**
+//  * Split text into sentence fragments using intelligent breaking points
+//  * Focuses on meaningful chunks rather than complete sentences
+//  */
+// export const splitIntoSentenceFragments = (text: string): string[] => {
+//   if (!text || typeof text !== 'string') {
+//     return [];
+//   }
+
+//   // First, split by sentence endings to get complete sentences
+//   const sentences = text
+//     .replace(/\s+/g, ' ')
+//     .trim()
+//     .replace(/\b(Mr|Mrs|Ms|Dr|Prof|Inc|Ltd|etc|vs|e\.g|i\.e)\./gi, '$1<ABBREV>')
+//     .replace(/\d+\.\d+/g, (match) => match.replace('.', '<DECIMAL>'))
+//     .split(/[.!?]+\s+(?=[A-Z])|[.!?]+\s*$/)
+//     .map(sentence => 
+//       sentence
+//         .replace(/<ABBREV>/g, '.')
+//         .replace(/<DECIMAL>/g, '.')
+//         .trim()
+//     )
+//     .filter(sentence => sentence.length > 0);
+
+//   // Now break each sentence into fragments
+//   const fragments: string[] = [];
+  
+//   sentences.forEach(sentence => {
+//     const sentenceFragments = breakIntoFragments(sentence);
+//     fragments.push(...sentenceFragments);
+//   });
+
+//   return fragments.filter(fragment => fragment.trim().length > 0);
+// };
+
+// /**
+//  * Break a single sentence into logical fragments
+//  */
+// const breakIntoFragments = (sentence: string): string[] => {
+//   const words = sentence.split(/\s+/);
+  
+//   // If sentence is short enough, don't split
+//   if (words.length <= 12) {
+//     return [sentence];
+//   }
+
+//   // Find potential split points
+//   const splitPoints = findSplitPoints(sentence);
+  
+//   // If no good split points found, try to split at midpoint
+//   if (splitPoints.length === 0) {
+//     const midPoint = Math.floor(words.length / 2);
+//     const firstPart = words.slice(0, midPoint).join(' ');
+//     const secondPart = words.slice(midPoint).join(' ');
+//     return [firstPart, secondPart];
+//   }
+
+//   // Use the best split point
+//   const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
+//   const firstPart = sentence.substring(0, bestSplit.position).trim();
+//   const secondPart = sentence.substring(bestSplit.position).trim();
+
+//   // Recursively split if parts are still too long
+//   const fragments: string[] = [];
+  
+//   const firstFragments = firstPart.split(/\s+/).length > 12 ? breakIntoFragments(firstPart) : [firstPart];
+//   const secondFragments = secondPart.split(/\s+/).length > 12 ? breakIntoFragments(secondPart) : [secondPart];
+  
+//   fragments.push(...firstFragments, ...secondFragments);
+  
+//   return fragments.filter(f => f.trim().length > 0);
+// };
+
+// /**
+//  * Find potential split points in a sentence
+//  */
+// export const findSplitPoints = (text: string): SplitPoint[] => {
+//   const splitPoints: SplitPoint[] = [];
+  
+//   // High priority split points
+//   const highPriorityPatterns = [
+//     { regex: /,\s+(?:particularly|especially|specifically|including|such as|for example|however|meanwhile|furthermore|moreover|nevertheless|therefore|consequently|thus|hence)/gi, reason: 'Transitional phrase' },
+//     { regex: /,\s+(?:which|who|that|where|when|while|although|though|because|since|if|unless|until)/gi, reason: 'Relative/subordinate clause' },
+//     { regex: /;\s+/g, reason: 'Semicolon break' },
+//     { regex: /:\s+/g, reason: 'Colon break' }
+//   ];
+
+//   // Medium priority split points
+//   const mediumPriorityPatterns = [
+//     { regex: /,\s+(?:and|but|or|yet|so|for|nor)\s+/gi, reason: 'Coordinating conjunction' },
+//     { regex: /,\s+(?:during|after|before|while|since|until|when|where|as)\s+/gi, reason: 'Temporal/spatial clause' },
+//     { regex: /\s+(?:during|after|before|while|since|until|when|where|as)\s+/gi, reason: 'Clause beginning' }
+//   ];
+
+//   // Low priority split points
+//   const lowPriorityPatterns = [
+//     { regex: /,\s+/g, reason: 'Comma break' },
+//     { regex: /\s+(?:and|but|or)\s+/gi, reason: 'Simple conjunction' }
+//   ];
+
+//   // Find high priority splits
+//   highPriorityPatterns.forEach(pattern => {
+//     let match;
+//     while ((match = pattern.regex.exec(text)) !== null) {
+//       splitPoints.push({
+//         position: match.index + match[0].length,
+//         character: match[0],
+//         reason: pattern.reason,
+//         priority: 'high'
+//       });
+//     }
+//   });
+
+//   // Find medium priority splits (only if no high priority found)
+//   if (splitPoints.length === 0) {
+//     mediumPriorityPatterns.forEach(pattern => {
+//       let match;
+//       while ((match = pattern.regex.exec(text)) !== null) {
+//         splitPoints.push({
+//           position: match.index + match[0].length,
+//           character: match[0],
+//           reason: pattern.reason,
+//           priority: 'medium'
+//         });
+//       }
+//     });
+//   }
+
+//   // Find low priority splits (only if no others found)
+//   if (splitPoints.length === 0) {
+//     lowPriorityPatterns.forEach(pattern => {
+//       let match;
+//       while ((match = pattern.regex.exec(text)) !== null) {
+//         splitPoints.push({
+//           position: match.index + match[0].length,
+//           character: match[0],
+//           reason: pattern.reason,
+//           priority: 'low'
+//         });
+//       }
+//     });
+//   }
+
+//   // Sort by priority and position
+//   return splitPoints.sort((a, b) => {
+//     const priorityOrder = { high: 0, medium: 1, low: 2 };
+//     if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+//       return priorityOrder[a.priority] - priorityOrder[b.priority];
+//     }
+//     return a.position - b.position;
+//   });
+// };
+
+// /**
+//  * Validate individual fragment
+//  */
+// export const validateFragment = (fragment: string): FragmentData => {
+//   const text = fragment.trim();
+//   const words = text.split(/\s+/).filter(word => word.length > 0);
+//   const wordCount = words.length;
+
+//   return {
+//     text,
+//     wordCount,
+//     isLong: wordCount > 12,
+//     isShort: wordCount < 4 && wordCount > 0,
+//     isEmpty: text.length === 0,
+//     canSplit: findSplitPoints(text).length > 0
+//   };
+// };
+
+// /**
+//  * Validate entire article's fragment structure
+//  */
+// export const validateFragments = (fragments: string[]): FragmentValidation => {
+//   const fragmentData = fragments.map(validateFragment);
+//   const totalWords = fragmentData.reduce((sum, f) => sum + f.wordCount, 0);
+
+//   return {
+//     totalFragments: fragments.length,
+//     optimalRange: fragments.length >= 15 && fragments.length <= 25,
+//     longFragments: fragmentData.filter(f => f.isLong).length,
+//     shortFragments: fragmentData.filter(f => f.isShort).length,
+//     emptyFragments: fragmentData.filter(f => f.isEmpty).length,
+//     averageWordCount: totalWords > 0 ? Math.round(totalWords / fragments.length) : 0
+//   };
+// };
+
+// /**
+//  * Merge two consecutive fragments
+//  */
+// export const mergeFragments = (fragments: string[], index: number): string[] => {
+//   if (index < 0 || index >= fragments.length - 1) {
+//     return fragments;
+//   }
+
+//   const newFragments = [...fragments];
+//   const mergedText = `${fragments[index]} ${fragments[index + 1]}`;
+  
+//   newFragments.splice(index, 2, mergedText);
+//   return newFragments;
+// };
+
+// /**
+//  * Split a fragment at a specific position
+//  */
+// export const splitFragmentAt = (fragments: string[], fragmentIndex: number, splitPosition: number): string[] => {
+//   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) {
+//     return fragments;
+//   }
+
+//   const fragment = fragments[fragmentIndex];
+//   if (splitPosition <= 0 || splitPosition >= fragment.length) {
+//     return fragments;
+//   }
+
+//   const newFragments = [...fragments];
+//   let firstPart = fragment.substring(0, splitPosition).trim();
+//   let secondPart = fragment.substring(splitPosition).trim();
+
+//   // Clean up split - ensure proper spacing
+//   if (firstPart.endsWith(',') || firstPart.endsWith(';') || firstPart.endsWith(':')) {
+//     // Keep punctuation with first part
+//   } else if (secondPart.startsWith(',') || secondPart.startsWith(';') || secondPart.startsWith(':')) {
+//     // Move punctuation to first part
+//     firstPart += secondPart.charAt(0);
+//     secondPart = secondPart.substring(1).trim();
+//   }
+
+//   newFragments.splice(fragmentIndex, 1, firstPart, secondPart);
+//   return newFragments.filter(f => f.trim().length > 0);
+// };
+
+// /**
+//  * Smart split using detected split points
+//  */
+// export const smartSplitFragment = (fragments: string[], fragmentIndex: number): string[] => {
+//   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) {
+//     return fragments;
+//   }
+
+//   const fragment = fragments[fragmentIndex];
+//   const splitPoints = findSplitPoints(fragment);
+  
+//   if (splitPoints.length === 0) {
+//     // Fallback to middle split
+//     const middlePosition = Math.floor(fragment.length / 2);
+//     const splitAt = fragment.lastIndexOf(' ', middlePosition);
+//     return splitFragmentAt(fragments, fragmentIndex, splitAt > 0 ? splitAt : middlePosition);
+//   }
+
+//   // Use the best split point
+//   const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
+//   return splitFragmentAt(fragments, fragmentIndex, bestSplit.position);
+// };
+
+// /**
+//  * Undo/Redo functionality
+//  */
+// export interface FragmentHistory {
+//   fragments: string[];
+//   timestamp: number;
+//   action: string;
+// }
+
+// export class FragmentEditor {
+//   private history: FragmentHistory[] = [];
+//   private currentIndex: number = -1;
+//   private maxHistorySize: number = 50;
+
+//   constructor(initialFragments: string[]) {
+//     this.saveState(initialFragments, 'Initial');
+//   }
+
+//   private saveState(fragments: string[], action: string) {
+//     // Remove any future history if we're not at the end
+//     if (this.currentIndex < this.history.length - 1) {
+//       this.history = this.history.slice(0, this.currentIndex + 1);
+//     }
+
+//     // Add new state
+//     this.history.push({
+//       fragments: [...fragments],
+//       timestamp: Date.now(),
+//       action
+//     });
+
+//     // Limit history size
+//     if (this.history.length > this.maxHistorySize) {
+//       this.history = this.history.slice(-this.maxHistorySize);
+//     }
+
+//     this.currentIndex = this.history.length - 1;
+//   }
+
+//   merge(fragments: string[], index: number): string[] {
+//     const newFragments = mergeFragments(fragments, index);
+//     this.saveState(newFragments, `Merge fragments ${index} and ${index + 1}`);
+//     return newFragments;
+//   }
+
+//   split(fragments: string[], index: number, position?: number): string[] {
+//     const newFragments = position !== undefined 
+//       ? splitFragmentAt(fragments, index, position)
+//       : smartSplitFragment(fragments, index);
+//     this.saveState(newFragments, `Split fragment ${index}`);
+//     return newFragments;
+//   }
+
+//   edit(fragments: string[], index: number, newText: string): string[] {
+//     const newFragments = [...fragments];
+//     newFragments[index] = newText;
+//     this.saveState(newFragments, `Edit fragment ${index}`);
+//     return newFragments;
+//   }
+
+//   undo(): string[] | null {
+//     if (this.currentIndex <= 0) return null;
+//     this.currentIndex--;
+//     return [...this.history[this.currentIndex].fragments];
+//   }
+
+//   redo(): string[] | null {
+//     if (this.currentIndex >= this.history.length - 1) return null;
+//     this.currentIndex++;
+//     return [...this.history[this.currentIndex].fragments];
+//   }
+
+//   canUndo(): boolean {
+//     return this.currentIndex > 0;
+//   }
+
+//   canRedo(): boolean {
+//     return this.currentIndex < this.history.length - 1;
+//   }
+
+//   getCurrentState(): string[] {
+//     return this.currentIndex >= 0 ? [...this.history[this.currentIndex].fragments] : [];
+//   }
+
+//   getHistory(): FragmentHistory[] {
+//     return [...this.history];
+//   }
+// }
+
+// /**
+//  * Generate article statistics for teacher review
+//  */
+// export const getFragmentStats = (text: string) => {
+//   const fragments = splitIntoSentenceFragments(text);
+//   const validation = validateFragments(fragments);
+
+//   const characterCount = text.length;
+//   const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+//   const estimatedReadingTime = Math.ceil(wordCount / 200);
+
+//   return {
+//     text: {
+//       characters: characterCount,
+//       words: wordCount,
+//       estimatedReadingTime
+//     },
+//     fragments: {
+//       count: fragments.length,
+//       validation,
+//       list: fragments.map(validateFragment)
+//     }
+//   };
+// };
+
+// // Maintain backward compatibility
+// export const splitIntoSentences = splitIntoSentenceFragments;
+// export const validateSentence = validateFragment;
+// export const validateArticle = validateFragments;
+// export const mergeSentences = mergeFragments;
+// export const splitSentence = splitFragmentAt;
+// export const getArticleStats = getFragmentStats;
+
+C:\Users\User\Desktop\jink-demo\src\utils\sentenceFragmentSplitter.ts
+
+// src/utils/sentenceFragmentSplitter.ts
+
+export interface FragmentData {
+  text: string;
+  wordCount: number;
+  isLong: boolean;
+  isShort: boolean;
+  isEmpty: boolean;
+  canSplit: boolean;
+}
+
+export interface SplitPoint {
+  position: number;
+  character: string;
+  reason: string;
+  priority: 'high' | 'medium' | 'low';
+}
+
+export interface FragmentValidation {
+  totalFragments: number;
+  optimalRange: boolean; // 15??5
+  longFragments: number; // >20 words (increased tolerance)
+  shortFragments: number; // <3 words
+  emptyFragments: number;
+  averageWordCount: number;
+}
+
+// Updated limits - more tolerant
+const MAX_RECURSION_DEPTH = 8;
+const MAX_WORDS_PER_FRAGMENT = 20; // Increased from 12
+const MIN_WORDS_PER_FRAGMENT = 2; // Decreased from 3
+const MIN_ARTICLE_WORDS = 20; // New minimum
+const MAX_ARTICLE_WORDS = 1500; // New maximum
+
+/**
+ * Split text into sentence fragments - simplified and punctuation-preserving
+ */
+export const splitIntoSentenceFragments = (text: string): string[] => {
+  if (!text || typeof text !== 'string') return [];
+
+  // Validate article length
+  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+  if (wordCount < MIN_ARTICLE_WORDS) {
+    throw new Error(`Article too short. Minimum ${MIN_ARTICLE_WORDS} words required.`);
+  }
+  if (wordCount > MAX_ARTICLE_WORDS) {
+    throw new Error(`Article too long. Maximum ${MAX_ARTICLE_WORDS} words allowed.`);
+  }
+
+  // First, split by sentence endings to get complete sentences
+  const sentences = splitBySentenceEndings(text);
+  
+  const fragments: string[] = [];
+  for (const sentence of sentences) {
+    const sentenceFragments = breakIntoFragments(sentence, 0);
+    fragments.push(...sentenceFragments);
+  }
+
+  return fragments.filter(f => f.trim().length > 0);
+};
+
+/**
+ * Split by sentence endings while preserving exact punctuation and spacing
+ */
+const splitBySentenceEndings = (text: string): string[] => {
+  const sentences: string[] = [];
+  let currentSentence = '';
+  let i = 0;
+  
+  while (i < text.length) {
+    const char = text[i];
+    currentSentence += char;
+    
+    // Check for sentence endings
+    if (['.', '!', '?'].includes(char)) {
+      // Look ahead to see if this is really a sentence ending
+      let j = i + 1;
+      
+      // Skip whitespace
+      while (j < text.length && /\s/.test(text[j])) {
+        currentSentence += text[j];
+        j++;
+      }
+      
+      // If next char is uppercase or end of text, this is likely a sentence ending
+      if (j >= text.length || /[A-Z]/.test(text[j])) {
+        sentences.push(currentSentence.trim());
+        currentSentence = '';
+        i = j;
+        continue;
+      }
+    }
+    
+    i++;
+  }
+  
+  // Add any remaining text
+  if (currentSentence.trim()) {
+    sentences.push(currentSentence.trim());
+  }
+  
+  return sentences.filter(s => s.length > 0);
+};
+
+/**
+ * Break a single sentence into fragments - simplified rules
+ */
+const breakIntoFragments = (sentence: string, depth: number): string[] => {
+  if (depth >= MAX_RECURSION_DEPTH) return [sentence];
+
+  const trimmed = sentence.trim();
+  if (!trimmed) return [];
+
+  const words = trimmed.split(/\s+/);
+  if (words.length <= MAX_WORDS_PER_FRAGMENT) return [trimmed];
+
+  // Find split points - SIMPLIFIED: only commas and periods
+  const splitPoints = findSimpleSplitPoints(trimmed);
+
+  // Choose best split position
+  let splitPos: number | null = null;
+  if (splitPoints.length > 0) {
+    // Prefer splits closer to the middle
+    const middle = Math.floor(trimmed.length / 2);
+    splitPoints.sort((a, b) => 
+      Math.abs(a.position - middle) - Math.abs(b.position - middle)
+    );
+    splitPos = splitPoints[0].position;
+  } else {
+    // Fallback: find middle word boundary
+    const middleWordIndex = Math.floor(words.length / 2);
+    let charCount = 0;
+    for (let i = 0; i < middleWordIndex; i++) {
+      charCount += words[i].length;
+      if (i < middleWordIndex - 1) charCount += 1; // space
+    }
+    splitPos = charCount;
+  }
+
+  if (splitPos === null || splitPos <= 1 || splitPos >= trimmed.length - 1) {
+    return [trimmed];
+  }
+
+  // Split while preserving exact spacing and punctuation
+  const first = trimmed.substring(0, splitPos).trim();
+  const second = trimmed.substring(splitPos).trim();
+
+  if (!first || !second) return [trimmed];
+  if (first === trimmed || second === trimmed) return [trimmed];
+
+  // Recurse only if still too long
+  const firstWords = first.split(/\s+/).length;
+  const secondWords = second.split(/\s+/).length;
+  
+  const leftFragments = firstWords > MAX_WORDS_PER_FRAGMENT 
+    ? breakIntoFragments(first, depth + 1) 
+    : [first];
+    
+  const rightFragments = secondWords > MAX_WORDS_PER_FRAGMENT 
+    ? breakIntoFragments(second, depth + 1) 
+    : [second];
+
+  return [...leftFragments, ...rightFragments];
+};
+
+/**
+ * Find split points - SIMPLIFIED: only commas and periods
+ */
+export const findSimpleSplitPoints = (text: string): SplitPoint[] => {
+  const points: SplitPoint[] = [];
+  
+  // High priority: periods followed by space (but not sentence ending)
+  const periodRegex = /\.\s+(?![A-Z])/g;
+  let match;
+  while ((match = periodRegex.exec(text)) !== null) {
+    points.push({
+      position: match.index + match[0].length,
+      character: match[0],
+      reason: 'Period break',
+      priority: 'high'
+    });
+  }
+  
+  // Medium priority: commas followed by space
+  const commaRegex = /,\s+/g;
+  while ((match = commaRegex.exec(text)) !== null) {
+    points.push({
+      position: match.index + match[0].length,
+      character: match[0],
+      reason: 'Comma break',
+      priority: 'medium'
+    });
+  }
+  
+  return points.sort((a, b) => {
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    }
+    return a.position - b.position;
+  });
+};
+
+/**
+ * Find ALL possible split points for manual splitting UI
+ */
+export const findAllSplitPoints = (text: string): Array<{position: number; word: string; reason: string}> => {
+  const points: Array<{position: number; word: string; reason: string}> = [];
+  const words = text.split(/(\s+)/); // Include spaces
+  
+  let position = 0;
+  for (let i = 0; i < words.length; i += 2) { // Skip spaces (odd indices)
+    if (i > 0) {
+      points.push({
+        position: position,
+        word: words[i],
+        reason: `Split before "${words[i]}"`
+      });
+    }
+    position += words[i].length;
+    if (i + 1 < words.length) {
+      position += words[i + 1].length; // Add space length
+    }
+  }
+  
+  return points;
+};
+
+/**
+ * Split fragment at exact character position
+ */
+export const splitFragmentAt = (fragments: string[], fragmentIndex: number, splitPosition: number): string[] => {
+  if (fragmentIndex < 0 || fragmentIndex >= fragments.length) return fragments;
+
+  const fragment = fragments[fragmentIndex];
+  if (splitPosition <= 0 || splitPosition >= fragment.length) return fragments;
+
+  // Find the exact word boundary near the split position
+  let actualSplit = splitPosition;
+  
+  // If we're in the middle of a word, move to the nearest word boundary
+  if (fragment[actualSplit] !== ' ') {
+    // Look backwards for space
+    let backPos = actualSplit;
+    while (backPos > 0 && fragment[backPos] !== ' ') {
+      backPos--;
+    }
+    
+    // Look forwards for space
+    let frontPos = actualSplit;
+    while (frontPos < fragment.length && fragment[frontPos] !== ' ') {
+      frontPos++;
+    }
+    
+    // Choose the closer boundary
+    const backDist = actualSplit - backPos;
+    const frontDist = frontPos - actualSplit;
+    actualSplit = backDist <= frontDist ? backPos : frontPos;
+  }
+
+  const first = fragment.substring(0, actualSplit).trim();
+  const second = fragment.substring(actualSplit).trim();
+
+  if (!first || !second) return fragments;
+
+  const result = [...fragments];
+  result.splice(fragmentIndex, 1, first, second);
+  return result;
+};
+
+/**
+ * Merge fragments while preserving exact spacing
+ */
+export const mergeFragments = (fragments: string[], index: number): string[] => {
+  if (index < 0 || index >= fragments.length - 1) return fragments;
+  
+  // Merge with single space (teachers can adjust spacing manually if needed)
+  const merged = `${fragments[index]} ${fragments[index + 1]}`;
+  
+  const result = [...fragments];
+  result.splice(index, 2, merged);
+  return result;
+};
+
+/**
+ * Validate that merged fragments recreate original text
+ */
+export const validateFragmentMerge = (fragments: string[], originalText: string): boolean => {
+  const merged = fragments.join(' ').replace(/\s+/g, ' ').trim();
+  const normalized = originalText.replace(/\s+/g, ' ').trim();
+  return merged === normalized;
+};
+
+// Rest of the validation and stats functions...
+export const validateFragment = (fragment: string): FragmentData => {
+  const text = fragment.trim();
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+  const wordCount = words.length;
+
+  return {
+    text,
+    wordCount,
+    isLong: wordCount > MAX_WORDS_PER_FRAGMENT,
+    isShort: wordCount < MIN_WORDS_PER_FRAGMENT && wordCount > 0,
+    isEmpty: text.length === 0,
+    canSplit: findAllSplitPoints(text).length > 1
+  };
+};
+
+export const validateFragments = (fragments: string[]): FragmentValidation => {
+  const data = fragments.map(validateFragment);
+  const totalWords = data.reduce((sum, f) => sum + f.wordCount, 0);
+
+  return {
+    totalFragments: fragments.length,
+    optimalRange: fragments.length >= 15 && fragments.length <= 25,
+    longFragments: data.filter(f => f.isLong).length,
+    shortFragments: data.filter(f => f.isShort).length,
+    emptyFragments: data.filter(f => f.isEmpty).length,
+    averageWordCount: totalWords > 0 ? Math.round(totalWords / fragments.length) : 0
+  };
+};
+
+// History and editor classes remain the same...
+export interface FragmentHistory {
+  fragments: string[];
+  timestamp: number;
+  action: string;
+}
+
+export class FragmentEditor {
+  private history: FragmentHistory[] = [];
+  private currentIndex = -1;
+  private maxHistorySize = 50;
+
+  constructor(initialFragments: string[]) {
+    this.saveState(initialFragments, 'Initial');
+  }
+
+  private saveState(fragments: string[], action: string) {
+    if (this.currentIndex < this.history.length - 1) {
+      this.history = this.history.slice(0, this.currentIndex + 1);
+    }
+    this.history.push({ fragments: [...fragments], timestamp: Date.now(), action });
+    if (this.history.length > this.maxHistorySize) {
+      this.history = this.history.slice(-this.maxHistorySize);
+    }
+    this.currentIndex = this.history.length - 1;
+  }
+
+  merge(fragments: string[], index: number): string[] {
+    const result = mergeFragments(fragments, index);
+    this.saveState(result, `Merge fragments ${index} & ${index + 1}`);
+    return result;
+  }
+
+  split(fragments: string[], index: number, position: number): string[] {
+    const result = splitFragmentAt(fragments, index, position);
+    this.saveState(result, `Split fragment ${index} at position ${position}`);
+    return result;
+  }
+
+  undo(): string[] | null {
+    if (this.currentIndex <= 0) return null;
+    this.currentIndex--;
+    return [...this.history[this.currentIndex].fragments];
+  }
+
+  redo(): string[] | null {
+    if (this.currentIndex >= this.history.length - 1) return null;
+    this.currentIndex++;
+    return [...this.history[this.currentIndex].fragments];
+  }
+
+  canUndo(): boolean {
+    return this.currentIndex > 0;
+  }
+
+  canRedo(): boolean {
+    return this.currentIndex < this.history.length - 1;
+  }
+
+  getCurrentState(): string[] {
+    return this.currentIndex >= 0 ? [...this.history[this.currentIndex].fragments] : [];
+  }
+}
+
+// Stats function
+export const getFragmentStats = (text: string) => {
+  const fragments = splitIntoSentenceFragments(text);
+  const validation = validateFragments(fragments);
+  const characters = text.length;
+  const words = text.split(/\s+/).filter(w => w.length > 0).length;
+  const estimatedReadingTime = Math.ceil(words / 200);
+
+  return {
+    text: { characters, words, estimatedReadingTime },
+    fragments: {
+      count: fragments.length,
+      validation,
+      list: fragments.map(validateFragment)
+    }
+  };
+};
+
+// Backward compatibility
+export const splitIntoSentences = splitIntoSentenceFragments;
+export const validateSentence = validateFragment;
+export const validateArticle = validateFragments;
+export const mergeSentences = mergeFragments;
+export const splitSentence = splitFragmentAt;
+export const getArticleStats = getFragmentStats;
+
+// Name validation helpers
+export const validateArticleName = (name: string): boolean => {
+  const regex = /^[a-zA-Z0-9_\-\(\)]{3,50}$/;
+  return regex.test(name);
+};
+
+export const suggestArticleNameFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+    .replace(/_{2,}/g, '_')
+    .replace(/^_|_$/g, '')
+    .substring(0, 40);
+};
+
+C:\Users\User\Desktop\jink-demo\src\utils\sentenceSplitter.ts
+
+// src/utils/sentenceSplitter.ts
+import { validateSentence } from './sentenceFragmentSplitter';
+
+export interface SentenceData {
+  text: string;
+  wordCount: number;
+  isLong: boolean;
+  isShort: boolean;
+  isEmpty: boolean;
+}
+
+export interface SentenceValidation {
+  totalSentences: number;
+  optimalRange: boolean; // 15-25 sentences
+  longSentences: number; // >15 words
+  shortSentences: number; // <5 words
+  emptySentences: number;
+  averageWordCount: number;
+}
+
+// /**
+//  * Split text into sentences using regex-based approach
+//  * This provides immediate client-side feedback to teachers
+//  */
+// export const splitIntoSentences = (text: string): string[] => {
+//   if (!text || typeof text !== 'string') {
+//     return [];
+//   }
+
+//   return text
+//     // Normalize whitespace and newlines
+//     .replace(/\s+/g, ' ')
+//     .trim()
+    
+//     // Handle common abbreviations that shouldn't end sentences
+//     .replace(/\b(Mr|Mrs|Ms|Dr|Prof|Inc|Ltd|etc|vs|e\.g|i\.e)\./gi, '$1<ABBREV>')
+    
+//     // Handle decimal numbers
+//     .replace(/\d+\.\d+/g, (match) => match.replace('.', '<DECIMAL>'))
+    
+//     // Split on sentence endings followed by whitespace and capital letter or end of string
+//     .split(/[.!?]+\s+(?=[A-Z])|[.!?]+\s*$/)
+    
+//     // Clean up and restore abbreviations
+//     .map(sentence => 
+//       sentence
+//         .replace(/<ABBREV>/g, '.')
+//         .replace(/<DECIMAL>/g, '.')
+//         .trim()
+//     )
+    
+//     // Filter out empty sentences
+//     .filter(sentence => sentence.length > 0)
+    
+//     // Ensure sentences end with proper punctuation
+//     .map(sentence => {
+//       const lastChar = sentence.slice(-1);
+//       if (!['.', '!', '?'].includes(lastChar)) {
+//         return sentence + '.';
+//       }
+//       return sentence;
+//     });
+// };
+
+// /**
+//  * Validate individual sentence
+//  */
+// export const validateSentence = (sentence: string): SentenceData => {
+//   const text = sentence.trim();
+//   const words = text.split(/\s+/).filter(word => word.length > 0);
+//   const wordCount = words.length;
+
+//   return {
+//     text,
+//     wordCount,
+//     isLong: wordCount > 15,
+//     isShort: wordCount < 5 && wordCount > 0,
+//     isEmpty: text.length === 0
+//   };
+// };
+
+// /**
+//  * Validate entire article's sentence structure
+//  */
+// export const validateArticle = (sentences: string[]): SentenceValidation => {
+//   const sentenceData = sentences.map(validateSentence);
+//   const totalWords = sentenceData.reduce((sum, s) => sum + s.wordCount, 0);
+
+//   return {
+//     totalSentences: sentences.length,
+//     optimalRange: sentences.length >= 15 && sentences.length <= 25,
+//     longSentences: sentenceData.filter(s => s.isLong).length,
+//     shortSentences: sentenceData.filter(s => s.isShort).length,
+//     emptySentences: sentenceData.filter(s => s.isEmpty).length,
+//     averageWordCount: totalWords > 0 ? Math.round(totalWords / sentences.length) : 0
+//   };
+// };
+
+// /**
+//  * Merge two consecutive sentences
+//  */
+// export const mergeSentences = (sentences: string[], index: number): string[] => {
+//   if (index < 0 || index >= sentences.length - 1) {
+//     return sentences;
+//   }
+
+//   const newSentences = [...sentences];
+//   const mergedText = `${sentences[index].replace(/[.!?]+$/, '')} ${sentences[index + 1]}`;
+  
+//   newSentences.splice(index, 2, mergedText);
+//   return newSentences;
+// };
+
+// /**
+//  * Split a sentence at a specific position
+//  */
+// export const splitSentence = (sentences: string[], sentenceIndex: number, splitPosition: number): string[] => {
+//   if (sentenceIndex < 0 || sentenceIndex >= sentences.length) {
+//     return sentences;
+//   }
+
+//   const sentence = sentences[sentenceIndex];
+//   if (splitPosition <= 0 || splitPosition >= sentence.length) {
+//     return sentences;
+//   }
+
+//   const newSentences = [...sentences];
+//   const firstPart = sentence.substring(0, splitPosition).trim();
+//   const secondPart = sentence.substring(splitPosition).trim();
+
+//   // Ensure proper punctuation
+//   const firstSentence = firstPart.match(/[.!?]$/) ? firstPart : firstPart + '.';
+//   const secondSentence = secondPart.charAt(0).toUpperCase() + secondPart.slice(1);
+
+//   newSentences.splice(sentenceIndex, 1, firstSentence, secondSentence);
+//   return newSentences;
+// };
+
+/**
+ * Auto-suggest sentence improvements
+ */
+export const getSentenceSuggestions = (sentences: string[]): Array<{
+  index: number;
+  type: 'long' | 'short' | 'merge' | 'split';
+  message: string;
+  severity: 'warning' | 'suggestion';
+}> => {
+  const suggestions: Array<{
+    index: number;
+    type: 'long' | 'short' | 'merge' | 'split';
+    message: string;
+    severity: 'warning' | 'suggestion';
+  }> = [];
+
+  sentences.forEach((sentence, index) => {
+    const validation = validateSentence(sentence);
+
+    if (validation.isLong) {
+      suggestions.push({
+        index,
+        type: 'long',
+        message: `This sentence has ${validation.wordCount} words. Consider splitting it for better dictation.`,
+        severity: 'warning'
+      });
+    }
+
+    if (validation.isShort && !validation.isEmpty) {
+      suggestions.push({
+        index,
+        type: 'short',
+        message: `This sentence is quite short (${validation.wordCount} words). Consider merging with adjacent sentence.`,
+        severity: 'suggestion'
+      });
+    }
+  });
+
+  return suggestions;
+};
+
+// /**
+//  * Generate article statistics for teacher review
+//  */
+// export const getArticleStats = (text: string) => {
+//   const sentences = splitIntoSentences(text);
+//   const validation = validateArticle(sentences);
+//   const suggestions = getSentenceSuggestions(sentences);
+
+//   const characterCount = text.length;
+//   const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+//   const estimatedReadingTime = Math.ceil(wordCount / 200); // Average reading speed
+
+//   return {
+//     text: {
+//       characters: characterCount,
+//       words: wordCount,
+//       estimatedReadingTime
+//     },
+//     sentences: {
+//       count: sentences.length,
+//       validation,
+//       suggestions,
+//       list: sentences.map(validateSentence)
+//     }
+//   };
+// };
+
+/**
+ * Generate sentence ID from article name and order
+ */
+export const generateSentenceId = (articleName: string, order: number): string => {
+  return `${articleName}_${order}`;
+};
+
+/**
+ * Parse sentence ID to get article name and order
+ */
+export const parseSentenceId = (sentenceId: string): { articleName: string; order: number } | null => {
+  const lastUnderscoreIndex = sentenceId.lastIndexOf('_');
+  if (lastUnderscoreIndex === -1) {
+    return null;
+  }
+  
+  const articleName = sentenceId.substring(0, lastUnderscoreIndex);
+  const orderStr = sentenceId.substring(lastUnderscoreIndex + 1);
+  const order = parseInt(orderStr, 10);
+  
+  if (isNaN(order)) {
+    return null;
+  }
+  
+  return { articleName, order };
+};
+
+/**
+ * Validate article name format
+ */
+export const validateArticleName = (name: string): boolean => {
+  const regex = /^[a-zA-Z0-9_\-\(\)]{3,50}$/;
+  return regex.test(name);
+};
+
+/**
+ * Clean title to suggest article name
+ */
+export const suggestArticleNameFromTitle = (title: string): string => {
+  return title.toLowerCase()
+    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+    .replace(/_{2,}/g, '_')
+    .replace(/^_|_$/g, '')
+    .substring(0, 40);
+};
+
+
+export * from './sentenceFragmentSplitter';
+
+
 
 C:\Users\User\Desktop\jink-demo\src\App.css
 
@@ -4172,7 +7721,7 @@ import { RoleGuard } from './routes/guards/RoleGuard';
 // Import your existing pages
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
-import TeacherDashboard from './pages/TeacherDashboard';
+// import TeacherDashboard from './pages/TeacherDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import Users from './pages/Users';
 import Unauthorized from './pages/Unauthorized';
@@ -4186,6 +7735,11 @@ import UserDetail from './pages/UserDetail';
 import UserProfile from './pages/UserProfile';
 import Navbar from './components/Navbar';
 import { useLocation } from 'react-router-dom';
+
+
+import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
+
+
 
 function App() {
 
@@ -4222,7 +7776,11 @@ function App() {
         {/* Teacher routes */}
         <Route element={<RoleGuard allow={["teacher"]} />}>
           <Route path="/teacher" element={<TeacherDashboard />} />
-          <Route path="/teacher/groups" element={<Groups />} />
+          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+          <Route path="/teacher/articles" element={<ArticleList />} />
+          <Route path="/teacher/articles/create" element={<ArticleUpload />} />
+          <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
+          <Route path="/teacher/articles/:articleName/edit" element={<ArticleUpload />} />
         </Route>
 
         {/* Student routes */}
@@ -4338,11 +7896,11 @@ body {
 
 C:\Users\User\Desktop\jink-demo\src\App2.tsx
 
-import { useState } from 'react'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-import Square from './Board'
-import {Board, Game} from './Board'
+// import { useState } from 'react'
+// // import viteLogo from '/vite.svg'
+// // import './App.css'
+// import Square from './Board'
+import {Game} from './Board'
 import './App2.css'
 
 function App2() {
@@ -4359,7 +7917,7 @@ export default App2
 
 C:\Users\User\Desktop\jink-demo\src\Board.tsx
 
-import React from "react";
+// import React from "react";
 import { useState } from "react";
 
 // https://react.dev/learn/tutorial-tic-tac-toe#lifting-state-up-again
@@ -4485,7 +8043,7 @@ export function Game() {
     setXIsNext(nextMove % 2 === 0);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = history.map((_squares, move) => {
     let description;
     if (move > 0) {
       description = "Go to move #" + move;

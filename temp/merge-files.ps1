@@ -1,3 +1,6 @@
+
+Remove-Item -ErrorAction SilentlyContinue merged.txt;
+
 Get-ChildItem -Recurse -Include *.* | ForEach-Object {
     Add-Content merged.txt "`n$($_.FullName)`n"
     Get-Content $_ | Add-Content merged.txt

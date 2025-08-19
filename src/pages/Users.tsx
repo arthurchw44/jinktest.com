@@ -9,6 +9,8 @@ import { UserStatusToggle } from '../components/user/UserStatusToggle';
 import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { useDeleteUser } from '../hooks/useUsers';
 import type { IUser } from '../api/apiUsers';
+// Add this import at the top
+
 
 const Users: React.FC = () => {
   const { user: currentUser } = useAuth();
@@ -22,6 +24,7 @@ const Users: React.FC = () => {
     isOpen: boolean;
     user: IUser | null;
   }>({ isOpen: false, user: null });
+  
 
   const handleEditUser = (user: IUser) => {
     setSelectedUser(user);

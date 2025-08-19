@@ -4,7 +4,7 @@ import { RoleGuard } from './routes/guards/RoleGuard';
 // Import your existing pages
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
-import TeacherDashboard from './pages/TeacherDashboard';
+// import TeacherDashboard from './pages/TeacherDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import Users from './pages/Users';
 import Unauthorized from './pages/Unauthorized';
@@ -18,6 +18,11 @@ import UserDetail from './pages/UserDetail';
 import UserProfile from './pages/UserProfile';
 import Navbar from './components/Navbar';
 import { useLocation } from 'react-router-dom';
+
+
+import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
+
+
 
 function App() {
 
@@ -54,7 +59,11 @@ function App() {
         {/* Teacher routes */}
         <Route element={<RoleGuard allow={["teacher"]} />}>
           <Route path="/teacher" element={<TeacherDashboard />} />
-          <Route path="/teacher/groups" element={<Groups />} />
+          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+          <Route path="/teacher/articles" element={<ArticleList />} />
+          <Route path="/teacher/articles/create" element={<ArticleUpload />} />
+          <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
+          <Route path="/teacher/articles/:articleName/edit" element={<ArticleUpload />} />
         </Route>
 
         {/* Student routes */}

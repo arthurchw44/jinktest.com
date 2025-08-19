@@ -57,7 +57,7 @@ export const useUpdateGroup = () => {
   return useMutation({
     mutationFn: ({ groupId, groupData }: { groupId: string; groupData: IGroupUpdate }) =>
       apiUpdateGroup(groupId, groupData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['groups'] });
       queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
     },
@@ -88,7 +88,7 @@ export const useManageGroupMembers = () => {
       groupId: string; 
       memberData: { add?: string[], remove?: string[] } 
     }) => apiManageGroupMembers(groupId, memberData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['groups'] });
       queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
     },

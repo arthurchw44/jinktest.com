@@ -56,7 +56,7 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ username, userData }: { username: string; userData: IUserUpdate }) =>
       apiUpdateUser(username, userData),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', variables.username] });
     },
@@ -96,7 +96,7 @@ export const useToggleUserStatus = () => {
   
   return useMutation({
     mutationFn: (username: string) => apiToggleUserStatus(username),
-    onSuccess: (data, username) => {
+    onSuccess: (_data, username) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', username] });
     },
