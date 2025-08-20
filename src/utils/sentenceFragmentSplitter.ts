@@ -1,5 +1,4 @@
-// src/utils/sentenceFragmentSplitter.ts
-
+// Complete sentenceFragmentSplitter.ts with all missing exports
 export interface FragmentData {
   text: string;
   wordCount: number;
@@ -18,182 +17,153 @@ export interface SplitPoint {
 
 export interface FragmentValidation {
   totalFragments: number;
-  optimalRange: boolean; // 15–25
-  longFragments: number; // >20 words (increased tolerance)
-  shortFragments: number; // <3 words
+  optimalRange: boolean; // 15-25 fragments
+  longFragments: number; // >15 words
+  shortFragments: number; // <4 words
   emptyFragments: number;
   averageWordCount: number;
 }
 
-// Updated limits - more tolerant
-const MAX_RECURSION_DEPTH = 8;
-const MAX_WORDS_PER_FRAGMENT = 20; // Increased from 12
-const MIN_WORDS_PER_FRAGMENT = 2; // Decreased from 3
-const MIN_ARTICLE_WORDS = 20; // New minimum
-const MAX_ARTICLE_WORDS = 1500; // New maximum
+// Article stats interface for compatibility
+export interface ArticleStats {
+  text: {
+    characters: number;
+    words: number;
+    estimatedReadingTime: number;
+  };
+  fragments: {
+    count: number;
+    validation: FragmentValidation;
+    list: FragmentData[];
+  };
+}
+
+const MAX_WORDS_PER_FRAGMENT = 20;
+const MIN_WORDS_PER_FRAGMENT = 2;
+const OPTIMAL_WORDS_PER_FRAGMENT = 12;
+
+export const isOptimalLength = (fragment: string): boolean => {
+  const wordCount = fragment.split(/\s+/).filter(w => w.length > 0).length;
+  return wordCount >= (OPTIMAL_WORDS_PER_FRAGMENT - 3) && 
+         wordCount <= (OPTIMAL_WORDS_PER_FRAGMENT + 3);
+};
+
 
 /**
- * Split text into sentence fragments - simplified and punctuation-preserving
+ * Simple fragment splitter focusing ONLY on periods and commas
  */
 export const splitIntoSentenceFragments = (text: string): string[] => {
   if (!text || typeof text !== 'string') return [];
-
-  // Validate article length
-  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-  if (wordCount < MIN_ARTICLE_WORDS) {
-    throw new Error(`Article too short. Minimum ${MIN_ARTICLE_WORDS} words required.`);
-  }
-  if (wordCount > MAX_ARTICLE_WORDS) {
-    throw new Error(`Article too long. Maximum ${MAX_ARTICLE_WORDS} words allowed.`);
-  }
-
-  // First, split by sentence endings to get complete sentences
-  const sentences = splitBySentenceEndings(text);
+  
+  // Clean and normalize the text
+  const cleanText = text
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+    
+  if (!cleanText) return [];
+  
+  // Step 1: Split by sentence endings (periods followed by space and capital letter)
+  const sentences = cleanText
+    .split(/\.(?=\s+[A-Z])/) // Split on period followed by space and capital
+    .map(sentence => sentence.trim())
+    .filter(sentence => sentence.length > 0)
+    .map((sentence, index, array) => {
+      // Add back period if it was removed (except for last sentence if it already ends properly)
+      if (index < array.length - 1 && !sentence.endsWith('.')) {
+        return sentence + '.';
+      }
+      return sentence;
+    });
   
   const fragments: string[] = [];
+  
+  // Step 2: Process each sentence
   for (const sentence of sentences) {
-    const sentenceFragments = breakIntoFragments(sentence, 0);
-    fragments.push(...sentenceFragments);
-  }
-
-  return fragments.filter(f => f.trim().length > 0);
-};
-
-/**
- * Split by sentence endings while preserving exact punctuation and spacing
- */
-const splitBySentenceEndings = (text: string): string[] => {
-  const sentences: string[] = [];
-  let currentSentence = '';
-  let i = 0;
-  
-  while (i < text.length) {
-    const char = text[i];
-    currentSentence += char;
+    const words = sentence.split(/\s+/);
     
-    // Check for sentence endings
-    if (['.', '!', '?'].includes(char)) {
-      // Look ahead to see if this is really a sentence ending
-      let j = i + 1;
+    // If sentence is short enough, keep as single fragment
+    if (words.length <= MAX_WORDS_PER_FRAGMENT) {
+      fragments.push(sentence);
+      continue;
+    }
+    
+    // For long sentences, split by commas
+    const commaParts = sentence.split(/,(?=\s)/); // Split on comma followed by space
+    let currentFragment = '';
+    
+    for (let i = 0; i < commaParts.length; i++) {
+      const part = commaParts[i].trim();
+      if (!part) continue;
       
-      // Skip whitespace
-      while (j < text.length && /\s/.test(text[j])) {
-        currentSentence += text[j];
-        j++;
-      }
+      // Add comma back (except for last part)
+      const partWithComma = (i < commaParts.length - 1 && !part.endsWith(',')) 
+        ? part + ',' 
+        : part;
       
-      // If next char is uppercase or end of text, this is likely a sentence ending
-      if (j >= text.length || /[A-Z]/.test(text[j])) {
-        sentences.push(currentSentence.trim());
-        currentSentence = '';
-        i = j;
-        continue;
+      const testFragment = currentFragment 
+        ? `${currentFragment} ${partWithComma}` 
+        : partWithComma;
+      
+      const testWords = testFragment.split(/\s+/).length;
+      
+      // If adding this part exceeds limit, save current and start new
+      if (testWords > MAX_WORDS_PER_FRAGMENT && currentFragment) {
+        fragments.push(currentFragment);
+        currentFragment = partWithComma;
+      } else {
+        currentFragment = testFragment;
       }
     }
     
-    i++;
-  }
-  
-  // Add any remaining text
-  if (currentSentence.trim()) {
-    sentences.push(currentSentence.trim());
-  }
-  
-  return sentences.filter(s => s.length > 0);
-};
-
-/**
- * Break a single sentence into fragments - simplified rules
- */
-const breakIntoFragments = (sentence: string, depth: number): string[] => {
-  if (depth >= MAX_RECURSION_DEPTH) return [sentence];
-
-  const trimmed = sentence.trim();
-  if (!trimmed) return [];
-
-  const words = trimmed.split(/\s+/);
-  if (words.length <= MAX_WORDS_PER_FRAGMENT) return [trimmed];
-
-  // Find split points - SIMPLIFIED: only commas and periods
-  const splitPoints = findSimpleSplitPoints(trimmed);
-
-  // Choose best split position
-  let splitPos: number | null = null;
-  if (splitPoints.length > 0) {
-    // Prefer splits closer to the middle
-    const middle = Math.floor(trimmed.length / 2);
-    splitPoints.sort((a, b) => 
-      Math.abs(a.position - middle) - Math.abs(b.position - middle)
-    );
-    splitPos = splitPoints[0].position;
-  } else {
-    // Fallback: find middle word boundary
-    const middleWordIndex = Math.floor(words.length / 2);
-    let charCount = 0;
-    for (let i = 0; i < middleWordIndex; i++) {
-      charCount += words[i].length;
-      if (i < middleWordIndex - 1) charCount += 1; // space
+    // Don't forget the last fragment
+    if (currentFragment) {
+      fragments.push(currentFragment);
     }
-    splitPos = charCount;
   }
-
-  if (splitPos === null || splitPos <= 1 || splitPos >= trimmed.length - 1) {
-    return [trimmed];
-  }
-
-  // Split while preserving exact spacing and punctuation
-  const first = trimmed.substring(0, splitPos).trim();
-  const second = trimmed.substring(splitPos).trim();
-
-  if (!first || !second) return [trimmed];
-  if (first === trimmed || second === trimmed) return [trimmed];
-
-  // Recurse only if still too long
-  const firstWords = first.split(/\s+/).length;
-  const secondWords = second.split(/\s+/).length;
   
-  const leftFragments = firstWords > MAX_WORDS_PER_FRAGMENT 
-    ? breakIntoFragments(first, depth + 1) 
-    : [first];
-    
-  const rightFragments = secondWords > MAX_WORDS_PER_FRAGMENT 
-    ? breakIntoFragments(second, depth + 1) 
-    : [second];
-
-  return [...leftFragments, ...rightFragments];
+  return fragments.filter(fragment => fragment.trim().length > 0);
 };
 
 /**
- * Find split points - SIMPLIFIED: only commas and periods
+ * Find split points in text - simplified to focus on periods and commas only
  */
-export const findSimpleSplitPoints = (text: string): SplitPoint[] => {
+export const findSplitPoints = (text: string): SplitPoint[] => {
   const points: SplitPoint[] = [];
   
-  // High priority: periods followed by space (but not sentence ending)
-  const periodRegex = /\.\s+(?![A-Z])/g;
+  // Find periods followed by space and capital letter
+  const periodRegex = /\.(?=\s+[A-Z])/g;
   let match;
   while ((match = periodRegex.exec(text)) !== null) {
     points.push({
-      position: match.index + match[0].length,
-      character: match[0],
-      reason: 'Period break',
+      position: match.index + 1, // After the period
+      character: '. ',
+      reason: 'Sentence boundary',
       priority: 'high'
     });
   }
   
-  // Medium priority: commas followed by space
-  const commaRegex = /,\s+/g;
+  // Find commas followed by space (but not within parentheses or quotes)
+  const commaRegex = /,(?=\s+[a-zA-Z])/g;
   while ((match = commaRegex.exec(text)) !== null) {
-    points.push({
-      position: match.index + match[0].length,
-      character: match[0],
-      reason: 'Comma break',
-      priority: 'medium'
-    });
+    // Simple check to avoid splitting within parentheses
+    const beforeText = text.substring(0, match.index);
+    const openParens = (beforeText.match(/\(/g) || []).length;
+    const closeParens = (beforeText.match(/\)/g) || []).length;
+    
+    // Only split if we're not inside parentheses
+    if (openParens === closeParens) {
+      points.push({
+        position: match.index + 1, // After the comma
+        character: ', ',
+        reason: 'Comma break',
+        priority: 'medium'
+      });
+    }
   }
   
+  // Sort by priority and position
   return points.sort((a, b) => {
-    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
     if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     }
@@ -202,126 +172,98 @@ export const findSimpleSplitPoints = (text: string): SplitPoint[] => {
 };
 
 /**
- * Find ALL possible split points for manual splitting UI
+ * Split fragment at exact position
  */
-export const findAllSplitPoints = (text: string): Array<{position: number; word: string; reason: string}> => {
-  const points: Array<{position: number; word: string; reason: string}> = [];
-  const words = text.split(/(\s+)/); // Include spaces
-  
-  let position = 0;
-  for (let i = 0; i < words.length; i += 2) { // Skip spaces (odd indices)
-    if (i > 0) {
-      points.push({
-        position: position,
-        word: words[i],
-        reason: `Split before "${words[i]}"`
-      });
-    }
-    position += words[i].length;
-    if (i + 1 < words.length) {
-      position += words[i + 1].length; // Add space length
-    }
-  }
-  
-  return points;
-};
-
-/**
- * Split fragment at exact character position
- */
-export const splitFragmentAt = (fragments: string[], fragmentIndex: number, splitPosition: number): string[] => {
+export const splitFragmentAt = (
+  fragments: string[], 
+  fragmentIndex: number, 
+  splitPosition: number
+): string[] => {
   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) return fragments;
-
+  
   const fragment = fragments[fragmentIndex];
   if (splitPosition <= 0 || splitPosition >= fragment.length) return fragments;
-
-  // Find the exact word boundary near the split position
-  let actualSplit = splitPosition;
   
-  // If we're in the middle of a word, move to the nearest word boundary
-  if (fragment[actualSplit] !== ' ') {
-    // Look backwards for space
-    let backPos = actualSplit;
-    while (backPos > 0 && fragment[backPos] !== ' ') {
-      backPos--;
-    }
-    
-    // Look forwards for space
-    let frontPos = actualSplit;
-    while (frontPos < fragment.length && fragment[frontPos] !== ' ') {
-      frontPos++;
-    }
-    
-    // Choose the closer boundary
-    const backDist = actualSplit - backPos;
-    const frontDist = frontPos - actualSplit;
-    actualSplit = backDist <= frontDist ? backPos : frontPos;
-  }
-
-  const first = fragment.substring(0, actualSplit).trim();
-  const second = fragment.substring(actualSplit).trim();
-
+  const first = fragment.substring(0, splitPosition).trim();
+  const second = fragment.substring(splitPosition).trim();
+  
   if (!first || !second) return fragments;
-
+  
   const result = [...fragments];
   result.splice(fragmentIndex, 1, first, second);
   return result;
 };
 
 /**
- * Merge fragments while preserving exact spacing
+ * Merge two consecutive fragments
  */
 export const mergeFragments = (fragments: string[], index: number): string[] => {
   if (index < 0 || index >= fragments.length - 1) return fragments;
   
-  // Merge with single space (teachers can adjust spacing manually if needed)
   const merged = `${fragments[index]} ${fragments[index + 1]}`;
-  
   const result = [...fragments];
   result.splice(index, 2, merged);
   return result;
 };
 
 /**
- * Validate that merged fragments recreate original text
+ * Validate individual fragment
  */
-export const validateFragmentMerge = (fragments: string[], originalText: string): boolean => {
-  const merged = fragments.join(' ').replace(/\s+/g, ' ').trim();
-  const normalized = originalText.replace(/\s+/g, ' ').trim();
-  return merged === normalized;
-};
-
-// Rest of the validation and stats functions...
 export const validateFragment = (fragment: string): FragmentData => {
   const text = fragment.trim();
-  const words = text.split(/\s+/).filter(w => w.length > 0);
+  const words = text.split(/\s+/).filter(word => word.length > 0);
   const wordCount = words.length;
-
+  
   return {
     text,
     wordCount,
     isLong: wordCount > MAX_WORDS_PER_FRAGMENT,
     isShort: wordCount < MIN_WORDS_PER_FRAGMENT && wordCount > 0,
     isEmpty: text.length === 0,
-    canSplit: findAllSplitPoints(text).length > 1
+    canSplit: findSplitPoints(text).length > 0
   };
 };
 
+/**
+ * Validate entire fragments array
+ */
 export const validateFragments = (fragments: string[]): FragmentValidation => {
-  const data = fragments.map(validateFragment);
-  const totalWords = data.reduce((sum, f) => sum + f.wordCount, 0);
-
+  const fragmentData = fragments.map(validateFragment);
+  const totalWords = fragmentData.reduce((sum, f) => sum + f.wordCount, 0);
+  
   return {
     totalFragments: fragments.length,
     optimalRange: fragments.length >= 15 && fragments.length <= 25,
-    longFragments: data.filter(f => f.isLong).length,
-    shortFragments: data.filter(f => f.isShort).length,
-    emptyFragments: data.filter(f => f.isEmpty).length,
+    longFragments: fragmentData.filter(f => f.isLong).length,
+    shortFragments: fragmentData.filter(f => f.isShort).length,
+    emptyFragments: fragmentData.filter(f => f.isEmpty).length,
     averageWordCount: totalWords > 0 ? Math.round(totalWords / fragments.length) : 0
   };
 };
 
-// History and editor classes remain the same...
+/**
+ * Smart split using detected split points
+ */
+export const smartSplitFragment = (fragments: string[], fragmentIndex: number): string[] => {
+  if (fragmentIndex < 0 || fragmentIndex >= fragments.length) return fragments;
+  
+  const fragment = fragments[fragmentIndex];
+  const splitPoints = findSplitPoints(fragment);
+  
+  if (splitPoints.length === 0) {
+    // Fallback: split at middle word boundary
+    const words = fragment.split(/\s+/);
+    const middleIndex = Math.floor(words.length / 2);
+    const middlePosition = words.slice(0, middleIndex).join(' ').length + 1;
+    return splitFragmentAt(fragments, fragmentIndex, middlePosition);
+  }
+  
+  // Use the first high-priority split point
+  const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
+  return splitFragmentAt(fragments, fragmentIndex, bestSplit.position);
+};
+
+// Fragment Editor with History
 export interface FragmentHistory {
   fragments: string[];
   timestamp: number;
@@ -334,30 +276,46 @@ export class FragmentEditor {
   private maxHistorySize = 50;
 
   constructor(initialFragments: string[]) {
-    this.saveState(initialFragments, 'Initial');
+    this.saveState([...initialFragments], 'Initial');
   }
 
-  private saveState(fragments: string[], action: string) {
+  private saveState(fragments: string[], action: string): void {
     if (this.currentIndex < this.history.length - 1) {
       this.history = this.history.slice(0, this.currentIndex + 1);
     }
-    this.history.push({ fragments: [...fragments], timestamp: Date.now(), action });
+
+    this.history.push({
+      fragments: [...fragments],
+      timestamp: Date.now(),
+      action
+    });
+
     if (this.history.length > this.maxHistorySize) {
       this.history = this.history.slice(-this.maxHistorySize);
     }
+
     this.currentIndex = this.history.length - 1;
   }
 
   merge(fragments: string[], index: number): string[] {
     const result = mergeFragments(fragments, index);
-    this.saveState(result, `Merge fragments ${index} & ${index + 1}`);
+    this.saveState(result, `Merge fragments ${index} and ${index + 1}`);
     return result;
   }
 
-  split(fragments: string[], index: number, position: number): string[] {
-    const result = splitFragmentAt(fragments, index, position);
-    this.saveState(result, `Split fragment ${index} at position ${position}`);
-    return result;
+  split(fragments: string[], index: number, position?: number): string[] {
+    const newFragments = position !== undefined 
+      ? splitFragmentAt(fragments, index, position)
+      : smartSplitFragment(fragments, index);
+    this.saveState(newFragments, `Split fragment ${index}`);
+    return newFragments;
+  }
+
+  edit(fragments: string[], index: number, newText: string): string[] {
+    const newFragments = [...fragments];
+    newFragments[index] = newText;
+    this.saveState(newFragments, `Edit fragment ${index}`);
+    return newFragments;
   }
 
   undo(): string[] | null {
@@ -385,16 +343,45 @@ export class FragmentEditor {
   }
 }
 
-// Stats function
-export const getFragmentStats = (text: string) => {
+// MISSING EXPORTS - Adding these functions that are needed by other components
+
+/**
+ * Validate article name format
+ */
+export const validateArticleName = (name: string): boolean => {
+  const regex = /^[a-zA-Z0-9-_]{3,50}$/;
+  return regex.test(name);
+};
+
+/**
+ * Suggest article name from title
+ */
+export const suggestArticleNameFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special chars except hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .substring(0, 40) // Limit length
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+};
+
+/**
+ * Get fragment statistics for TextInput component
+ */
+export const getFragmentStats = (text: string): ArticleStats => {
   const fragments = splitIntoSentenceFragments(text);
   const validation = validateFragments(fragments);
-  const characters = text.length;
-  const words = text.split(/\s+/).filter(w => w.length > 0).length;
-  const estimatedReadingTime = Math.ceil(words / 200);
+  const characterCount = text.length;
+  const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+  const estimatedReadingTime = Math.ceil(wordCount / 200); // Average reading speed
 
   return {
-    text: { characters, words, estimatedReadingTime },
+    text: {
+      characters: characterCount,
+      words: wordCount,
+      estimatedReadingTime
+    },
     fragments: {
       count: fragments.length,
       validation,
@@ -403,25 +390,9 @@ export const getFragmentStats = (text: string) => {
   };
 };
 
-// Backward compatibility
+// Backward compatibility exports
 export const splitIntoSentences = splitIntoSentenceFragments;
 export const validateSentence = validateFragment;
 export const validateArticle = validateFragments;
 export const mergeSentences = mergeFragments;
 export const splitSentence = splitFragmentAt;
-export const getArticleStats = getFragmentStats;
-
-// Name validation helpers
-export const validateArticleName = (name: string): boolean => {
-  const regex = /^[a-zA-Z0-9_\-\(\)]{3,50}$/;
-  return regex.test(name);
-};
-
-export const suggestArticleNameFromTitle = (title: string): string => {
-  return title
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9_\-]/g, '_')
-    .replace(/_{2,}/g, '_')
-    .replace(/^_|_$/g, '')
-    .substring(0, 40);
-};

@@ -185,7 +185,7 @@ const TeacherDashboard: React.FC = () => {
                   </Link>
                 </div>
               ) : (
-                recentArticles.map((article) => (
+                recentArticles.map((article:IArticle) => (
                   <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">

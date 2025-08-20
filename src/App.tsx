@@ -21,7 +21,7 @@ import { useLocation } from 'react-router-dom';
 
 
 import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
-
+import ArticleEdit from './pages/teacher/ArticleEdit';
 
 
 function App() {
@@ -63,7 +63,7 @@ function App() {
           <Route path="/teacher/articles" element={<ArticleList />} />
           <Route path="/teacher/articles/create" element={<ArticleUpload />} />
           <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
-          <Route path="/teacher/articles/:articleName/edit" element={<ArticleUpload />} />
+          <Route path="/teacher/articles/:articleName/edit" element={<ArticleEdit />} />
         </Route>
 
         {/* Student routes */}

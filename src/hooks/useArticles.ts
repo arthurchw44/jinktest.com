@@ -13,7 +13,8 @@ import type {
   UpdateArticleRequest,
   UpdateSentencesRequest,
   SentenceResponse,
-  TeacherStatsResponse
+  TeacherStatsResponse,
+  IArticle
 } from '../types/article.types';
 
 // API functions
@@ -31,10 +32,85 @@ const articleAPI = {
   },
 
   // Create new article
-  create: async (data: CreateArticleRequest): Promise<ArticleResponse> => {
-    const response = await api.post('/articles', data);
-    return response.data;
+  // create: async (data: CreateArticleRequest): Promise<ArticleResponse> => {
+  //   const response = await api.post('/articles', data);
+  //   return response.data;
+  // },
+
+  create: async (data: CreateArticleRequest): Promise<{ success: boolean; article: IArticle; message: string }> => {
+    console.log('Creating article with payload:', data);
+    
+    // Validate payload before sending
+    if (!data.articleName || !data.title || !data.originalText) {
+      throw new Error('Missing required fields: articleName, title, or originalText');
+    }
+    
+    if (!data.sentences || data.sentences.length === 0) {
+      throw new Error('At least one sentence is required');
+    }
+    
+    // Ensure all sentences have required fields
+    data.sentences.forEach((sentence, index) => {
+      if (!sentence.text || sentence.text.trim().length === 0) {
+        throw new Error(`Sentence ${index + 1} is empty`);
+      }
+      if (typeof sentence.order !== 'number') {
+        sentence.order = index + 1;
+      }
+      if (typeof sentence.wordCount !== 'number') {
+        sentence.wordCount = sentence.text.split(/\s+/).filter(w => w.trim().length > 0).length;
+      }
+      if (typeof sentence.isLong !== 'boolean') {
+        sentence.isLong = sentence.wordCount > 15;
+      }
+    });
+    
+    try {
+      const response = await api.post<{ success: boolean; article: IArticle; message: string }>('/articles', data);
+      return response.data;
+    } catch (error: any) {
+      console.error('API Error Details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        config: error.config
+      });
+      
+      // Enhanced error message handling
+      if (error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
+      
+      // Handle specific HTTP status codes with user-friendly messages
+      if (error.response?.status === 409) {
+        throw new Error(`Article name "${data.articleName}" already exists. Please choose a different name.`);
+      }
+      
+      if (error.response?.status === 400) {
+        throw new Error('Invalid article data. Please check your input and try again.');
+      }
+      
+      if (error.response?.status === 401) {
+        throw new Error('You are not authorized to create articles. Please log in again.');
+      }
+      
+      if (error.response?.status === 403) {
+        throw new Error('You do not have permission to create articles. Contact your administrator.');
+      }
+      
+      if (error.response?.status === 500) {
+        throw new Error('Server error occurred. Please try again in a moment.');
+      }
+      
+      // Network or other errors
+      if (!error.response) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      }
+      
+      throw error;
+    }
   },
+  
 
   // Get all articles for teacher
   getAll: async (): Promise<ArticlesResponse> => {
@@ -167,14 +243,26 @@ export const useCreateArticle = () => {
  */
 export const useUpdateArticleMetadata = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ articleName, data }: { articleName: string; data: UpdateArticleRequest }) => 
-      articleAPI.updateMetadata(articleName, data),
-    onSuccess: (response, variables) => {
+    mutationFn: async ({ 
+      articleName, 
+      updateData 
+    }: { 
+      articleName: string; 
+      updateData: UpdateArticleRequest 
+    }) => {
+      const response = await api.put<ArticleResponse>(`/articles/${articleName}`, updateData);
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
       // Update specific article and articles list
-      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.setQueryData(['article', variables.articleName], data.article);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
+      console.log('Article metadata updated successfully');
+    },
+    onError: (error: any) => {
+      console.error('Update article metadata error:', error);
     }
   });
 };
@@ -184,16 +272,26 @@ export const useUpdateArticleMetadata = () => {
  */
 export const useUpdateArticleSentences = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ articleName, sentences }: { 
+    mutationFn: async ({ 
+      articleName, 
+      sentences 
+    }: { 
       articleName: string; 
-      sentences: Omit<ISentence, 'sentenceId'>[] 
-    }) => articleAPI.updateSentences(articleName, { sentences }),
-    onSuccess: (response, variables) => {
+      sentences: UpdateSentencesRequest 
+    }) => {
+      const response = await api.put<ArticleResponse>(`/articles/${articleName}/sentences`, sentences);
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
       // Update specific article and articles list
-      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.setQueryData(['article', variables.articleName], data.article);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
+      console.log('Article sentences updated successfully');
+    },
+    onError: (error: any) => {
+      console.error('Update article sentences error:', error);
     }
   });
 };

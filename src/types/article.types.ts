@@ -1,8 +1,8 @@
-// src/types/article.types.ts
+// Complete article.types.ts with all missing types
 
-// Article interface - matches backend, NO id field
+// Core interfaces
 export interface IArticle {
-  articleName: string;          // Unique user-assigned identifier
+  articleName: string;  // Unique identifier
   title: string;
   originalText: string;
   teacherUsername: string;
@@ -20,9 +20,8 @@ export interface IArticle {
   updatedAt?: string;
 }
 
-// Sentence interface - NO id field, uses sentenceId
 export interface ISentence {
-  sentenceId: string;           // Generated: articleName + "_" + order
+  sentenceId: string;  // Generated: articleName_order
   order: number;
   text: string;
   wordCount: number;
@@ -40,17 +39,38 @@ export interface CreateArticleRequest {
   articleName: string;
   title: string;
   originalText: string;
-  metadata?: IArticle['metadata'];
-  sentences: Omit<ISentence, 'sentenceId'>[];
+  metadata: {
+    grade?: string;
+    subject?: string;
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    estimatedTime?: number;
+  };
+  // Sentences without sentenceId - backend will generate them
+  sentences: Array<{
+    order: number;
+    text: string;
+    wordCount: number;
+    isLong: boolean;
+  }>;
 }
 
 export interface UpdateArticleRequest {
   title?: string;
-  metadata?: IArticle['metadata'];
+  metadata?: {
+    grade?: string;
+    subject?: string;
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    estimatedTime?: number;
+  };
 }
 
 export interface UpdateSentencesRequest {
-  sentences: Omit<ISentence, 'sentenceId'>[];
+  sentences: Array<{
+    order: number;
+    text: string;
+    wordCount: number;
+    isLong: boolean;
+  }>;
 }
 
 export interface SuggestNameRequest {
@@ -115,12 +135,11 @@ export interface SentenceFormData {
   isLong: boolean;
 }
 
-
 export interface IArticleMetadata {
-grade?: string;
-subject?: string;
-difficulty: 'easy' | 'medium' | 'hard';
-estimatedTime?: number;
+  grade?: string;
+  subject?: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  estimatedTime?: number;
 }
 
 // Utility Types

@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
-import { SentencePreview } from '../../components/articles/SentencePreview';
-import type { IArticle } from '../../types/article.types';
+import  SentencePreview  from '../../components/articles/SentencePreview';
+import type { IArticle, ISentence } from '../../types/article.types';
 
 const ArticleDetail: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
@@ -215,7 +215,7 @@ const ArticleDetail: React.FC = () => {
               Sentences ({article.sentences.length})
             </h3>
             <SentencePreview
-              sentences={article.sentences.map(s => s.text)}
+              sentences={article.sentences.map((s:ISentence) => s.text)}
               articleName={article.articleName}
               showSentenceIds={true}
               editable={false}
@@ -238,28 +238,28 @@ const ArticleDetail: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Avg Words/Sentence:</span>
                 <span className="text-sm font-medium">
-                  {Math.round(article.sentences.reduce((sum, s) => sum + s.wordCount, 0) / article.sentences.length) || 0}
+                  {Math.round(article.sentences.reduce((sum:number, s:ISentence) => sum + s.wordCount, 0) / article.sentences.length) || 0}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Long Sentences:</span>
                 <span className="text-sm font-medium text-yellow-600">
-                  {article.sentences.filter(s => s.isLong).length}
+                  {article.sentences.filter((s:ISentence) => s.isLong).length}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Ready Sentences:</span>
                 <span className="text-sm font-medium text-green-600">
-                  {article.sentences.filter(s => s.status === 'ready').length}
+                  {article.sentences.filter((s:ISentence) => s.status === 'ready').length}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Has Audio:</span>
                 <span className="text-sm font-medium">
-                  {article.sentences.filter(s => s.individualAudioUrl).length}
+                  {article.sentences.filter((s:ISentence) => s.individualAudioUrl).length}
                 </span>
               </div>
             </div>

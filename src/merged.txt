@@ -430,312 +430,283 @@ export const ArticleNameInput: React.FC<ArticleNameInputProps> = ({
 
 C:\Users\User\Desktop\jink-demo\src\components\articles\SentencePreview.tsx
 
-// src/components/articles/SentencePreview.tsx
 import React, { useState } from 'react';
-import { splitFragmentAt, mergeFragments, findAllSplitPoints, validateFragmentMerge, FragmentEditor } from '../../utils/sentenceFragmentSplitter';
+// import { findSplitPoints } from '../../utils/sentenceFragmentSplitter';
 
 interface SentencePreviewProps {
   sentences: string[];
-  articleName?: string;
+  articleName: string;
   showSentenceIds?: boolean;
   editable?: boolean;
-  onSentencesChange?: (sentences: string[]) => void;
-  originalText?: string; // For validation
+  onSplit?: (index: number, position: number) => void;
+  onMerge?: (index: number) => void;
+  onEdit?: (index: number, newText: string) => void;
 }
 
-export const SentencePreview: React.FC<SentencePreviewProps> = ({
-  sentences: initialSentences,
+const SentencePreview: React.FC<SentencePreviewProps> = ({
+  sentences,
   articleName,
   showSentenceIds = false,
   editable = true,
-  onSentencesChange,
-  originalText
+  onSplit,
+  onMerge,
+  onEdit
 }) => {
-  const [sentences, setSentences] = useState<string[]>(initialSentences);
-  const [editor] = useState(() => new FragmentEditor(initialSentences));
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
-  const [showSplitUI, setShowSplitUI] = useState<number | null>(null);
 
-  // Update sentences when prop changes
-  React.useEffect(() => {
-    setSentences(initialSentences);
-  }, [initialSentences]);
-
-  const handleSentencesUpdate = (newSentences: string[]) => {
-    setSentences(newSentences);
-    onSentencesChange?.(newSentences);
+  const handleSplitClick = (sentenceIndex: number, wordIndex: number, sentence: string) => {
+    if (!onSplit) return;
+    
+    // Calculate the position to split at (after the word)
+    const words = sentence.split(' ');
+    const beforeWords = words.slice(0, wordIndex + 1);
+    const position = beforeWords.join(' ').length;
+    
+    console.log(`Splitting sentence ${sentenceIndex} at position ${position}`);
+    onSplit(sentenceIndex, position);
   };
 
   const handleMerge = (index: number) => {
-    if (index >= sentences.length - 1) return;
-    const result = editor.merge(sentences, index);
-    handleSentencesUpdate(result);
+    if (!onMerge) return;
+    onMerge(index);
   };
 
-  const handleSplit = (fragmentIndex: number, splitPosition: number) => {
-    const result = editor.split(sentences, fragmentIndex, splitPosition);
-    handleSentencesUpdate(result);
-    setShowSplitUI(null);
-  };
-
-  const handleUndo = () => {
-    const result = editor.undo();
-    if (result) {
-      handleSentencesUpdate(result);
-    }
-  };
-
-  const handleRedo = () => {
-    const result = editor.redo();
-    if (result) {
-      handleSentencesUpdate(result);
-    }
-  };
-
-  const startEditing = (index: number) => {
+  const handleEdit = (index: number) => {
     setEditingIndex(index);
     setEditText(sentences[index]);
   };
 
-  const saveEdit = () => {
-    if (editingIndex === null) return;
-    const newSentences = [...sentences];
-    newSentences[editingIndex] = editText.trim();
-    handleSentencesUpdate(newSentences);
-    setEditingIndex(null);
-  };
-
-  const cancelEdit = () => {
+  const handleSaveEdit = () => {
+    if (editingIndex !== null && onEdit) {
+      onEdit(editingIndex, editText);
+    }
     setEditingIndex(null);
     setEditText('');
   };
 
-  const WordSplitter: React.FC<{ text: string; fragmentIndex: number }> = ({ text, fragmentIndex }) => {
-    const splitPoints = findAllSplitPoints(text);
-    const words = text.split(/(\s+)/);
-    
-    let charPosition = 0;
+  const handleCancelEdit = () => {
+    setEditingIndex(null);
+    setEditText('');
+  };
+
+  const renderSentenceWithSplitPoints = (sentence: string, sentenceIndex: number) => {
+    const words = sentence.split(' ');
     const elements: React.ReactNode[] = [];
-    
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i];
-      const isSpace = i % 2 === 1;
-      
-      if (!isSpace && i > 0) {
-        // Add split button before each word (except the first)
-        const splitPoint = splitPoints.find(sp => sp.position === charPosition);
-        if (splitPoint) {
-          elements.push(
-            <button
-              key={`split-${charPosition}`}
-              onClick={() => handleSplit(fragmentIndex, charPosition)}
-              className="inline-block w-px h-4 bg-blue-400 hover:bg-blue-600 hover:w-0.5 transition-all cursor-pointer mx-0.5"
-              title={splitPoint.reason}
-            />
-          );
-        }
-      }
-      
+
+    words.forEach((word, wordIndex) => {
+      // Add the word with proper spacing
       elements.push(
-        <span key={`word-${i}`} className={isSpace ? '' : 'hover:bg-yellow-100'}>
+        <span key={`word-${wordIndex}`} className="inline whitespace-pre">
           {word}
         </span>
       );
-      
-      charPosition += word.length;
-    }
-    
-    return <span className="relative">{elements}</span>;
+
+      // Add split point after each word (except the last one)
+      if (wordIndex < words.length - 1) {
+        // Check if this is a good split point (after comma or before new clause)
+        const isGoodSplitPoint = word.endsWith(',') || word.endsWith(';');
+        
+        elements.push(
+          <span key={`space-${wordIndex}`} className="inline-flex items-center whitespace-pre">
+            {/* Use non-breaking space entity to ensure space is preserved */}
+            <span className="text-gray-400">&nbsp;</span>
+            {editable && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleSplitClick(sentenceIndex, wordIndex, sentence);
+                }}
+                className={`
+                  inline-flex items-center justify-center mx-1 
+                  transition-all duration-200 hover:scale-110 active:scale-95
+                  ${isGoodSplitPoint 
+                    ? 'w-6 h-6 bg-blue-500 hover:bg-blue-600' 
+                    : 'w-4 h-4 bg-gray-300 hover:bg-blue-400'
+                  }
+                  rounded-full cursor-pointer shadow-sm hover:shadow-md
+                `}
+                title={`Split here (${isGoodSplitPoint ? 'Recommended' : 'Manual'})`}
+                style={{ minWidth: '16px', minHeight: '16px' }}
+              >
+                <div className={`
+                  w-0.5 h-3 bg-white rounded-full
+                  ${isGoodSplitPoint ? 'opacity-100' : 'opacity-70'}
+                `} />
+              </button>
+            )}
+            {/* Add another space after the button */}
+            <span className="text-transparent">&nbsp;</span>
+          </span>
+        );
+      }
+    });
+
+    return <div className="leading-relaxed whitespace-pre-wrap">{elements}</div>;
   };
 
-  const getFragmentStats = (fragment: string) => {
-    const wordCount = fragment.split(/\s+/).filter(w => w.length > 0).length;
+  // Alternative simpler approach - show text without split points in detail view
+  const renderSentenceSimple = (sentence: string) => {
+    return (
+      <div className="text-gray-800 leading-relaxed whitespace-pre-wrap bg-gray-50 p-3 rounded">
+        {sentence}
+      </div>
+    );
+  };
+
+  const getSentenceValidation = (sentence: string) => {
+    const wordCount = sentence.split(' ').filter(word => word.trim().length > 0).length;
+    const charCount = sentence.length;
+    
     return {
-      words: wordCount,
-      chars: fragment.length,
+      wordCount,
+      charCount,
       isLong: wordCount > 20,
-      isShort: wordCount < 3 && wordCount > 0
+      isShort: wordCount < 2,
+      isOptimal: wordCount >= 8 && wordCount <= 15
     };
   };
 
-  const validateMergeResult = () => {
-    if (!originalText) return null;
-    const isValid = validateFragmentMerge(sentences, originalText);
-    return isValid;
+  const getValidationColor = (validation: ReturnType<typeof getSentenceValidation>) => {
+    if (validation.isLong) return 'text-red-600 bg-red-50';
+    if (validation.isShort) return 'text-orange-600 bg-orange-50';
+    if (validation.isOptimal) return 'text-green-600 bg-green-50';
+    return 'text-blue-600 bg-blue-50';
   };
 
-  const mergeValidation = validateMergeResult();
+  const getValidationIcon = (validation: ReturnType<typeof getSentenceValidation>) => {
+    if (validation.isLong) return '?†Ô?';
+    if (validation.isShort) return '??';
+    if (validation.isOptimal) return '??;
+    return '??';
+  };
 
   return (
     <div className="space-y-4">
-      {/* Control Panel */}
+      {/* Only show instructions if editable */}
       {editable && (
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={handleUndo}
-              disabled={!editor.canUndo()}
-              className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              ??Undo
-            </button>
-            <button
-              onClick={handleRedo}
-              disabled={!editor.canRedo()}
-              className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              ??Redo
-            </button>
-            <div className="text-sm text-gray-600">
-              {sentences.length} fragments
-            </div>
-          </div>
-          
-          {/* Merge Validation */}
-          {mergeValidation !== null && (
-            <div className={`text-sm px-3 py-1 rounded ${
-              mergeValidation 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-red-100 text-red-700'
-            }`}>
-              {mergeValidation 
-                ? '??Fragments can recreate original text' 
-                : '??Fragments may not recreate original text exactly'}
-            </div>
-          )}
+        <div className="text-sm text-gray-600 mb-4">
+          <p><strong>Instructions:</strong> Click the blue circles between words to split fragments. 
+          Larger circles indicate recommended split points.</p>
         </div>
       )}
+      
+      {sentences.map((sentence, index) => {
+        const validation = getSentenceValidation(sentence);
+        const isEditing = editingIndex === index;
 
-      {/* Fragments */}
-      <div className="space-y-3">
-        {sentences.map((sentence, index) => {
-          const stats = getFragmentStats(sentence);
-          const isEditing = editingIndex === index;
-          const isShowingSplit = showSplitUI === index;
-          
-          return (
-            <div
-              key={index}
-              className={`p-4 border rounded-lg transition-all ${
-                stats.isLong ? 'border-yellow-300 bg-yellow-50' :
-                stats.isShort ? 'border-blue-300 bg-blue-50' :
-                'border-gray-200 bg-white'
-              } ${isShowingSplit ? 'ring-2 ring-blue-500' : ''}`}
-            >
-              {/* Fragment Header */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  {showSentenceIds && (
-                    <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded">
-                      #{index + 1}
-                    </span>
-                  )}
-                  <span className="text-xs text-gray-500">
-                    {stats.words} words, {stats.chars} chars
-                  </span>
-                  {stats.isLong && <span className="text-xs text-yellow-600">??Long</span>}
-                  {stats.isShort && <span className="text-xs text-blue-600">??Short</span>}
-                </div>
+        return (
+          <div
+            key={index}
+            className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors"
+          >
+            {/* Header with stats and controls */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-3">
+                <span className={`
+                  px-2 py-1 rounded-full text-xs font-medium
+                  ${getValidationColor(validation)}
+                `}>
+                  {getValidationIcon(validation)} #{index + 1}
+                </span>
                 
-                {editable && !isEditing && (
-                  <div className="flex items-center space-x-1">
-                    {/* Split Button */}
-                    <button
-                      onClick={() => setShowSplitUI(isShowingSplit ? null : index)}
-                      className={`text-xs px-2 py-1 rounded transition-colors ${
-                        isShowingSplit 
-                          ? 'bg-blue-500 text-white' 
-                          : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                      }`}
-                      title="Click to show split points"
-                    >
-                      ?ÔøΩÔøΩ? Split
-                    </button>
-                    
-                    {/* Merge Button */}
-                    {index < sentences.length - 1 && (
-                      <button
-                        onClick={() => handleMerge(index)}
-                        className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200"
-                        title="Merge with next fragment"
-                      >
-                        ?? Merge
-                      </button>
-                    )}
-                    
-                    {/* Edit Button */}
-                    <button
-                      onClick={() => startEditing(index)}
-                      className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                    >
-                      ?ÔøΩÔøΩ? Edit
-                    </button>
-                  </div>
+                <span className="text-sm text-gray-600">
+                  <strong>{validation.wordCount}</strong> words, 
+                  <strong> {validation.charCount}</strong> chars
+                </span>
+                
+                {validation.isLong && (
+                  <span className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded">
+                    Too long - consider splitting
+                  </span>
                 )}
               </div>
 
-              {/* Fragment Content */}
-              <div className="text-sm text-gray-800">
-                {isEditing ? (
-                  <div className="space-y-2">
-                    <textarea
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-                      rows={3}
-                      autoFocus
-                    />
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={saveEdit}
-                        className="px-3 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={cancelEdit}
-                        className="px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : isShowingSplit ? (
-                  <div className="space-y-2">
-                    <div className="text-xs text-blue-600 mb-2">
-                      ?? Click on the blue lines to split at that position
-                    </div>
-                    <div className="leading-relaxed">
-                      <WordSplitter text={sentence} fragmentIndex={index} />
-                    </div>
-                  </div>
-                ) : (
-                  <p className="leading-relaxed">{sentence}</p>
-                )}
-              </div>
-              
-              {/* Audio Preview (if available) */}
-              {articleName && (
-                <div className="mt-2 pt-2 border-t border-gray-100">
-                  <div className="text-xs text-gray-500">
-                    Audio: {articleName}_sentence_{index + 1}.mp3
-                  </div>
+              {editable && (
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handleEdit(index)}
+                    className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 
+                             text-gray-700 rounded transition-colors"
+                    title="Edit this fragment"
+                  >
+                    ?èÔ? Edit
+                  </button>
+                  
+                  {index < sentences.length - 1 && (
+                    <button
+                      onClick={() => handleMerge(index)}
+                      className="px-3 py-1 text-xs bg-blue-100 hover:bg-blue-200 
+                               text-blue-700 rounded transition-colors"
+                      title="Merge with next fragment"
+                    >
+                      ?? Merge
+                    </button>
+                  )}
                 </div>
               )}
             </div>
-          );
-        })}
-      </div>
 
-      {/* Summary */}
-      <div className="text-xs text-gray-500 text-center pt-2 border-t">
-        Total: {sentences.length} fragments, {' '}
-        {sentences.reduce((sum, s) => sum + s.split(/\s+/).filter(w => w.length > 0).length, 0)} words
-      </div>
+            {/* Content */}
+            {isEditing ? (
+              <div className="space-y-3">
+                <textarea
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md resize-none 
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  rows={3}
+                  placeholder="Edit fragment text..."
+                />
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={handleSaveEdit}
+                    className="px-4 py-2 bg-green-600 text-white rounded-md 
+                             hover:bg-green-700 transition-colors text-sm"
+                  >
+                    ??Save
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md 
+                             hover:bg-gray-400 transition-colors text-sm"
+                  >
+                    ??Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Use simple rendering for detail view (non-editable) or complex for editable */}
+                {editable ? 
+                  renderSentenceWithSplitPoints(sentence, index) : 
+                  renderSentenceSimple(sentence)
+                }
+              </>
+            )}
+
+            {/* Sentence ID display */}
+            {showSentenceIds && (
+              <div className="mt-2 text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded">
+                ID: {articleName}_{index + 1}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {sentences.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <p>No fragments to display</p>
+          <p className="text-sm">Paste your article text to see fragments</p>
+        </div>
+      )}
     </div>
   );
 };
+
+export default SentencePreview;
 
 C:\Users\User\Desktop\jink-demo\src\components\articles\TextInput.tsx
 
@@ -923,12 +894,12 @@ export const TextInput: React.FC<TextInputProps> = ({
             <span>Word count: 20-1500 words (currently {stats.text.words})</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className={stats.fragments.validation.optimalRange ? '?? : '?ÔøΩÔøΩ?'}>
+            <span className={stats.fragments.validation.optimalRange ? '?? : '?†Ô?'}>
             </span>
             <span>Optimal fragments: 15-25 (currently {stats.fragments.count})</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className={stats.fragments.validation.longFragments === 0 ? '?? : '?ÔøΩÔøΩ?'}>
+            <span className={stats.fragments.validation.longFragments === 0 ? '?? : '?†Ô?'}>
             </span>
             <span>Long fragments (&gt;20 words): {stats.fragments.validation.longFragments}</span>
           </div>
@@ -937,7 +908,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         {!hasError && stats.text.words > 0 && (
           <div className="mt-3 pt-3 border-t border-blue-200">
             <div className="text-xs text-blue-600">
-              ?ÔøΩÔøΩ <strong>Tip:</strong> After creating the article, you can manually split and merge fragments using the editor.
+              ?í° <strong>Tip:</strong> After creating the article, you can manually split and merge fragments using the editor.
               {stats.fragments.validation.longFragments > 0 && 
                 " Some fragments are long - you can split them for better dictation pacing."
               }
@@ -955,7 +926,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         }`}>
           <div className="flex items-center space-x-2">
             <span className="text-lg">
-              {canProceed ? '?? : '?ÔøΩÔøΩ?'}
+              {canProceed ? '?? : '?†Ô?'}
             </span>
             <span className={`text-sm font-medium ${
               canProceed ? 'text-green-800' : 'text-yellow-800'
@@ -3484,7 +3455,8 @@ import type {
   UpdateArticleRequest,
   UpdateSentencesRequest,
   SentenceResponse,
-  TeacherStatsResponse
+  TeacherStatsResponse,
+  IArticle
 } from '../types/article.types';
 
 // API functions
@@ -3502,10 +3474,85 @@ const articleAPI = {
   },
 
   // Create new article
-  create: async (data: CreateArticleRequest): Promise<ArticleResponse> => {
-    const response = await api.post('/articles', data);
-    return response.data;
+  // create: async (data: CreateArticleRequest): Promise<ArticleResponse> => {
+  //   const response = await api.post('/articles', data);
+  //   return response.data;
+  // },
+
+  create: async (data: CreateArticleRequest): Promise<{ success: boolean; article: IArticle; message: string }> => {
+    console.log('Creating article with payload:', data);
+    
+    // Validate payload before sending
+    if (!data.articleName || !data.title || !data.originalText) {
+      throw new Error('Missing required fields: articleName, title, or originalText');
+    }
+    
+    if (!data.sentences || data.sentences.length === 0) {
+      throw new Error('At least one sentence is required');
+    }
+    
+    // Ensure all sentences have required fields
+    data.sentences.forEach((sentence, index) => {
+      if (!sentence.text || sentence.text.trim().length === 0) {
+        throw new Error(`Sentence ${index + 1} is empty`);
+      }
+      if (typeof sentence.order !== 'number') {
+        sentence.order = index + 1;
+      }
+      if (typeof sentence.wordCount !== 'number') {
+        sentence.wordCount = sentence.text.split(/\s+/).filter(w => w.trim().length > 0).length;
+      }
+      if (typeof sentence.isLong !== 'boolean') {
+        sentence.isLong = sentence.wordCount > 15;
+      }
+    });
+    
+    try {
+      const response = await api.post<{ success: boolean; article: IArticle; message: string }>('/articles', data);
+      return response.data;
+    } catch (error: any) {
+      console.error('API Error Details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        config: error.config
+      });
+      
+      // Enhanced error message handling
+      if (error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
+      
+      // Handle specific HTTP status codes with user-friendly messages
+      if (error.response?.status === 409) {
+        throw new Error(`Article name "${data.articleName}" already exists. Please choose a different name.`);
+      }
+      
+      if (error.response?.status === 400) {
+        throw new Error('Invalid article data. Please check your input and try again.');
+      }
+      
+      if (error.response?.status === 401) {
+        throw new Error('You are not authorized to create articles. Please log in again.');
+      }
+      
+      if (error.response?.status === 403) {
+        throw new Error('You do not have permission to create articles. Contact your administrator.');
+      }
+      
+      if (error.response?.status === 500) {
+        throw new Error('Server error occurred. Please try again in a moment.');
+      }
+      
+      // Network or other errors
+      if (!error.response) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      }
+      
+      throw error;
+    }
   },
+  
 
   // Get all articles for teacher
   getAll: async (): Promise<ArticlesResponse> => {
@@ -3638,14 +3685,26 @@ export const useCreateArticle = () => {
  */
 export const useUpdateArticleMetadata = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ articleName, data }: { articleName: string; data: UpdateArticleRequest }) => 
-      articleAPI.updateMetadata(articleName, data),
-    onSuccess: (response, variables) => {
+    mutationFn: async ({ 
+      articleName, 
+      updateData 
+    }: { 
+      articleName: string; 
+      updateData: UpdateArticleRequest 
+    }) => {
+      const response = await api.put<ArticleResponse>(`/articles/${articleName}`, updateData);
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
       // Update specific article and articles list
-      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.setQueryData(['article', variables.articleName], data.article);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
+      console.log('Article metadata updated successfully');
+    },
+    onError: (error: any) => {
+      console.error('Update article metadata error:', error);
     }
   });
 };
@@ -3655,16 +3714,26 @@ export const useUpdateArticleMetadata = () => {
  */
 export const useUpdateArticleSentences = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ articleName, sentences }: { 
+    mutationFn: async ({ 
+      articleName, 
+      sentences 
+    }: { 
       articleName: string; 
-      sentences: Omit<ISentence, 'sentenceId'>[] 
-    }) => articleAPI.updateSentences(articleName, { sentences }),
-    onSuccess: (response, variables) => {
+      sentences: UpdateSentencesRequest 
+    }) => {
+      const response = await api.put<ArticleResponse>(`/articles/${articleName}/sentences`, sentences);
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
       // Update specific article and articles list
-      queryClient.setQueryData(['article', variables.articleName], response.article);
+      queryClient.setQueryData(['article', variables.articleName], data.article);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
+      console.log('Article sentences updated successfully');
+    },
+    onError: (error: any) => {
+      console.error('Update article sentences error:', error);
     }
   });
 };
@@ -4094,8 +4163,8 @@ C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleDetail.tsx
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
-import { SentencePreview } from '../../components/articles/SentencePreview';
-import type { IArticle } from '../../types/article.types';
+import  SentencePreview  from '../../components/articles/SentencePreview';
+import type { IArticle, ISentence } from '../../types/article.types';
 
 const ArticleDetail: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
@@ -4122,7 +4191,7 @@ const ArticleDetail: React.FC = () => {
       editing: { 
         bg: 'bg-yellow-100', 
         text: 'text-yellow-800', 
-        icon: '?ÔøΩÔøΩ?',
+        icon: '?èÔ?',
         label: 'Editing',
         description: 'Article is being edited and not ready for students yet.'
       },
@@ -4307,7 +4376,7 @@ const ArticleDetail: React.FC = () => {
               Sentences ({article.sentences.length})
             </h3>
             <SentencePreview
-              sentences={article.sentences.map(s => s.text)}
+              sentences={article.sentences.map((s:ISentence) => s.text)}
               articleName={article.articleName}
               showSentenceIds={true}
               editable={false}
@@ -4330,28 +4399,28 @@ const ArticleDetail: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Avg Words/Sentence:</span>
                 <span className="text-sm font-medium">
-                  {Math.round(article.sentences.reduce((sum, s) => sum + s.wordCount, 0) / article.sentences.length) || 0}
+                  {Math.round(article.sentences.reduce((sum:number, s:ISentence) => sum + s.wordCount, 0) / article.sentences.length) || 0}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Long Sentences:</span>
                 <span className="text-sm font-medium text-yellow-600">
-                  {article.sentences.filter(s => s.isLong).length}
+                  {article.sentences.filter((s:ISentence) => s.isLong).length}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Ready Sentences:</span>
                 <span className="text-sm font-medium text-green-600">
-                  {article.sentences.filter(s => s.status === 'ready').length}
+                  {article.sentences.filter((s:ISentence) => s.status === 'ready').length}
                 </span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Has Audio:</span>
                 <span className="text-sm font-medium">
-                  {article.sentences.filter(s => s.individualAudioUrl).length}
+                  {article.sentences.filter((s:ISentence) => s.individualAudioUrl).length}
                 </span>
               </div>
             </div>
@@ -4446,6 +4515,459 @@ const ArticleDetail: React.FC = () => {
 };
 
 export default ArticleDetail;
+
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleEdit.tsx
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { validateFragments, FragmentEditor } from '../../utils/sentenceFragmentSplitter';
+import SentencePreview from '../../components/articles/SentencePreview';
+import { useArticle, useUpdateArticleMetadata, useUpdateArticleSentences } from '../../hooks/useArticles';
+import type { UpdateArticleRequest, UpdateSentencesRequest } from '../../types/article.types';
+
+interface ArticleEditFormData {
+  title: string;
+  grade: string;
+  subject: string;
+  difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+}
+
+const ArticleEdit: React.FC = () => {
+  const { articleName } = useParams<{ articleName: string }>();
+  const navigate = useNavigate();
+  
+  const { data: article, isLoading, error } = useArticle(articleName!);
+  const updateMetadataMutation = useUpdateArticleMetadata();
+  const updateSentencesMutation = useUpdateArticleSentences();
+
+  const [currentTab, setCurrentTab] = useState<'metadata' | 'fragments'>('metadata');
+  const [formData, setFormData] = useState<ArticleEditFormData>({
+    title: '',
+    grade: '',
+    subject: '',
+    difficulty: 'A1'
+  });
+  
+  const [fragments, setFragments] = useState<string[]>([]);
+  const [fragmentEditor, setFragmentEditor] = useState<FragmentEditor | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Initialize form data when article loads
+  useEffect(() => {
+    if (article) {
+      setFormData({
+        title: article.title,
+        grade: article.metadata.grade || '',
+        subject: article.metadata.subject || '',
+        difficulty: article.metadata.difficulty || 'A1'
+      });
+      
+      const sentenceTexts = article.sentences
+        .sort((a, b) => a.order - b.order)
+        .map(s => s.text);
+      
+      setFragments(sentenceTexts);
+      setFragmentEditor(new FragmentEditor(sentenceTexts));
+    }
+  }, [article]);
+
+  const handleInputChange = (field: keyof ArticleEditFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+
+  const handleSplitFragment = (index: number, position: number) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.split(fragments, index, position);
+      setFragments(newFragments);
+      setHasUnsavedChanges(true);
+      console.log(`Split fragment ${index} at position ${position}`);
+    } catch (error) {
+      console.error('Error splitting fragment:', error);
+    }
+  };
+
+  const handleMergeFragments = (index: number) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.merge(fragments, index);
+      setFragments(newFragments);
+      setHasUnsavedChanges(true);
+      console.log(`Merged fragments ${index} and ${index + 1}`);
+    } catch (error) {
+      console.error('Error merging fragments:', error);
+    }
+  };
+
+  const handleEditFragment = (index: number, newText: string) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.edit(fragments, index, newText);
+      setFragments(newFragments);
+      setHasUnsavedChanges(true);
+      console.log(`Edited fragment ${index}`);
+    } catch (error) {
+      console.error('Error editing fragment:', error);
+    }
+  };
+
+  const handleUndo = () => {
+    if (!fragmentEditor) return;
+    
+    const undoFragments = fragmentEditor.undo();
+    if (undoFragments) {
+      setFragments(undoFragments);
+      setHasUnsavedChanges(true);
+      console.log('Undid last operation');
+    }
+  };
+
+  const handleRedo = () => {
+    if (!fragmentEditor) return;
+    
+    const redoFragments = fragmentEditor.redo();
+    if (redoFragments) {
+      setFragments(redoFragments);
+      setHasUnsavedChanges(true);
+      console.log('Redid operation');
+    }
+  };
+
+  const handleSaveMetadata = async () => {
+    if (!article || !articleName) return;
+
+    try {
+      const updateData: UpdateArticleRequest = {
+        title: formData.title.trim(),
+        metadata: {
+          grade: formData.grade.trim() || undefined,
+          subject: formData.subject.trim() || undefined,
+          difficulty: formData.difficulty,
+          estimatedTime: Math.ceil(fragments.length * 1.5)
+        }
+      };
+
+      await updateMetadataMutation.mutateAsync({ articleName, updateData });
+      setHasUnsavedChanges(false);
+      alert('Article metadata updated successfully!');
+    } catch (error: any) {
+      console.error('Failed to update metadata:', error);
+      alert(`Failed to update metadata: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  const handleSaveFragments = async () => {
+    if (!article || !articleName) return;
+
+    try {
+      const sentencesData: UpdateSentencesRequest = {
+        sentences: fragments.map((text, index) => ({
+          order: index + 1,
+          text: text.trim(),
+          wordCount: text.trim().split(/\s+/).filter(w => w.length > 0).length,
+          isLong: text.trim().split(/\s+/).filter(w => w.length > 0).length > 15
+        }))
+      };
+
+      await updateSentencesMutation.mutateAsync({ articleName, sentences: sentencesData });
+      setHasUnsavedChanges(false);
+      alert('Article fragments updated successfully!');
+    } catch (error: any) {
+      console.error('Failed to update fragments:', error);
+      alert(`Failed to update fragments: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges) {
+      if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        return;
+      }
+    }
+    navigate(`/teacher/articles/${articleName}`);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-2 text-gray-600">Loading article...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !article) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="text-center py-12">
+          <div className="text-red-600 mb-4">Article not found</div>
+          <button 
+            onClick={() => navigate('/teacher/articles')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Articles
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const validation = validateFragments(fragments);
+
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Edit Article</h1>
+            <p className="text-gray-600 mt-1">
+              Editing: <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{article.articleName}</span>
+            </p>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        {hasUnsavedChanges && (
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 text-sm">
+              ?†Ô? You have unsaved changes. Don't forget to save your work!
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="mb-6">
+        <nav className="flex space-x-8">
+          <button
+            onClick={() => setCurrentTab('metadata')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              currentTab === 'metadata'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Article Details
+          </button>
+          <button
+            onClick={() => setCurrentTab('fragments')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              currentTab === 'fragments'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Edit Fragments ({fragments.length})
+          </button>
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        
+        {/* Metadata Tab */}
+        {currentTab === 'metadata' && (
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold">Article Details</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Article Name (Read-only)
+                </label>
+                <input
+                  type="text"
+                  value={article.articleName}
+                  disabled
+                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Article name cannot be changed after creation</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Article Title *
+                </label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., Climate Change Impact on Australia"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Grade Level
+                </label>
+                <input
+                  type="text"
+                  value={formData.grade}
+                  onChange={(e) => handleInputChange('grade', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., Grade 9, University, Adult"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  value={formData.subject}
+                  onChange={(e) => handleInputChange('subject', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., English, Science, History"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CEFR Difficulty Level *
+                </label>
+                <select
+                  value={formData.difficulty}
+                  onChange={(e) => handleInputChange('difficulty', e.target.value as any)}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="A1">A1 - Beginner</option>
+                  <option value="A2">A2 - Elementary</option>
+                  <option value="B1">B1 - Intermediate</option>
+                  <option value="B2">B2 - Upper Intermediate</option>
+                  <option value="C1">C1 - Advanced</option>
+                  <option value="C2">C2 - Proficient</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t">
+              <button
+                onClick={handleSaveMetadata}
+                disabled={updateMetadataMutation.isPending}
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              >
+                {updateMetadataMutation.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Saving...
+                  </>
+                ) : (
+                  'Save Metadata'
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Fragments Tab */}
+        {currentTab === 'fragments' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Edit Fragments</h2>
+              
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={handleUndo}
+                  disabled={!fragmentEditor?.canUndo()}
+                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 rounded transition-colors"
+                >
+                  ??Undo
+                </button>
+                <button
+                  onClick={handleRedo}
+                  disabled={!fragmentEditor?.canRedo()}
+                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 rounded transition-colors"
+                >
+                  ??Redo
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h3 className="font-medium text-blue-900 mb-2">Fragment Statistics</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-blue-700">Total:</span>
+                  <span className="ml-1 font-medium">{validation.totalFragments}</span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Average words:</span>
+                  <span className="ml-1 font-medium">{validation.averageWordCount}</span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Too long:</span>
+                  <span className="ml-1 font-medium text-red-600">{validation.longFragments}</span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Too short:</span>
+                  <span className="ml-1 font-medium text-orange-600">{validation.shortFragments}</span>
+                </div>
+              </div>
+            </div>
+
+            <SentencePreview
+              sentences={fragments}
+              articleName={article.articleName}
+              showSentenceIds={false}
+              editable={true}
+              onSplit={handleSplitFragment}
+              onMerge={handleMergeFragments}
+              onEdit={handleEditFragment}
+            />
+
+            <div className="pt-4 border-t">
+              <button
+                onClick={handleSaveFragments}
+                disabled={updateSentencesMutation.isPending}
+                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              >
+                {updateSentencesMutation.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Saving...
+                  </>
+                ) : (
+                  'Save Fragments'
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Error Display */}
+        {(updateMetadataMutation.isError || updateSentencesMutation.isError) && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700 text-sm">
+              <strong>Error:</strong> {
+                (updateMetadataMutation.error as Error)?.message || 
+                (updateSentencesMutation.error as Error)?.message || 
+                'Failed to save changes'
+              }
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ArticleEdit;
 
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleList.tsx
 
@@ -4614,7 +5136,7 @@ const ArticleList: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {articles.map((article) => (
+                {articles.map((article:IArticle) => (
                   <tr key={article.articleName} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -4715,155 +5237,246 @@ export default ArticleList;
 
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleUpload.tsx
 
-// src/pages/teacher/ArticleUpload.tsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextInput } from '../../components/articles/TextInput';
-import { SentencePreview } from '../../components/articles/SentencePreview';
-import { ArticleNameInput } from '../../components/articles/ArticleNameInput';
+import { splitIntoSentenceFragments, validateFragments, FragmentEditor } from '../../utils/sentenceFragmentSplitter';
+import SentencePreview from '../../components/articles/SentencePreview';
 import { useCreateArticle } from '../../hooks/useArticles';
-import { splitIntoSentenceFragments } from '../../utils/sentenceFragmentSplitter';
+import type { CreateArticleRequest } from '../../types/article.types';
+import { useNavigate } from 'react-router-dom';
 
-// Local metadata type that matches the API expectations
-type ArticleMetadataUI = {
-  grade?: string;
-  subject?: string;
-  difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-  estimatedTime?: number;
-};
+interface ArticleFormData {
+  articleName: string;
+  title: string;
+  originalText: string;
+  grade: string;
+  subject: string;
+  difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+}
 
 const ArticleUpload: React.FC = () => {
-  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<ArticleFormData>({
+    articleName: '',
+    title: '',
+    originalText: '',
+    grade: '',
+    subject: '',
+    difficulty: 'A1'
+  });
+  
+  const [fragments, setFragments] = useState<string[]>([]);
+  const [fragmentEditor, setFragmentEditor] = useState<FragmentEditor | null>(null);
+  const [isGeneratingFragments, setIsGeneratingFragments] = useState(false);
+
   const createArticleMutation = useCreateArticle();
 
-  // Form state
-  const [currentStep, setCurrentStep] = useState(1);
-  const [articleName, setArticleName] = useState('');
-  const [title, setTitle] = useState('');
-  const [originalText, setOriginalText] = useState('');
-  const [fragments, setFragments] = useState<string[]>([]);
-  const [metadata, setMetadata] = useState<ArticleMetadataUI>({
-    difficulty: 'B1'
-  });
-
-  // Auto-generate fragments when text changes
+  const navigate = useNavigate();
+  
+  // Auto-generate fragments when originalText changes
   useEffect(() => {
-    if (originalText.trim()) {
-      try {
-        const autoFragments = splitIntoSentenceFragments(originalText);
-        setFragments(autoFragments);
-      } catch (error) {
-        console.error('Error splitting text:', error);
-        setFragments([]);
-      }
+    if (formData.originalText.trim().length > 0) {
+      setIsGeneratingFragments(true);
+      
+      // Debounce fragment generation
+      const timeoutId = setTimeout(() => {
+        try {
+          const newFragments = splitIntoSentenceFragments(formData.originalText);
+          setFragments(newFragments);
+          setFragmentEditor(new FragmentEditor(newFragments));
+          console.log('Generated fragments:', newFragments);
+        } catch (error) {
+          console.error('Error generating fragments:', error);
+        } finally {
+          setIsGeneratingFragments(false);
+        }
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
     } else {
       setFragments([]);
+      setFragmentEditor(null);
+      setIsGeneratingFragments(false);
     }
-  }, [originalText]);
+  }, [formData.originalText]);
 
-  const handleNext = () => {
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1);
+  // Auto-generate article name from title
+  useEffect(() => {
+    if (formData.title.trim().length > 0 && !formData.articleName) {
+      const suggestedName = formData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .substring(0, 40)
+        .replace(/-+$/, '');
+      
+      setFormData(prev => ({ ...prev, articleName: suggestedName }));
+    }
+  }, [formData.title, formData.articleName]);
+
+  const handleInputChange = (field: keyof ArticleFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSplitFragment = (index: number, position: number) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.split(fragments, index, position);
+      setFragments(newFragments);
+      console.log(`Split fragment ${index} at position ${position}`);
+    } catch (error) {
+      console.error('Error splitting fragment:', error);
     }
   };
 
-  const handlePrevious = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+  const handleMergeFragments = (index: number) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.merge(fragments, index);
+      setFragments(newFragments);
+      console.log(`Merged fragments ${index} and ${index + 1}`);
+    } catch (error) {
+      console.error('Error merging fragments:', error);
     }
   };
 
-const handleSubmit = async () => {
-  if (!articleName || !title || !originalText || fragments.length === 0) {
-    alert('Please complete all required fields');
-    return;
-  }
+  const handleEditFragment = (index: number, newText: string) => {
+    if (!fragmentEditor) return;
+    
+    try {
+      const newFragments = fragmentEditor.edit(fragments, index, newText);
+      setFragments(newFragments);
+      console.log(`Edited fragment ${index}`);
+    } catch (error) {
+      console.error('Error editing fragment:', error);
+    }
+  };
 
-  try {
-    // Convert fragments to sentences format for API
-    const sentences = fragments.map((text, index) => ({
-      order: index + 1,
-      text: text.trim(),
-      wordCount: text.split(/\s+/).filter(w => w.length > 0).length,
-      isLong: text.split(/\s+/).filter(w => w.length > 0).length > 20,
-      status: 'pending' as const
-    }));
+  const handleUndo = () => {
+    if (!fragmentEditor) return;
+    
+    const undoFragments = fragmentEditor.undo();
+    if (undoFragments) {
+      setFragments(undoFragments);
+      console.log('Undid last operation');
+    }
+  };
 
-    await createArticleMutation.mutateAsync({
-      articleName,
-      title,
-      originalText,
-      metadata,
-      sentences
-    });
+  const handleRedo = () => {
+    if (!fragmentEditor) return;
+    
+    const redoFragments = fragmentEditor.redo();
+    if (redoFragments) {
+      setFragments(redoFragments);
+      console.log('Redid operation');
+    }
+  };
 
-    navigate('/teacher/articles');
-  } catch (error) {
-    console.error('Failed to create article:', error);
-    alert('Failed to create article. Please try again.');
-  }
-};
-
-
-  const isStepValid = (step: number): boolean => {
+  const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return originalText.trim().length > 0 && 
-               originalText.split(/\s+/).filter(w => w.length > 0).length >= 20 &&
-               originalText.split(/\s+/).filter(w => w.length > 0).length <= 1500;
+        return formData.originalText.trim().length >= 20 && 
+               formData.originalText.trim().length <= 1500;
       case 2:
-        return fragments.length > 0;
+        return fragments.length > 0 && fragments.length <= 30;
       case 3:
-        return articleName.trim().length > 0 && title.trim().length > 0;
+        return formData.articleName.trim().length >= 3 && 
+               formData.title.trim().length >= 3;
       default:
         return false;
     }
   };
 
-  const canProceed = isStepValid(currentStep);
+  const handleNextStep = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 3));
+    }
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
+
+  const handleSubmit = async () => {
+    if (!validateStep(3) || fragments.length === 0) {
+      alert('Please complete all required fields and ensure you have fragments.');
+      return;
+    }
+
+    try {
+      // Prepare the payload according to the backend API structure
+      const payload: CreateArticleRequest = {
+        articleName: formData.articleName.trim(),
+        title: formData.title.trim(),
+        originalText: formData.originalText.trim(),
+        metadata: {
+          grade: formData.grade.trim() || undefined,
+          subject: formData.subject.trim() || undefined,
+          difficulty: formData.difficulty,
+          estimatedTime: Math.ceil(fragments.length * 1.5) // Rough estimate: 1.5 min per fragment
+        },
+        sentences: fragments.map((text, index) => ({
+          order: index + 1,
+          text: text.trim(),
+          wordCount: text.trim().split(/\s+/).filter(w => w.length > 0).length,
+          isLong: text.trim().split(/\s+/).filter(w => w.length > 0).length > 15
+        }))
+      };
+
+      console.log('Submitting article with payload:', payload);
+      
+      const result = await createArticleMutation.mutateAsync(payload);
+      
+      alert(`Article "${result.article.title}" created successfully!`);
+      
+      // Reset form
+      setFormData({
+        articleName: '',
+        title: '',
+        originalText: '',
+        grade: '',
+        subject: '',
+        difficulty: 'A1'
+      });
+      setFragments([]);
+      setFragmentEditor(null);
+      setCurrentStep(1);
+      navigate('/teacher/articles'); // Redirect to articles list
+      
+    } catch (error: any) {
+      console.error('Failed to create article:', error);
+      alert(`Failed to create article: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  const validation = validateFragments(fragments);
+  const wordCount = formData.originalText.trim().split(/\s+/).filter(w => w.length > 0).length;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Article</h1>
-        <p className="text-gray-600">Create a dictation exercise from your article</p>
-      </div>
-
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Create New Article</h1>
+      
       {/* Progress Steps */}
       <div className="mb-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center space-x-8">
           {[1, 2, 3].map((step) => (
             <div key={step} className="flex items-center">
               <div className={`
                 w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
-                ${currentStep === step 
+                ${currentStep >= step 
                   ? 'bg-blue-600 text-white' 
-                  : currentStep > step 
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }
+                  : 'bg-gray-200 text-gray-500'}
               `}>
-                {currentStep > step ? '?? : step}
+                {step}
               </div>
-              <div className="ml-3">
-                <div className={`text-sm font-medium ${
-                  currentStep >= step ? 'text-gray-900' : 'text-gray-500'
-                }`}>
-                  {step === 1 && 'Article Text'}
-                  {step === 2 && 'Review Fragments'}
-                  {step === 3 && 'Article Details'}
-                </div>
-                <div className="text-xs text-gray-500">
-                  {step === 1 && 'Enter your article content'}
-                  {step === 2 && 'Split and merge fragments'}
-                  {step === 3 && 'Name and metadata'}
-                </div>
-              </div>
+              <span className={`ml-2 text-sm ${currentStep >= step ? 'text-blue-600' : 'text-gray-500'}`}>
+                {step === 1 && 'Enter Text'}
+                {step === 2 && 'Review Fragments'}
+                {step === 3 && 'Article Details'}
+              </span>
               {step < 3 && (
-                <div className={`flex-1 h-px mx-4 ${
-                  currentStep > step ? 'bg-green-500' : 'bg-gray-200'
-                }`} />
+                <div className={`w-16 h-0.5 ml-4 ${currentStep > step ? 'bg-blue-600' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
@@ -4871,42 +5484,47 @@ const handleSubmit = async () => {
       </div>
 
       {/* Step Content */}
-      <div className="bg-white rounded-lg shadow border p-6 min-h-[500px]">
-        {/* Step 1: Article Text */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        
+        {/* Step 1: Text Input */}
         {currentStep === 1 && (
           <div className="space-y-6">
+            <h2 className="text-xl font-semibold">Step 1: Enter Article Text</h2>
+            
             <div>
-              <h3 className="text-xl font-semibold mb-4">Enter Article Text</h3>
-              <p className="text-gray-600 mb-6">
-                Paste or type your article content. The system will automatically split it into fragments 
-                that you can review and adjust in the next step.
-              </p>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Article Text *
+              </label>
+              <textarea
+                value={formData.originalText}
+                onChange={(e) => handleInputChange('originalText', e.target.value)}
+                className="w-full h-64 p-4 border border-gray-300 rounded-md resize-none
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Paste or type your article text here... (20-1500 words)"
+              />
+              <div className="flex justify-between text-sm text-gray-500 mt-2">
+                <span>
+                  {wordCount} words 
+                  {isGeneratingFragments && ' (Generating fragments...)'}
+                </span>
+                <span className={
+                  wordCount < 20 ? 'text-red-500' :
+                  wordCount > 1500 ? 'text-red-500' :
+                  'text-green-500'
+                }>
+                  {wordCount < 20 && 'Too short (minimum 20 words)'}
+                  {wordCount > 1500 && 'Too long (maximum 1500 words)'}
+                  {wordCount >= 20 && wordCount <= 1500 && 'Good length'}
+                </span>
+              </div>
             </div>
 
-            <TextInput
-              value={originalText}
-              onChange={setOriginalText}
-              placeholder="Paste your article text here. Minimum 20 words, maximum 1500 words..."
-            />
-
-            {originalText && (
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">Preview: Auto-Generated Fragments</h4>
-                <p className="text-sm text-blue-700 mb-3">
-                  {fragments.length} fragments will be created. You can fine-tune them in the next step.
+            {fragments.length > 0 && (
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-medium text-blue-900 mb-2">Fragment Preview</h3>
+                <p className="text-sm text-blue-700">
+                  Generated {fragments.length} fragments. Click "Next" to review and edit them.
                 </p>
-                {fragments.length > 0 && (
-                  <div className="text-xs text-blue-600 space-y-1 max-h-32 overflow-y-auto">
-                    {fragments.slice(0, 5).map((fragment, index) => (
-                      <div key={index} className="truncate">
-                        {index + 1}. {fragment}
-                      </div>
-                    ))}
-                    {fragments.length > 5 && (
-                      <div className="italic">... and {fragments.length - 5} more fragments</div>
-                    )}
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -4915,216 +5533,207 @@ const handleSubmit = async () => {
         {/* Step 2: Fragment Review */}
         {currentStep === 2 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Review and Edit Fragments</h3>
-              <p className="text-gray-600 mb-6">
-                Review the automatically generated fragments. You can split long fragments, 
-                merge short ones, or edit the text directly. Use the Split button to see split points 
-                between words.
-              </p>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Step 2: Review & Edit Fragments</h2>
+              
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={handleUndo}
+                  disabled={!fragmentEditor?.canUndo()}
+                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 
+                           disabled:opacity-50 disabled:cursor-not-allowed
+                           text-gray-700 rounded transition-colors"
+                >
+                  ??Undo
+                </button>
+                <button
+                  onClick={handleRedo}
+                  disabled={!fragmentEditor?.canRedo()}
+                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 
+                           disabled:opacity-50 disabled:cursor-not-allowed
+                           text-gray-700 rounded transition-colors"
+                >
+                  ??Redo
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 p-4 rounded-lg">
+              <h3 className="font-medium text-yellow-900 mb-2">Fragment Statistics</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-yellow-700">Total:</span>
+                  <span className="ml-1 font-medium">{validation.totalFragments}</span>
+                </div>
+                <div>
+                  <span className="text-yellow-700">Average words:</span>
+                  <span className="ml-1 font-medium">{validation.averageWordCount}</span>
+                </div>
+                <div>
+                  <span className="text-yellow-700">Too long:</span>
+                  <span className="ml-1 font-medium text-red-600">{validation.longFragments}</span>
+                </div>
+                <div>
+                  <span className="text-yellow-700">Too short:</span>
+                  <span className="ml-1 font-medium text-orange-600">{validation.shortFragments}</span>
+                </div>
+              </div>
             </div>
 
             <SentencePreview
               sentences={fragments}
+              articleName={formData.articleName || 'preview'}
+              showSentenceIds={false}
               editable={true}
-              onSentencesChange={setFragments}
-              originalText={originalText}
-              showSentenceIds={true}
+              onSplit={handleSplitFragment}
+              onMerge={handleMergeFragments}
+              onEdit={handleEditFragment}
             />
-
-            {fragments.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
-                <div className="text-4xl mb-4">??</div>
-                <p className="text-lg font-medium mb-2">No fragments to display</p>
-                <p>Go back to add article text first.</p>
-              </div>
-            )}
           </div>
         )}
 
         {/* Step 3: Article Details */}
         {currentStep === 3 && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Article Details</h3>
-              <p className="text-gray-600 mb-6">
-                Provide a name and metadata for your article. The article name will be used 
-                for identification and file naming.
-              </p>
-            </div>
-
+            <h2 className="text-xl font-semibold">Step 3: Article Details</h2>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Article Title *
-                  </label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Enter a descriptive title..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                    required
-                  />
-                </div>
-
-                <ArticleNameInput
-                  value={articleName}
-                  onChange={setArticleName}
-                  title={title}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Article Name * (URL-friendly)
+                </label>
+                <input
+                  type="text"
+                  value={formData.articleName}
+                  onChange={(e) => handleInputChange('articleName', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., climate-change-news-2024"
                 />
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    value={metadata.subject || ''}
-                    onChange={(e) => setMetadata({ ...metadata, subject: e.target.value })}
-                    placeholder="e.g., Science, History, Literature..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                  />
-                </div>
               </div>
 
-              {/* Right Column */}
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Grade Level
-                  </label>
-                  <select
-                    value={metadata.grade || ''}
-                    onChange={(e) => setMetadata({ ...metadata, grade: e.target.value })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                  >
-                    <option value="">Select grade level...</option>
-                    <option value="elementary">Elementary</option>
-                    <option value="middle">Middle School</option>
-                    <option value="high">High School</option>
-                    <option value="university">University</option>
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Article Title *
+                </label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., Climate Change Impact on Australia"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Difficulty Level *
-                  </label>
-                  <select
-                    value={metadata.difficulty || 'B1'}
-                    onChange={(e) => setMetadata({ 
-                      ...metadata, 
-                      difficulty: e.target.value as 'A1'|'A2'|'B1'|'B2'|'C1'|'C2' 
-                    })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                    required
-                  >
-                    <option value="A1">A1 (Beginner)</option>
-                    <option value="A2">A2 (Elementary)</option>
-                    <option value="B1">B1 (Intermediate)</option>
-                    <option value="B2">B2 (Upper-Intermediate)</option>
-                    <option value="C1">C1 (Advanced)</option>
-                    <option value="C2">C2 (Proficient)</option>
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Grade Level
+                </label>
+                <input
+                  type="text"
+                  value={formData.grade}
+                  onChange={(e) => handleInputChange('grade', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., Grade 9, University, Adult"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Estimated Time (minutes)
-                  </label>
-                  <input
-                    type="number"
-                    min="5"
-                    max="120"
-                    value={metadata.estimatedTime || ''}
-                    onChange={(e) => setMetadata({ 
-                      ...metadata, 
-                      estimatedTime: e.target.value ? parseInt(e.target.value) : undefined 
-                    })}
-                    placeholder="Leave blank for auto-calculation"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  value={formData.subject}
+                  onChange={(e) => handleInputChange('subject', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g., English, Science, History"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CEFR Difficulty Level *
+                </label>
+                <select
+                  value={formData.difficulty}
+                  onChange={(e) => handleInputChange('difficulty', e.target.value as any)}
+                  className="w-full p-3 border border-gray-300 rounded-md
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="A1">A1 - Beginner</option>
+                  <option value="A2">A2 - Elementary</option>
+                  <option value="B1">B1 - Intermediate</option>
+                  <option value="B2">B2 - Upper Intermediate</option>
+                  <option value="C1">C1 - Advanced</option>
+                  <option value="C2">C2 - Proficient</option>
+                </select>
               </div>
             </div>
 
-            {/* Summary */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-800 mb-3">Article Summary</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-600">Fragments:</span>
-                  <div className="font-medium">{fragments.length}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Words:</span>
-                  <div className="font-medium">{originalText.split(/\s+/).filter(w => w.length > 0).length}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Avg Words/Fragment:</span>
-                  <div className="font-medium">
-                    {fragments.length > 0 
-                      ? Math.round(originalText.split(/\s+/).filter(w => w.length > 0).length / fragments.length)
-                      : 0
-                    }
-                  </div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Est. Time:</span>
-                  <div className="font-medium">
-                    {metadata.estimatedTime || Math.ceil(originalText.split(/\s+/).filter(w => w.length > 0).length / 200)} min
-                  </div>
-                </div>
-              </div>
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-medium text-green-900 mb-2">Ready to Create</h3>
+              <p className="text-sm text-green-700">
+                Article with {fragments.length} fragments ready for creation. 
+                Estimated time: {Math.ceil(fragments.length * 1.5)} minutes.
+              </p>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center mt-8">
-        <div>
-          {currentStep > 1 && (
-            <button
-              onClick={handlePrevious}
-              className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              ??Previous
-            </button>
-          )}
-        </div>
-
-        <div className="flex items-center space-x-4">
-          {/* Validation Message */}
-          {!canProceed && (
-            <div className="text-sm text-red-600">
-              {currentStep === 1 && 'Please enter valid article text (20-1500 words)'}
-              {currentStep === 2 && 'No fragments available. Check your article text.'}
-              {currentStep === 3 && 'Please fill in required fields (title and article name)'}
-            </div>
-          )}
+        {/* Navigation */}
+        <div className="flex justify-between items-center mt-8 pt-6 border-t">
+          <button
+            onClick={handlePrevStep}
+            disabled={currentStep === 1}
+            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md
+                     hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed
+                     transition-colors"
+          >
+            Previous
+          </button>
 
           {currentStep < 3 ? (
             <button
-              onClick={handleNext}
-              disabled={!canProceed}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              onClick={handleNextStep}
+              disabled={!validateStep(currentStep)}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md
+                       hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-colors"
             >
-              Next ??
+              Next
             </button>
           ) : (
             <button
               onClick={handleSubmit}
-              disabled={!canProceed || createArticleMutation.isPending}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              disabled={!validateStep(3) || createArticleMutation.isPending}
+              className="px-6 py-2 bg-green-600 text-white rounded-md
+                       hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-colors flex items-center"
             >
-              {createArticleMutation.isPending ? 'Creating...' : 'Create Article'}
+              {createArticleMutation.isPending ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Creating...
+                </>
+              ) : (
+                'Create Article'
+              )}
             </button>
           )}
         </div>
+
+        {/* Error Display */}
+        {createArticleMutation.isError && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700 text-sm">
+              <strong>Error:</strong> {(createArticleMutation.error as Error)?.message || 'Failed to create article'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -5336,7 +5945,7 @@ const TeacherDashboard: React.FC = () => {
                   </Link>
                 </div>
               ) : (
-                recentArticles.map((article) => (
+                recentArticles.map((article:IArticle) => (
                   <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
@@ -5445,7 +6054,7 @@ const TeacherDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h4 className="text-sm font-medium text-blue-900 mb-2">?ÔøΩÔøΩ Pro Tips</h4>
+                  <h4 className="text-sm font-medium text-blue-900 mb-2">?í° Pro Tips</h4>
                   <ul className="text-xs text-blue-800 space-y-1">
                     <li>??Aim for 15-25 sentences per article</li>
                     <li>??Keep sentences under 15 words for clarity</li>
@@ -6411,11 +7020,11 @@ export default function ProtectedRoute() {
 
 C:\Users\User\Desktop\jink-demo\src\types\article.types.ts
 
-// src/types/article.types.ts
+// Complete article.types.ts with all missing types
 
-// Article interface - matches backend, NO id field
+// Core interfaces
 export interface IArticle {
-  articleName: string;          // Unique user-assigned identifier
+  articleName: string;  // Unique identifier
   title: string;
   originalText: string;
   teacherUsername: string;
@@ -6433,9 +7042,8 @@ export interface IArticle {
   updatedAt?: string;
 }
 
-// Sentence interface - NO id field, uses sentenceId
 export interface ISentence {
-  sentenceId: string;           // Generated: articleName + "_" + order
+  sentenceId: string;  // Generated: articleName_order
   order: number;
   text: string;
   wordCount: number;
@@ -6453,17 +7061,38 @@ export interface CreateArticleRequest {
   articleName: string;
   title: string;
   originalText: string;
-  metadata?: IArticle['metadata'];
-  sentences: Omit<ISentence, 'sentenceId'>[];
+  metadata: {
+    grade?: string;
+    subject?: string;
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    estimatedTime?: number;
+  };
+  // Sentences without sentenceId - backend will generate them
+  sentences: Array<{
+    order: number;
+    text: string;
+    wordCount: number;
+    isLong: boolean;
+  }>;
 }
 
 export interface UpdateArticleRequest {
   title?: string;
-  metadata?: IArticle['metadata'];
+  metadata?: {
+    grade?: string;
+    subject?: string;
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    estimatedTime?: number;
+  };
 }
 
 export interface UpdateSentencesRequest {
-  sentences: Omit<ISentence, 'sentenceId'>[];
+  sentences: Array<{
+    order: number;
+    text: string;
+    wordCount: number;
+    isLong: boolean;
+  }>;
 }
 
 export interface SuggestNameRequest {
@@ -6528,12 +7157,11 @@ export interface SentenceFormData {
   isLong: boolean;
 }
 
-
 export interface IArticleMetadata {
-grade?: string;
-subject?: string;
-difficulty: 'easy' | 'medium' | 'hard';
-estimatedTime?: number;
+  grade?: string;
+  subject?: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  estimatedTime?: number;
 }
 
 // Utility Types
@@ -6572,417 +7200,9 @@ export const isTokenValid = (): boolean => {
   }
 };
 
-C:\Users\User\Desktop\jink-demo\src\utils\sentenceFragmentSplitter copy.ts
-
-// // src/utils/sentenceFragmentSplitter.ts
-
-// export interface FragmentData {
-//   text: string;
-//   wordCount: number;
-//   isLong: boolean;
-//   isShort: boolean;
-//   isEmpty: boolean;
-//   canSplit: boolean; // Whether this fragment has potential split points
-// }
-
-// export interface SplitPoint {
-//   position: number;
-//   character: string;
-//   reason: string; // Why this is a good split point
-//   priority: 'high' | 'medium' | 'low';
-// }
-
-// export interface FragmentValidation {
-//   totalFragments: number;
-//   optimalRange: boolean; // 15-25 fragments
-//   longFragments: number; // >12 words
-//   shortFragments: number; // <4 words
-//   emptyFragments: number;
-//   averageWordCount: number;
-// }
-
-// /**
-//  * Split text into sentence fragments using intelligent breaking points
-//  * Focuses on meaningful chunks rather than complete sentences
-//  */
-// export const splitIntoSentenceFragments = (text: string): string[] => {
-//   if (!text || typeof text !== 'string') {
-//     return [];
-//   }
-
-//   // First, split by sentence endings to get complete sentences
-//   const sentences = text
-//     .replace(/\s+/g, ' ')
-//     .trim()
-//     .replace(/\b(Mr|Mrs|Ms|Dr|Prof|Inc|Ltd|etc|vs|e\.g|i\.e)\./gi, '$1<ABBREV>')
-//     .replace(/\d+\.\d+/g, (match) => match.replace('.', '<DECIMAL>'))
-//     .split(/[.!?]+\s+(?=[A-Z])|[.!?]+\s*$/)
-//     .map(sentence => 
-//       sentence
-//         .replace(/<ABBREV>/g, '.')
-//         .replace(/<DECIMAL>/g, '.')
-//         .trim()
-//     )
-//     .filter(sentence => sentence.length > 0);
-
-//   // Now break each sentence into fragments
-//   const fragments: string[] = [];
-  
-//   sentences.forEach(sentence => {
-//     const sentenceFragments = breakIntoFragments(sentence);
-//     fragments.push(...sentenceFragments);
-//   });
-
-//   return fragments.filter(fragment => fragment.trim().length > 0);
-// };
-
-// /**
-//  * Break a single sentence into logical fragments
-//  */
-// const breakIntoFragments = (sentence: string): string[] => {
-//   const words = sentence.split(/\s+/);
-  
-//   // If sentence is short enough, don't split
-//   if (words.length <= 12) {
-//     return [sentence];
-//   }
-
-//   // Find potential split points
-//   const splitPoints = findSplitPoints(sentence);
-  
-//   // If no good split points found, try to split at midpoint
-//   if (splitPoints.length === 0) {
-//     const midPoint = Math.floor(words.length / 2);
-//     const firstPart = words.slice(0, midPoint).join(' ');
-//     const secondPart = words.slice(midPoint).join(' ');
-//     return [firstPart, secondPart];
-//   }
-
-//   // Use the best split point
-//   const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
-//   const firstPart = sentence.substring(0, bestSplit.position).trim();
-//   const secondPart = sentence.substring(bestSplit.position).trim();
-
-//   // Recursively split if parts are still too long
-//   const fragments: string[] = [];
-  
-//   const firstFragments = firstPart.split(/\s+/).length > 12 ? breakIntoFragments(firstPart) : [firstPart];
-//   const secondFragments = secondPart.split(/\s+/).length > 12 ? breakIntoFragments(secondPart) : [secondPart];
-  
-//   fragments.push(...firstFragments, ...secondFragments);
-  
-//   return fragments.filter(f => f.trim().length > 0);
-// };
-
-// /**
-//  * Find potential split points in a sentence
-//  */
-// export const findSplitPoints = (text: string): SplitPoint[] => {
-//   const splitPoints: SplitPoint[] = [];
-  
-//   // High priority split points
-//   const highPriorityPatterns = [
-//     { regex: /,\s+(?:particularly|especially|specifically|including|such as|for example|however|meanwhile|furthermore|moreover|nevertheless|therefore|consequently|thus|hence)/gi, reason: 'Transitional phrase' },
-//     { regex: /,\s+(?:which|who|that|where|when|while|although|though|because|since|if|unless|until)/gi, reason: 'Relative/subordinate clause' },
-//     { regex: /;\s+/g, reason: 'Semicolon break' },
-//     { regex: /:\s+/g, reason: 'Colon break' }
-//   ];
-
-//   // Medium priority split points
-//   const mediumPriorityPatterns = [
-//     { regex: /,\s+(?:and|but|or|yet|so|for|nor)\s+/gi, reason: 'Coordinating conjunction' },
-//     { regex: /,\s+(?:during|after|before|while|since|until|when|where|as)\s+/gi, reason: 'Temporal/spatial clause' },
-//     { regex: /\s+(?:during|after|before|while|since|until|when|where|as)\s+/gi, reason: 'Clause beginning' }
-//   ];
-
-//   // Low priority split points
-//   const lowPriorityPatterns = [
-//     { regex: /,\s+/g, reason: 'Comma break' },
-//     { regex: /\s+(?:and|but|or)\s+/gi, reason: 'Simple conjunction' }
-//   ];
-
-//   // Find high priority splits
-//   highPriorityPatterns.forEach(pattern => {
-//     let match;
-//     while ((match = pattern.regex.exec(text)) !== null) {
-//       splitPoints.push({
-//         position: match.index + match[0].length,
-//         character: match[0],
-//         reason: pattern.reason,
-//         priority: 'high'
-//       });
-//     }
-//   });
-
-//   // Find medium priority splits (only if no high priority found)
-//   if (splitPoints.length === 0) {
-//     mediumPriorityPatterns.forEach(pattern => {
-//       let match;
-//       while ((match = pattern.regex.exec(text)) !== null) {
-//         splitPoints.push({
-//           position: match.index + match[0].length,
-//           character: match[0],
-//           reason: pattern.reason,
-//           priority: 'medium'
-//         });
-//       }
-//     });
-//   }
-
-//   // Find low priority splits (only if no others found)
-//   if (splitPoints.length === 0) {
-//     lowPriorityPatterns.forEach(pattern => {
-//       let match;
-//       while ((match = pattern.regex.exec(text)) !== null) {
-//         splitPoints.push({
-//           position: match.index + match[0].length,
-//           character: match[0],
-//           reason: pattern.reason,
-//           priority: 'low'
-//         });
-//       }
-//     });
-//   }
-
-//   // Sort by priority and position
-//   return splitPoints.sort((a, b) => {
-//     const priorityOrder = { high: 0, medium: 1, low: 2 };
-//     if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-//       return priorityOrder[a.priority] - priorityOrder[b.priority];
-//     }
-//     return a.position - b.position;
-//   });
-// };
-
-// /**
-//  * Validate individual fragment
-//  */
-// export const validateFragment = (fragment: string): FragmentData => {
-//   const text = fragment.trim();
-//   const words = text.split(/\s+/).filter(word => word.length > 0);
-//   const wordCount = words.length;
-
-//   return {
-//     text,
-//     wordCount,
-//     isLong: wordCount > 12,
-//     isShort: wordCount < 4 && wordCount > 0,
-//     isEmpty: text.length === 0,
-//     canSplit: findSplitPoints(text).length > 0
-//   };
-// };
-
-// /**
-//  * Validate entire article's fragment structure
-//  */
-// export const validateFragments = (fragments: string[]): FragmentValidation => {
-//   const fragmentData = fragments.map(validateFragment);
-//   const totalWords = fragmentData.reduce((sum, f) => sum + f.wordCount, 0);
-
-//   return {
-//     totalFragments: fragments.length,
-//     optimalRange: fragments.length >= 15 && fragments.length <= 25,
-//     longFragments: fragmentData.filter(f => f.isLong).length,
-//     shortFragments: fragmentData.filter(f => f.isShort).length,
-//     emptyFragments: fragmentData.filter(f => f.isEmpty).length,
-//     averageWordCount: totalWords > 0 ? Math.round(totalWords / fragments.length) : 0
-//   };
-// };
-
-// /**
-//  * Merge two consecutive fragments
-//  */
-// export const mergeFragments = (fragments: string[], index: number): string[] => {
-//   if (index < 0 || index >= fragments.length - 1) {
-//     return fragments;
-//   }
-
-//   const newFragments = [...fragments];
-//   const mergedText = `${fragments[index]} ${fragments[index + 1]}`;
-  
-//   newFragments.splice(index, 2, mergedText);
-//   return newFragments;
-// };
-
-// /**
-//  * Split a fragment at a specific position
-//  */
-// export const splitFragmentAt = (fragments: string[], fragmentIndex: number, splitPosition: number): string[] => {
-//   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) {
-//     return fragments;
-//   }
-
-//   const fragment = fragments[fragmentIndex];
-//   if (splitPosition <= 0 || splitPosition >= fragment.length) {
-//     return fragments;
-//   }
-
-//   const newFragments = [...fragments];
-//   let firstPart = fragment.substring(0, splitPosition).trim();
-//   let secondPart = fragment.substring(splitPosition).trim();
-
-//   // Clean up split - ensure proper spacing
-//   if (firstPart.endsWith(',') || firstPart.endsWith(';') || firstPart.endsWith(':')) {
-//     // Keep punctuation with first part
-//   } else if (secondPart.startsWith(',') || secondPart.startsWith(';') || secondPart.startsWith(':')) {
-//     // Move punctuation to first part
-//     firstPart += secondPart.charAt(0);
-//     secondPart = secondPart.substring(1).trim();
-//   }
-
-//   newFragments.splice(fragmentIndex, 1, firstPart, secondPart);
-//   return newFragments.filter(f => f.trim().length > 0);
-// };
-
-// /**
-//  * Smart split using detected split points
-//  */
-// export const smartSplitFragment = (fragments: string[], fragmentIndex: number): string[] => {
-//   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) {
-//     return fragments;
-//   }
-
-//   const fragment = fragments[fragmentIndex];
-//   const splitPoints = findSplitPoints(fragment);
-  
-//   if (splitPoints.length === 0) {
-//     // Fallback to middle split
-//     const middlePosition = Math.floor(fragment.length / 2);
-//     const splitAt = fragment.lastIndexOf(' ', middlePosition);
-//     return splitFragmentAt(fragments, fragmentIndex, splitAt > 0 ? splitAt : middlePosition);
-//   }
-
-//   // Use the best split point
-//   const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
-//   return splitFragmentAt(fragments, fragmentIndex, bestSplit.position);
-// };
-
-// /**
-//  * Undo/Redo functionality
-//  */
-// export interface FragmentHistory {
-//   fragments: string[];
-//   timestamp: number;
-//   action: string;
-// }
-
-// export class FragmentEditor {
-//   private history: FragmentHistory[] = [];
-//   private currentIndex: number = -1;
-//   private maxHistorySize: number = 50;
-
-//   constructor(initialFragments: string[]) {
-//     this.saveState(initialFragments, 'Initial');
-//   }
-
-//   private saveState(fragments: string[], action: string) {
-//     // Remove any future history if we're not at the end
-//     if (this.currentIndex < this.history.length - 1) {
-//       this.history = this.history.slice(0, this.currentIndex + 1);
-//     }
-
-//     // Add new state
-//     this.history.push({
-//       fragments: [...fragments],
-//       timestamp: Date.now(),
-//       action
-//     });
-
-//     // Limit history size
-//     if (this.history.length > this.maxHistorySize) {
-//       this.history = this.history.slice(-this.maxHistorySize);
-//     }
-
-//     this.currentIndex = this.history.length - 1;
-//   }
-
-//   merge(fragments: string[], index: number): string[] {
-//     const newFragments = mergeFragments(fragments, index);
-//     this.saveState(newFragments, `Merge fragments ${index} and ${index + 1}`);
-//     return newFragments;
-//   }
-
-//   split(fragments: string[], index: number, position?: number): string[] {
-//     const newFragments = position !== undefined 
-//       ? splitFragmentAt(fragments, index, position)
-//       : smartSplitFragment(fragments, index);
-//     this.saveState(newFragments, `Split fragment ${index}`);
-//     return newFragments;
-//   }
-
-//   edit(fragments: string[], index: number, newText: string): string[] {
-//     const newFragments = [...fragments];
-//     newFragments[index] = newText;
-//     this.saveState(newFragments, `Edit fragment ${index}`);
-//     return newFragments;
-//   }
-
-//   undo(): string[] | null {
-//     if (this.currentIndex <= 0) return null;
-//     this.currentIndex--;
-//     return [...this.history[this.currentIndex].fragments];
-//   }
-
-//   redo(): string[] | null {
-//     if (this.currentIndex >= this.history.length - 1) return null;
-//     this.currentIndex++;
-//     return [...this.history[this.currentIndex].fragments];
-//   }
-
-//   canUndo(): boolean {
-//     return this.currentIndex > 0;
-//   }
-
-//   canRedo(): boolean {
-//     return this.currentIndex < this.history.length - 1;
-//   }
-
-//   getCurrentState(): string[] {
-//     return this.currentIndex >= 0 ? [...this.history[this.currentIndex].fragments] : [];
-//   }
-
-//   getHistory(): FragmentHistory[] {
-//     return [...this.history];
-//   }
-// }
-
-// /**
-//  * Generate article statistics for teacher review
-//  */
-// export const getFragmentStats = (text: string) => {
-//   const fragments = splitIntoSentenceFragments(text);
-//   const validation = validateFragments(fragments);
-
-//   const characterCount = text.length;
-//   const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
-//   const estimatedReadingTime = Math.ceil(wordCount / 200);
-
-//   return {
-//     text: {
-//       characters: characterCount,
-//       words: wordCount,
-//       estimatedReadingTime
-//     },
-//     fragments: {
-//       count: fragments.length,
-//       validation,
-//       list: fragments.map(validateFragment)
-//     }
-//   };
-// };
-
-// // Maintain backward compatibility
-// export const splitIntoSentences = splitIntoSentenceFragments;
-// export const validateSentence = validateFragment;
-// export const validateArticle = validateFragments;
-// export const mergeSentences = mergeFragments;
-// export const splitSentence = splitFragmentAt;
-// export const getArticleStats = getFragmentStats;
-
 C:\Users\User\Desktop\jink-demo\src\utils\sentenceFragmentSplitter.ts
 
-// src/utils/sentenceFragmentSplitter.ts
-
+// Complete sentenceFragmentSplitter.ts with all missing exports
 export interface FragmentData {
   text: string;
   wordCount: number;
@@ -7001,182 +7221,153 @@ export interface SplitPoint {
 
 export interface FragmentValidation {
   totalFragments: number;
-  optimalRange: boolean; // 15??5
-  longFragments: number; // >20 words (increased tolerance)
-  shortFragments: number; // <3 words
+  optimalRange: boolean; // 15-25 fragments
+  longFragments: number; // >15 words
+  shortFragments: number; // <4 words
   emptyFragments: number;
   averageWordCount: number;
 }
 
-// Updated limits - more tolerant
-const MAX_RECURSION_DEPTH = 8;
-const MAX_WORDS_PER_FRAGMENT = 20; // Increased from 12
-const MIN_WORDS_PER_FRAGMENT = 2; // Decreased from 3
-const MIN_ARTICLE_WORDS = 20; // New minimum
-const MAX_ARTICLE_WORDS = 1500; // New maximum
+// Article stats interface for compatibility
+export interface ArticleStats {
+  text: {
+    characters: number;
+    words: number;
+    estimatedReadingTime: number;
+  };
+  fragments: {
+    count: number;
+    validation: FragmentValidation;
+    list: FragmentData[];
+  };
+}
+
+const MAX_WORDS_PER_FRAGMENT = 20;
+const MIN_WORDS_PER_FRAGMENT = 2;
+const OPTIMAL_WORDS_PER_FRAGMENT = 12;
+
+export const isOptimalLength = (fragment: string): boolean => {
+  const wordCount = fragment.split(/\s+/).filter(w => w.length > 0).length;
+  return wordCount >= (OPTIMAL_WORDS_PER_FRAGMENT - 3) && 
+         wordCount <= (OPTIMAL_WORDS_PER_FRAGMENT + 3);
+};
+
 
 /**
- * Split text into sentence fragments - simplified and punctuation-preserving
+ * Simple fragment splitter focusing ONLY on periods and commas
  */
 export const splitIntoSentenceFragments = (text: string): string[] => {
   if (!text || typeof text !== 'string') return [];
-
-  // Validate article length
-  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-  if (wordCount < MIN_ARTICLE_WORDS) {
-    throw new Error(`Article too short. Minimum ${MIN_ARTICLE_WORDS} words required.`);
-  }
-  if (wordCount > MAX_ARTICLE_WORDS) {
-    throw new Error(`Article too long. Maximum ${MAX_ARTICLE_WORDS} words allowed.`);
-  }
-
-  // First, split by sentence endings to get complete sentences
-  const sentences = splitBySentenceEndings(text);
+  
+  // Clean and normalize the text
+  const cleanText = text
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+    
+  if (!cleanText) return [];
+  
+  // Step 1: Split by sentence endings (periods followed by space and capital letter)
+  const sentences = cleanText
+    .split(/\.(?=\s+[A-Z])/) // Split on period followed by space and capital
+    .map(sentence => sentence.trim())
+    .filter(sentence => sentence.length > 0)
+    .map((sentence, index, array) => {
+      // Add back period if it was removed (except for last sentence if it already ends properly)
+      if (index < array.length - 1 && !sentence.endsWith('.')) {
+        return sentence + '.';
+      }
+      return sentence;
+    });
   
   const fragments: string[] = [];
+  
+  // Step 2: Process each sentence
   for (const sentence of sentences) {
-    const sentenceFragments = breakIntoFragments(sentence, 0);
-    fragments.push(...sentenceFragments);
-  }
-
-  return fragments.filter(f => f.trim().length > 0);
-};
-
-/**
- * Split by sentence endings while preserving exact punctuation and spacing
- */
-const splitBySentenceEndings = (text: string): string[] => {
-  const sentences: string[] = [];
-  let currentSentence = '';
-  let i = 0;
-  
-  while (i < text.length) {
-    const char = text[i];
-    currentSentence += char;
+    const words = sentence.split(/\s+/);
     
-    // Check for sentence endings
-    if (['.', '!', '?'].includes(char)) {
-      // Look ahead to see if this is really a sentence ending
-      let j = i + 1;
+    // If sentence is short enough, keep as single fragment
+    if (words.length <= MAX_WORDS_PER_FRAGMENT) {
+      fragments.push(sentence);
+      continue;
+    }
+    
+    // For long sentences, split by commas
+    const commaParts = sentence.split(/,(?=\s)/); // Split on comma followed by space
+    let currentFragment = '';
+    
+    for (let i = 0; i < commaParts.length; i++) {
+      const part = commaParts[i].trim();
+      if (!part) continue;
       
-      // Skip whitespace
-      while (j < text.length && /\s/.test(text[j])) {
-        currentSentence += text[j];
-        j++;
-      }
+      // Add comma back (except for last part)
+      const partWithComma = (i < commaParts.length - 1 && !part.endsWith(',')) 
+        ? part + ',' 
+        : part;
       
-      // If next char is uppercase or end of text, this is likely a sentence ending
-      if (j >= text.length || /[A-Z]/.test(text[j])) {
-        sentences.push(currentSentence.trim());
-        currentSentence = '';
-        i = j;
-        continue;
+      const testFragment = currentFragment 
+        ? `${currentFragment} ${partWithComma}` 
+        : partWithComma;
+      
+      const testWords = testFragment.split(/\s+/).length;
+      
+      // If adding this part exceeds limit, save current and start new
+      if (testWords > MAX_WORDS_PER_FRAGMENT && currentFragment) {
+        fragments.push(currentFragment);
+        currentFragment = partWithComma;
+      } else {
+        currentFragment = testFragment;
       }
     }
     
-    i++;
-  }
-  
-  // Add any remaining text
-  if (currentSentence.trim()) {
-    sentences.push(currentSentence.trim());
-  }
-  
-  return sentences.filter(s => s.length > 0);
-};
-
-/**
- * Break a single sentence into fragments - simplified rules
- */
-const breakIntoFragments = (sentence: string, depth: number): string[] => {
-  if (depth >= MAX_RECURSION_DEPTH) return [sentence];
-
-  const trimmed = sentence.trim();
-  if (!trimmed) return [];
-
-  const words = trimmed.split(/\s+/);
-  if (words.length <= MAX_WORDS_PER_FRAGMENT) return [trimmed];
-
-  // Find split points - SIMPLIFIED: only commas and periods
-  const splitPoints = findSimpleSplitPoints(trimmed);
-
-  // Choose best split position
-  let splitPos: number | null = null;
-  if (splitPoints.length > 0) {
-    // Prefer splits closer to the middle
-    const middle = Math.floor(trimmed.length / 2);
-    splitPoints.sort((a, b) => 
-      Math.abs(a.position - middle) - Math.abs(b.position - middle)
-    );
-    splitPos = splitPoints[0].position;
-  } else {
-    // Fallback: find middle word boundary
-    const middleWordIndex = Math.floor(words.length / 2);
-    let charCount = 0;
-    for (let i = 0; i < middleWordIndex; i++) {
-      charCount += words[i].length;
-      if (i < middleWordIndex - 1) charCount += 1; // space
+    // Don't forget the last fragment
+    if (currentFragment) {
+      fragments.push(currentFragment);
     }
-    splitPos = charCount;
   }
-
-  if (splitPos === null || splitPos <= 1 || splitPos >= trimmed.length - 1) {
-    return [trimmed];
-  }
-
-  // Split while preserving exact spacing and punctuation
-  const first = trimmed.substring(0, splitPos).trim();
-  const second = trimmed.substring(splitPos).trim();
-
-  if (!first || !second) return [trimmed];
-  if (first === trimmed || second === trimmed) return [trimmed];
-
-  // Recurse only if still too long
-  const firstWords = first.split(/\s+/).length;
-  const secondWords = second.split(/\s+/).length;
   
-  const leftFragments = firstWords > MAX_WORDS_PER_FRAGMENT 
-    ? breakIntoFragments(first, depth + 1) 
-    : [first];
-    
-  const rightFragments = secondWords > MAX_WORDS_PER_FRAGMENT 
-    ? breakIntoFragments(second, depth + 1) 
-    : [second];
-
-  return [...leftFragments, ...rightFragments];
+  return fragments.filter(fragment => fragment.trim().length > 0);
 };
 
 /**
- * Find split points - SIMPLIFIED: only commas and periods
+ * Find split points in text - simplified to focus on periods and commas only
  */
-export const findSimpleSplitPoints = (text: string): SplitPoint[] => {
+export const findSplitPoints = (text: string): SplitPoint[] => {
   const points: SplitPoint[] = [];
   
-  // High priority: periods followed by space (but not sentence ending)
-  const periodRegex = /\.\s+(?![A-Z])/g;
+  // Find periods followed by space and capital letter
+  const periodRegex = /\.(?=\s+[A-Z])/g;
   let match;
   while ((match = periodRegex.exec(text)) !== null) {
     points.push({
-      position: match.index + match[0].length,
-      character: match[0],
-      reason: 'Period break',
+      position: match.index + 1, // After the period
+      character: '. ',
+      reason: 'Sentence boundary',
       priority: 'high'
     });
   }
   
-  // Medium priority: commas followed by space
-  const commaRegex = /,\s+/g;
+  // Find commas followed by space (but not within parentheses or quotes)
+  const commaRegex = /,(?=\s+[a-zA-Z])/g;
   while ((match = commaRegex.exec(text)) !== null) {
-    points.push({
-      position: match.index + match[0].length,
-      character: match[0],
-      reason: 'Comma break',
-      priority: 'medium'
-    });
+    // Simple check to avoid splitting within parentheses
+    const beforeText = text.substring(0, match.index);
+    const openParens = (beforeText.match(/\(/g) || []).length;
+    const closeParens = (beforeText.match(/\)/g) || []).length;
+    
+    // Only split if we're not inside parentheses
+    if (openParens === closeParens) {
+      points.push({
+        position: match.index + 1, // After the comma
+        character: ', ',
+        reason: 'Comma break',
+        priority: 'medium'
+      });
+    }
   }
   
+  // Sort by priority and position
   return points.sort((a, b) => {
-    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
     if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     }
@@ -7185,126 +7376,98 @@ export const findSimpleSplitPoints = (text: string): SplitPoint[] => {
 };
 
 /**
- * Find ALL possible split points for manual splitting UI
+ * Split fragment at exact position
  */
-export const findAllSplitPoints = (text: string): Array<{position: number; word: string; reason: string}> => {
-  const points: Array<{position: number; word: string; reason: string}> = [];
-  const words = text.split(/(\s+)/); // Include spaces
-  
-  let position = 0;
-  for (let i = 0; i < words.length; i += 2) { // Skip spaces (odd indices)
-    if (i > 0) {
-      points.push({
-        position: position,
-        word: words[i],
-        reason: `Split before "${words[i]}"`
-      });
-    }
-    position += words[i].length;
-    if (i + 1 < words.length) {
-      position += words[i + 1].length; // Add space length
-    }
-  }
-  
-  return points;
-};
-
-/**
- * Split fragment at exact character position
- */
-export const splitFragmentAt = (fragments: string[], fragmentIndex: number, splitPosition: number): string[] => {
+export const splitFragmentAt = (
+  fragments: string[], 
+  fragmentIndex: number, 
+  splitPosition: number
+): string[] => {
   if (fragmentIndex < 0 || fragmentIndex >= fragments.length) return fragments;
-
+  
   const fragment = fragments[fragmentIndex];
   if (splitPosition <= 0 || splitPosition >= fragment.length) return fragments;
-
-  // Find the exact word boundary near the split position
-  let actualSplit = splitPosition;
   
-  // If we're in the middle of a word, move to the nearest word boundary
-  if (fragment[actualSplit] !== ' ') {
-    // Look backwards for space
-    let backPos = actualSplit;
-    while (backPos > 0 && fragment[backPos] !== ' ') {
-      backPos--;
-    }
-    
-    // Look forwards for space
-    let frontPos = actualSplit;
-    while (frontPos < fragment.length && fragment[frontPos] !== ' ') {
-      frontPos++;
-    }
-    
-    // Choose the closer boundary
-    const backDist = actualSplit - backPos;
-    const frontDist = frontPos - actualSplit;
-    actualSplit = backDist <= frontDist ? backPos : frontPos;
-  }
-
-  const first = fragment.substring(0, actualSplit).trim();
-  const second = fragment.substring(actualSplit).trim();
-
+  const first = fragment.substring(0, splitPosition).trim();
+  const second = fragment.substring(splitPosition).trim();
+  
   if (!first || !second) return fragments;
-
+  
   const result = [...fragments];
   result.splice(fragmentIndex, 1, first, second);
   return result;
 };
 
 /**
- * Merge fragments while preserving exact spacing
+ * Merge two consecutive fragments
  */
 export const mergeFragments = (fragments: string[], index: number): string[] => {
   if (index < 0 || index >= fragments.length - 1) return fragments;
   
-  // Merge with single space (teachers can adjust spacing manually if needed)
   const merged = `${fragments[index]} ${fragments[index + 1]}`;
-  
   const result = [...fragments];
   result.splice(index, 2, merged);
   return result;
 };
 
 /**
- * Validate that merged fragments recreate original text
+ * Validate individual fragment
  */
-export const validateFragmentMerge = (fragments: string[], originalText: string): boolean => {
-  const merged = fragments.join(' ').replace(/\s+/g, ' ').trim();
-  const normalized = originalText.replace(/\s+/g, ' ').trim();
-  return merged === normalized;
-};
-
-// Rest of the validation and stats functions...
 export const validateFragment = (fragment: string): FragmentData => {
   const text = fragment.trim();
-  const words = text.split(/\s+/).filter(w => w.length > 0);
+  const words = text.split(/\s+/).filter(word => word.length > 0);
   const wordCount = words.length;
-
+  
   return {
     text,
     wordCount,
     isLong: wordCount > MAX_WORDS_PER_FRAGMENT,
     isShort: wordCount < MIN_WORDS_PER_FRAGMENT && wordCount > 0,
     isEmpty: text.length === 0,
-    canSplit: findAllSplitPoints(text).length > 1
+    canSplit: findSplitPoints(text).length > 0
   };
 };
 
+/**
+ * Validate entire fragments array
+ */
 export const validateFragments = (fragments: string[]): FragmentValidation => {
-  const data = fragments.map(validateFragment);
-  const totalWords = data.reduce((sum, f) => sum + f.wordCount, 0);
-
+  const fragmentData = fragments.map(validateFragment);
+  const totalWords = fragmentData.reduce((sum, f) => sum + f.wordCount, 0);
+  
   return {
     totalFragments: fragments.length,
     optimalRange: fragments.length >= 15 && fragments.length <= 25,
-    longFragments: data.filter(f => f.isLong).length,
-    shortFragments: data.filter(f => f.isShort).length,
-    emptyFragments: data.filter(f => f.isEmpty).length,
+    longFragments: fragmentData.filter(f => f.isLong).length,
+    shortFragments: fragmentData.filter(f => f.isShort).length,
+    emptyFragments: fragmentData.filter(f => f.isEmpty).length,
     averageWordCount: totalWords > 0 ? Math.round(totalWords / fragments.length) : 0
   };
 };
 
-// History and editor classes remain the same...
+/**
+ * Smart split using detected split points
+ */
+export const smartSplitFragment = (fragments: string[], fragmentIndex: number): string[] => {
+  if (fragmentIndex < 0 || fragmentIndex >= fragments.length) return fragments;
+  
+  const fragment = fragments[fragmentIndex];
+  const splitPoints = findSplitPoints(fragment);
+  
+  if (splitPoints.length === 0) {
+    // Fallback: split at middle word boundary
+    const words = fragment.split(/\s+/);
+    const middleIndex = Math.floor(words.length / 2);
+    const middlePosition = words.slice(0, middleIndex).join(' ').length + 1;
+    return splitFragmentAt(fragments, fragmentIndex, middlePosition);
+  }
+  
+  // Use the first high-priority split point
+  const bestSplit = splitPoints.find(sp => sp.priority === 'high') || splitPoints[0];
+  return splitFragmentAt(fragments, fragmentIndex, bestSplit.position);
+};
+
+// Fragment Editor with History
 export interface FragmentHistory {
   fragments: string[];
   timestamp: number;
@@ -7317,30 +7480,46 @@ export class FragmentEditor {
   private maxHistorySize = 50;
 
   constructor(initialFragments: string[]) {
-    this.saveState(initialFragments, 'Initial');
+    this.saveState([...initialFragments], 'Initial');
   }
 
-  private saveState(fragments: string[], action: string) {
+  private saveState(fragments: string[], action: string): void {
     if (this.currentIndex < this.history.length - 1) {
       this.history = this.history.slice(0, this.currentIndex + 1);
     }
-    this.history.push({ fragments: [...fragments], timestamp: Date.now(), action });
+
+    this.history.push({
+      fragments: [...fragments],
+      timestamp: Date.now(),
+      action
+    });
+
     if (this.history.length > this.maxHistorySize) {
       this.history = this.history.slice(-this.maxHistorySize);
     }
+
     this.currentIndex = this.history.length - 1;
   }
 
   merge(fragments: string[], index: number): string[] {
     const result = mergeFragments(fragments, index);
-    this.saveState(result, `Merge fragments ${index} & ${index + 1}`);
+    this.saveState(result, `Merge fragments ${index} and ${index + 1}`);
     return result;
   }
 
-  split(fragments: string[], index: number, position: number): string[] {
-    const result = splitFragmentAt(fragments, index, position);
-    this.saveState(result, `Split fragment ${index} at position ${position}`);
-    return result;
+  split(fragments: string[], index: number, position?: number): string[] {
+    const newFragments = position !== undefined 
+      ? splitFragmentAt(fragments, index, position)
+      : smartSplitFragment(fragments, index);
+    this.saveState(newFragments, `Split fragment ${index}`);
+    return newFragments;
+  }
+
+  edit(fragments: string[], index: number, newText: string): string[] {
+    const newFragments = [...fragments];
+    newFragments[index] = newText;
+    this.saveState(newFragments, `Edit fragment ${index}`);
+    return newFragments;
   }
 
   undo(): string[] | null {
@@ -7368,16 +7547,45 @@ export class FragmentEditor {
   }
 }
 
-// Stats function
-export const getFragmentStats = (text: string) => {
+// MISSING EXPORTS - Adding these functions that are needed by other components
+
+/**
+ * Validate article name format
+ */
+export const validateArticleName = (name: string): boolean => {
+  const regex = /^[a-zA-Z0-9-_]{3,50}$/;
+  return regex.test(name);
+};
+
+/**
+ * Suggest article name from title
+ */
+export const suggestArticleNameFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special chars except hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .substring(0, 40) // Limit length
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+};
+
+/**
+ * Get fragment statistics for TextInput component
+ */
+export const getFragmentStats = (text: string): ArticleStats => {
   const fragments = splitIntoSentenceFragments(text);
   const validation = validateFragments(fragments);
-  const characters = text.length;
-  const words = text.split(/\s+/).filter(w => w.length > 0).length;
-  const estimatedReadingTime = Math.ceil(words / 200);
+  const characterCount = text.length;
+  const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+  const estimatedReadingTime = Math.ceil(wordCount / 200); // Average reading speed
 
   return {
-    text: { characters, words, estimatedReadingTime },
+    text: {
+      characters: characterCount,
+      words: wordCount,
+      estimatedReadingTime
+    },
     fragments: {
       count: fragments.length,
       validation,
@@ -7386,28 +7594,12 @@ export const getFragmentStats = (text: string) => {
   };
 };
 
-// Backward compatibility
+// Backward compatibility exports
 export const splitIntoSentences = splitIntoSentenceFragments;
 export const validateSentence = validateFragment;
 export const validateArticle = validateFragments;
 export const mergeSentences = mergeFragments;
 export const splitSentence = splitFragmentAt;
-export const getArticleStats = getFragmentStats;
-
-// Name validation helpers
-export const validateArticleName = (name: string): boolean => {
-  const regex = /^[a-zA-Z0-9_\-\(\)]{3,50}$/;
-  return regex.test(name);
-};
-
-export const suggestArticleNameFromTitle = (title: string): string => {
-  return title
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9_\-]/g, '_')
-    .replace(/_{2,}/g, '_')
-    .replace(/^_|_$/g, '')
-    .substring(0, 40);
-};
 
 C:\Users\User\Desktop\jink-demo\src\utils\sentenceSplitter.ts
 
@@ -7738,7 +7930,7 @@ import { useLocation } from 'react-router-dom';
 
 
 import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
-
+import ArticleEdit from './pages/teacher/ArticleEdit';
 
 
 function App() {
@@ -7780,7 +7972,7 @@ function App() {
           <Route path="/teacher/articles" element={<ArticleList />} />
           <Route path="/teacher/articles/create" element={<ArticleUpload />} />
           <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
-          <Route path="/teacher/articles/:articleName/edit" element={<ArticleUpload />} />
+          <Route path="/teacher/articles/:articleName/edit" element={<ArticleEdit />} />
         </Route>
 
         {/* Student routes */}

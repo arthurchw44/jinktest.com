@@ -1,0 +1,6 @@
+
+git --version
+git remote add origin https://github.com/arthurchw44/jinkapiserver.com.git
+git push -u origin main
+git commit -m "Your descriptive commit message here"
+git add .
