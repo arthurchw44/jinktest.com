@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
 import  SentencePreview  from '../../components/articles/SentencePreview';
 import type { IArticle, ISentence } from '../../types/article.types';
+import type { FragmentTiming } from '../../types/article.types';
 
 const ArticleDetail: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
@@ -12,6 +13,19 @@ const ArticleDetail: React.FC = () => {
   const deleteArticleMutation = useDeleteArticle();
   
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+
+  const convertSentencesToFragmentTiming = (sentences: ISentence[]): FragmentTiming[] => {
+    return sentences.map((sentence, index) => ({
+      fragmentIndex: index,
+      order: sentence.order,
+      text: sentence.text,
+      startTime: sentence.startTime || 0,
+      endTime: sentence.endTime || 0,
+      duration: (sentence.endTime || 0) - (sentence.startTime || 0),
+      wordCount: sentence.wordCount
+    }));
+  };
 
   const handleDelete = async () => {
     if (!article) return;

@@ -27,8 +27,12 @@ api.interceptors.response.use(
       clearAuthToken();
       window.location.href = '/login';
     }
+    
     return Promise.reject(error);
   }
 );
+
+
+
 
 export default api;

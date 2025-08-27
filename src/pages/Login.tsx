@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,14 +9,13 @@ export default function Login() {
   const { login, user } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  useEffect(() => { 
+            
+            if (!user) 
+              return; 
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-          await login(username, password);
-          if(user)
-            {
-              switch(user.role) {
+            switch (user.role) 
+            { 
                 case "admin":
                   navigate("/admin");
                   break;
@@ -28,8 +27,18 @@ export default function Login() {
                   break;
                 default:
                   navigate("/login");
-              }
-            }
+            } 
+        
+        
+        }, [user]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+          await login(username, password);
+
+
+
 
     } catch (err: any) {
       setError(err?.response?.data?.message ?? 'Login failed');

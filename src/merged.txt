@@ -302,15 +302,43 @@ api.interceptors.response.use(
       clearAuthToken();
       window.location.href = '/login';
     }
+    
     return Promise.reject(error);
   }
 );
+
+
+
 
 export default api;
 
 C:\Users\User\Desktop\jink-demo\src\assets\react.svg
 
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+
+C:\Users\User\Desktop\jink-demo\src\components\articles\tests\ArticleNameInput.test.tsx
+
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ArticleNameInput } from '../ArticleNameInput';
+import { describe, test, expect, vi } from 'vitest';
+
+console.log('ENV', typeof window, typeof document, typeof navigator);
+
+describe('ArticleNameInput', () => {
+  test('shows validation message for short name', () => {
+    const onChange = vi.fn();
+    render(<ArticleNameInput value="ab" onChange={onChange} />);
+    expect(screen.getByText(/at least 3 characters/i)).toBeInTheDocument();
+  });
+
+  test('calls onChange when typing', () => {
+    const onChange = vi.fn();
+    render(<ArticleNameInput value="" onChange={onChange} />);
+    const input = screen.getByPlaceholderText(/enter unique article identifier/i);
+    fireEvent.change(input, { target: { value: 'climate-2025' } });
+    expect(onChange).toHaveBeenCalledWith('climate-2025');
+  });
+});
 
 C:\Users\User\Desktop\jink-demo\src\components\articles\ArticleNameInput.tsx
 
@@ -1485,6 +1513,789 @@ export const RoleBasedComponent: React.FC<RoleBasedComponentProps> = ({
 
   return <>{children}</>;
 };
+
+C:\Users\User\Desktop\jink-demo\src\components\dictation\FragmentDictation.tsx
+
+
+// src/components/dictation/FragmentDictation.tsx
+
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFragmentAudioPlayer } from '../../hooks/useFragmentAudioPlayer';
+import type { FragmentTiming } from '../../hooks/useFragmentAudioPlayer';
+import { compareTexts, isAnswerAcceptable } from '../../utils/dictationUtils';
+import type { ComparisonResult } from '../../types/article.types';
+
+export interface DictationAttempt {
+  attempt: string;
+  result: ComparisonResult;
+  timestamp: Date;
+}
+
+export interface FragmentProgress {
+  fragmentIndex: number;
+  attempts: DictationAttempt[];
+  status: 'pending' | 'correct' | 'given_up';
+  bestScore: number;
+  timeSpent: number; // seconds
+}
+
+export interface DictationSession {
+  articleName: string;
+  fragments: FragmentTiming[];
+  progress: FragmentProgress[];
+  currentFragmentIndex: number;
+  startTime: Date;
+  completedFragments: number;
+  totalScore: number;
+}
+
+interface FragmentDictationProps {
+  articleName: string;
+  articleTitle: string;
+  fullAudioUrl: string;
+  fragments: FragmentTiming[];
+  onSessionComplete?: (session: DictationSession) => void;
+  onProgressUpdate?: (progress: FragmentProgress[]) => void;
+  showText?: boolean;
+  allowGiveUp?: boolean;
+}
+
+const FragmentDictation: React.FC<FragmentDictationProps> = ({
+  articleName,
+  articleTitle,
+  fullAudioUrl,
+  fragments,
+  onSessionComplete,
+  onProgressUpdate,
+  showText = false,
+  allowGiveUp = true
+}) => {
+  const { state: audioState, controls: audioControls } = useFragmentAudioPlayer(
+    fullAudioUrl,
+    fragments,
+    true // autoStopAtFragmentEnd
+  );
+
+  // Session state
+  const [session, setSession] = useState<DictationSession>(() => ({
+    articleName,
+    fragments,
+    progress: fragments.map((_fragment, index) => ({
+      fragmentIndex: index,
+      attempts: [],
+      status: 'pending',
+      bestScore: 0,
+      timeSpent: 0
+    })),
+    currentFragmentIndex: 0,
+    startTime: new Date(),
+    completedFragments: 0,
+    totalScore: 0
+  }));
+
+  // Current fragment state
+  const [currentInput, setCurrentInput] = useState('');
+  const [lastComparison, setLastComparison] = useState<ComparisonResult | null>(null);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [fragmentStartTime, setFragmentStartTime] = useState<Date | null>(null);
+
+  const currentFragment = fragments[session.currentFragmentIndex];
+  const currentProgress = session.progress[session.currentFragmentIndex];
+  const isLastFragment = session.currentFragmentIndex === fragments.length - 1;
+  const canProceed = currentProgress.status === 'correct' || currentProgress.status === 'given_up';
+
+  // Auto-start timing when fragment changes
+  useEffect(() => {
+    setFragmentStartTime(new Date());
+    setCurrentInput('');
+    setLastComparison(null);
+    setShowAnswer(false);
+  }, [session.currentFragmentIndex]);
+
+  // Audio controls
+  const handlePlayFragment = useCallback(() => {
+    audioControls.seekToFragment(session.currentFragmentIndex);
+    audioControls.play();
+  }, [audioControls, session.currentFragmentIndex]);
+
+  const handleReplayFragment = useCallback(() => {
+    audioControls.replayCurrentFragment();
+  }, [audioControls]);
+
+  const handlePlaybackRateChange = useCallback((rate: number) => {
+    audioControls.setPlaybackRate(rate);
+  }, [audioControls]);
+
+  // Dictation logic
+  const handleConfirm = useCallback(() => {
+    if (!currentInput.trim() || !currentFragment) return;
+
+    const result = compareTexts(currentFragment.text, currentInput.trim());
+    const attempt: DictationAttempt = {
+      attempt: currentInput.trim(),
+      result,
+      timestamp: new Date()
+    };
+
+    // Calculate time spent on this fragment
+    const timeSpent = fragmentStartTime 
+      ? Math.round((Date.now() - fragmentStartTime.getTime()) / 1000)
+      : 0;
+
+    setSession(prev => {
+      const newProgress = [...prev.progress];
+      const fragmentProgress = newProgress[session.currentFragmentIndex];
+      
+      fragmentProgress.attempts.push(attempt);
+      fragmentProgress.bestScore = Math.max(fragmentProgress.bestScore, result.score);
+      fragmentProgress.timeSpent += timeSpent;
+
+      if (isAnswerAcceptable(result)) {
+        fragmentProgress.status = 'correct';
+      }
+
+      const completedFragments = newProgress.filter(p => p.status !== 'pending').length;
+      const totalScore = newProgress.reduce((sum, p) => sum + p.bestScore, 0) / newProgress.length;
+
+      const updatedSession = {
+        ...prev,
+        progress: newProgress,
+        completedFragments,
+        totalScore
+      };
+
+      // Notify parent of progress update
+      onProgressUpdate?.(newProgress);
+
+      return updatedSession;
+    });
+
+    setLastComparison(result);
+    setFragmentStartTime(new Date()); // Reset timer for potential retry
+  }, [currentInput, currentFragment, fragmentStartTime, session.currentFragmentIndex, onProgressUpdate]);
+
+  const handleGiveUp = useCallback(() => {
+    if (!allowGiveUp || !currentFragment) return;
+
+    // Calculate time spent
+    const timeSpent = fragmentStartTime 
+      ? Math.round((Date.now() - fragmentStartTime.getTime()) / 1000)
+      : 0;
+
+    setSession(prev => {
+      const newProgress = [...prev.progress];
+      const fragmentProgress = newProgress[session.currentFragmentIndex];
+      
+      fragmentProgress.status = 'given_up';
+      fragmentProgress.timeSpent += timeSpent;
+
+      const completedFragments = newProgress.filter(p => p.status !== 'pending').length;
+      const totalScore = newProgress.reduce((sum, p) => sum + p.bestScore, 0) / newProgress.length;
+
+      const updatedSession = {
+        ...prev,
+        progress: newProgress,
+        completedFragments,
+        totalScore
+      };
+
+      onProgressUpdate?.(newProgress);
+      return updatedSession;
+    });
+
+    setShowAnswer(true);
+    setLastComparison(null);
+  }, [allowGiveUp, currentFragment, fragmentStartTime, session.currentFragmentIndex, onProgressUpdate]);
+
+  const handleNext = useCallback(() => {
+    if (!canProceed) return;
+
+    if (isLastFragment) {
+      // Session complete
+      onSessionComplete?.(session);
+    } else {
+      setSession(prev => ({
+        ...prev,
+        currentFragmentIndex: prev.currentFragmentIndex + 1
+      }));
+    }
+  }, [canProceed, isLastFragment, session, onSessionComplete]);
+
+  const handlePrevious = useCallback(() => {
+    if (session.currentFragmentIndex > 0) {
+      setSession(prev => ({
+        ...prev,
+        currentFragmentIndex: prev.currentFragmentIndex - 1
+      }));
+    }
+  }, [session.currentFragmentIndex]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement) {
+        // Allow normal typing in input fields
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          handleConfirm();
+        }
+        return;
+      }
+
+      switch (e.key) {
+        case ' ':
+          e.preventDefault();
+          audioControls.togglePlayback();
+          break;
+        case 'r':
+          e.preventDefault();
+          handleReplayFragment();
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (canProceed) {
+            handleNext();
+          } else {
+            handleConfirm();
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [audioControls, handleConfirm, handleNext, handleReplayFragment, canProceed]);
+
+  if (!currentFragment) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">No fragments available</h2>
+          <p className="text-gray-600">Please check the article configuration.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="text-center border-b pb-4">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">{articleTitle}</h1>
+        <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+          <span>Fragment {session.currentFragmentIndex + 1} of {fragments.length}</span>
+          <span>??/span>
+          <span>{session.completedFragments} completed</span>
+          <span>??/span>
+          <span>Score: {Math.round(session.totalScore * 100)}%</span>
+        </div>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="w-full bg-gray-200 rounded-full h-2">
+        <div 
+          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+          style={{ width: `${(session.completedFragments / fragments.length) * 100}%` }}
+        />
+      </div>
+
+      {/* Audio Controls */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-lg font-semibold mb-4">Audio Controls</h2>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <button
+            onClick={handlePlayFragment}
+            disabled={audioState.isLoading || !audioState.canPlay}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+          >
+            {audioState.isPlaying ? '?¸ï?' : '?¶ï?'} Play Fragment
+          </button>
+          
+          <button
+            onClick={handleReplayFragment}
+            disabled={audioState.isLoading || !audioState.canPlay}
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            ?? Replay
+          </button>
+
+          <div className="flex items-center space-x-2">
+            <label className="text-sm text-gray-700">Speed:</label>
+            <input
+              type="range"
+              min="0.5"
+              max="1.5"
+              step="0.1"
+              value={audioState.playbackRate}
+              onChange={(e) => handlePlaybackRateChange(Number(e.target.value))}
+              className="w-20"
+            />
+            <span className="text-sm text-gray-600">{audioState.playbackRate}x</span>
+          </div>
+        </div>
+
+        {audioState.error && (
+          <div className="text-red-600 text-sm bg-red-50 p-2 rounded">
+            Error: {audioState.error}
+          </div>
+        )}
+      </div>
+
+      {/* Text Display (Optional) */}
+      {showText && !showAnswer && (
+        <div className="bg-gray-50 rounded-lg p-4">
+          <p className="text-gray-800 text-center italic">"{currentFragment.text}"</p>
+        </div>
+      )}
+
+      {/* Input Section */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-lg font-semibold mb-4">Your Answer</h2>
+        
+        <div className="space-y-4">
+          <textarea
+            value={currentInput}
+            onChange={(e) => setCurrentInput(e.target.value)}
+            placeholder="Type what you heard..."
+            disabled={canProceed}
+            className="w-full h-24 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+          />
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleConfirm}
+              disabled={!currentInput.trim() || canProceed}
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Confirm Answer
+            </button>
+
+            {allowGiveUp && (
+              <button
+                onClick={handleGiveUp}
+                disabled={canProceed}
+                className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Show Answer
+              </button>
+            )}
+          </div>
+
+          {/* Attempt Count */}
+          {currentProgress.attempts.length > 0 && (
+            <div className="text-sm text-gray-600">
+              Attempts: {currentProgress.attempts.length}
+              {currentProgress.bestScore > 0 && (
+                <span className="ml-2">??Best score: {Math.round(currentProgress.bestScore * 100)}%</span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Feedback Section */}
+      {(lastComparison || showAnswer) && (
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <h2 className="text-lg font-semibold mb-4">Feedback</h2>
+          
+          {lastComparison && !isAnswerAcceptable(lastComparison) && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-red-600 text-lg">??/span>
+                <span className="text-red-700 font-medium">
+                  {lastComparison.correctTokens}/{lastComparison.totalTokens} words correct 
+                  ({Math.round(lastComparison.score * 100)}%)
+                </span>
+              </div>
+              
+              <div className="bg-red-50 p-3 rounded border">
+                <p className="text-sm text-gray-700 mb-1">Hint:</p>
+                <p className="font-mono text-red-800 text-lg">{lastComparison.feedback}</p>
+              </div>
+              
+              <p className="text-sm text-gray-600">
+                Try again or click "Show Answer" if you need help.
+              </p>
+            </div>
+          )}
+
+          {lastComparison && isAnswerAcceptable(lastComparison) && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-green-600 text-lg">??/span>
+                <span className="text-green-700 font-medium">Perfect! Well done!</span>
+              </div>
+              
+              <div className="bg-green-50 p-3 rounded border">
+                <p className="font-medium text-green-800">"{currentFragment.text}"</p>
+              </div>
+            </div>
+          )}
+
+          {showAnswer && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-600 text-lg">?’¡</span>
+                <span className="text-blue-700 font-medium">Correct Answer:</span>
+              </div>
+              
+              <div className="bg-blue-50 p-3 rounded border">
+                <p className="font-medium text-blue-800">"{currentFragment.text}"</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Navigation */}
+      <div className="flex justify-between items-center pt-4">
+        <button
+          onClick={handlePrevious}
+          disabled={session.currentFragmentIndex === 0}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ??Previous
+        </button>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Press <kbd className="px-2 py-1 bg-gray-100 rounded">Space</kbd> to play/pause, 
+            <kbd className="px-2 py-1 bg-gray-100 rounded ml-1">R</kbd> to replay
+          </p>
+        </div>
+
+        <button
+          onClick={handleNext}
+          disabled={!canProceed}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLastFragment ? 'Finish' : 'Next'} ??
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default FragmentDictation;
+
+C:\Users\User\Desktop\jink-demo\src\components\dictation\SessionResults.tsx
+
+
+// src/components/dictation/SessionResults.tsx
+
+import React from 'react';
+import type { DictationSession } from './FragmentDictation';
+import { DictationService } from '../../services/dictationService';
+
+// import type { SessionAnalytics } from '../../services/dictationService';
+
+interface SessionResultsProps {
+  session: DictationSession;
+  onRetry?: () => void;
+  onReturnToList?: () => void;
+  onViewProgress?: () => void;
+}
+
+const SessionResults: React.FC<SessionResultsProps> = ({
+  session,
+  onRetry,
+  onReturnToList,
+  onViewProgress
+}) => {
+  const analytics = DictationService.analyzeSession(session);
+  const performanceLevel = DictationService.getPerformanceLevel(analytics.averageScore);
+  const accuracyTrend = DictationService.getAccuracyTrend(session.progress);
+  const recommendations = DictationService.getRecommendations(session);
+
+  const formatPercentage = (value: number) => Math.round(value * 100);
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="text-center bg-white rounded-lg shadow-sm border p-8">
+        <div className="mb-4">
+          {analytics.completionRate === 1 ? (
+            <div className="text-6xl mb-2">??</div>
+          ) : (
+            <div className="text-6xl mb-2">??</div>
+          )}
+        </div>
+        
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          {analytics.completionRate === 1 ? 'Congratulations!' : 'Session Complete'}
+        </h1>
+        
+        <p className="text-xl text-gray-600 mb-4">
+          {session.fragments[0]?.text ? session.fragments[0].text.substring(0, 50) + '...' : 'Dictation Practice'}
+        </p>
+
+        <div className={`inline-flex items-center px-4 py-2 rounded-full font-semibold ${performanceLevel.color}`}>
+          {performanceLevel.level}
+        </div>
+        
+        <p className="text-gray-600 mt-2">{performanceLevel.description}</p>
+      </div>
+
+      {/* Key Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
+          <div className="text-3xl font-bold text-blue-600 mb-2">
+            {formatPercentage(analytics.averageScore)}%
+          </div>
+          <div className="text-sm text-gray-600">Overall Accuracy</div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
+          <div className="text-3xl font-bold text-green-600 mb-2">
+            {analytics.fragmentsCompleted}
+          </div>
+          <div className="text-sm text-gray-600">
+            Fragments Completed
+            <div className="text-xs text-gray-500">out of {analytics.totalFragments}</div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
+          <div className="text-3xl font-bold text-purple-600 mb-2">
+            {DictationService.formatTime(analytics.totalTimeSpent)}
+          </div>
+          <div className="text-sm text-gray-600">Time Spent</div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
+          <div className="text-3xl font-bold text-orange-600 mb-2">
+            {analytics.averageAttemptsPerFragment.toFixed(1)}
+          </div>
+          <div className="text-sm text-gray-600">Avg Attempts</div>
+        </div>
+      </div>
+
+      {/* Progress Breakdown */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-xl font-semibold mb-4">Progress Breakdown</h2>
+        
+        <div className="space-y-4">
+          {/* Completion Rate Bar */}
+          <div>
+            <div className="flex justify-between text-sm text-gray-600 mb-1">
+              <span>Completion Rate</span>
+              <span>{formatPercentage(analytics.completionRate)}%</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-blue-600 h-2 rounded-full transition-all duration-1000"
+                style={{ width: `${formatPercentage(analytics.completionRate)}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Accuracy Trend */}
+          {session.progress.length > 3 && (
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">Accuracy Trend:</span>
+              <div className="flex items-center space-x-1">
+                {accuracyTrend.trend === 'improving' && (
+                  <>
+                    <span className="text-green-600">??</span>
+                    <span className="text-green-600 text-sm font-medium">Improving</span>
+                  </>
+                )}
+                {accuracyTrend.trend === 'declining' && (
+                  <>
+                    <span className="text-red-600">??</span>
+                    <span className="text-red-600 text-sm font-medium">Declining</span>
+                  </>
+                )}
+                {accuracyTrend.trend === 'stable' && (
+                  <>
+                    <span className="text-gray-600">?¡ï?</span>
+                    <span className="text-gray-600 text-sm font-medium">Stable</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Fragment Details */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-xl font-semibold mb-4">Fragment Performance</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {session.progress.map((progress, index) => {
+            const fragment = session.fragments[index];
+            if (!fragment) return null;
+
+            let statusColor = 'bg-gray-100 text-gray-600';
+            let statusIcon = '??;
+            
+            if (progress.status === 'correct') {
+              statusColor = 'bg-green-100 text-green-700';
+              statusIcon = '??;
+            } else if (progress.status === 'given_up') {
+              statusColor = 'bg-yellow-100 text-yellow-700';
+              statusIcon = '?’¡';
+            }
+
+            return (
+              <div key={index} className={`p-3 rounded-lg border-2 ${statusColor} border-opacity-20`}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium">Fragment {index + 1}</span>
+                  <span className="text-lg">{statusIcon}</span>
+                </div>
+                
+                <div className="text-xs mb-1 truncate" title={fragment.text}>
+                  {fragment.text}
+                </div>
+                
+                <div className="flex justify-between text-xs">
+                  <span>Score: {formatPercentage(progress.bestScore)}%</span>
+                  <span>Tries: {progress.attempts.length}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Strengths and Areas for Improvement */}
+      {(analytics.strengths.length > 0 || analytics.improvements.length > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {analytics.strengths.length > 0 && (
+            <div className="bg-green-50 rounded-lg border border-green-200 p-6">
+              <h3 className="text-lg font-semibold text-green-800 mb-3 flex items-center">
+                <span className="mr-2">?’ª</span>
+                Strengths
+              </h3>
+              <ul className="space-y-2">
+                {analytics.strengths.map((strength, index) => (
+                  <li key={index} className="text-green-700 text-sm flex items-start">
+                    <span className="text-green-600 mr-2 mt-1">??/span>
+                    {strength}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {analytics.improvements.length > 0 && (
+            <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+              <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                <span className="mr-2">?Ž¯</span>
+                Areas for Improvement
+              </h3>
+              <ul className="space-y-2">
+                {analytics.improvements.map((improvement, index) => (
+                  <li key={index} className="text-blue-700 text-sm flex items-start">
+                    <span className="text-blue-600 mr-2 mt-1">??/span>
+                    {improvement}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Recommendations */}
+      {recommendations.length > 0 && (
+        <div className="bg-purple-50 rounded-lg border border-purple-200 p-6">
+          <h3 className="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+            <span className="mr-2">?’¡</span>
+            Personalized Recommendations
+          </h3>
+          <ul className="space-y-2">
+            {recommendations.map((recommendation, index) => (
+              <li key={index} className="text-purple-700 text-sm flex items-start">
+                <span className="text-purple-600 mr-2 mt-1">??/span>
+                {recommendation}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Difficult Fragments */}
+      {analytics.difficultFragments.length > 0 && (
+        <div className="bg-orange-50 rounded-lg border border-orange-200 p-6">
+          <h3 className="text-lg font-semibold text-orange-800 mb-3 flex items-center">
+            <span className="mr-2">? ï?</span>
+            Challenging Fragments
+          </h3>
+          <p className="text-orange-700 text-sm mb-3">
+            These fragments might benefit from extra practice:
+          </p>
+          <div className="space-y-2">
+            {analytics.difficultFragments.map((progress) => {
+              const fragment = session.fragments[progress.fragmentIndex];
+              return (
+                <div key={progress.fragmentIndex} className="bg-white p-3 rounded border">
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="text-xs font-medium text-gray-600">
+                      Fragment {progress.fragmentIndex + 1}
+                    </span>
+                    <div className="text-xs text-gray-500">
+                      {progress.attempts.length} attempts ??{formatPercentage(progress.bestScore)}% best score
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-800">{fragment?.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 pt-4">
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+          >
+            Practice Again
+          </button>
+        )}
+        
+        {onViewProgress && (
+          <button
+            onClick={onViewProgress}
+            className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
+          >
+            View Detailed Progress
+          </button>
+        )}
+        
+        {onReturnToList && (
+          <button
+            onClick={onReturnToList}
+            className="flex-1 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-semibold"
+          >
+            Back to Articles
+          </button>
+        )}
+      </div>
+
+      {/* Share Results */}
+      <div className="text-center border-t pt-4">
+        <p className="text-sm text-gray-600 mb-2">
+          Session completed on {session.startTime.toLocaleDateString()}
+        </p>
+        <div className="text-xs text-gray-500">
+          <span>Total Score: {formatPercentage(analytics.averageScore)}%</span>
+          <span className="mx-2">??/span>
+          <span>Time: {DictationService.formatTime(analytics.totalTimeSpent)}</span>
+          <span className="mx-2">??/span>
+          <span>Completion: {formatPercentage(analytics.completionRate)}%</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SessionResults;
 
 C:\Users\User\Desktop\jink-demo\src\components\groups\GroupDetail.tsx
 
@@ -3459,6 +4270,7 @@ import type {
   IArticle
 } from '../types/article.types';
 
+
 // API functions
 const articleAPI = {
   // Suggest article name from title
@@ -3481,16 +4293,16 @@ const articleAPI = {
 
   create: async (data: CreateArticleRequest): Promise<{ success: boolean; article: IArticle; message: string }> => {
     console.log('Creating article with payload:', data);
-    
+
     // Validate payload before sending
     if (!data.articleName || !data.title || !data.originalText) {
       throw new Error('Missing required fields: articleName, title, or originalText');
     }
-    
+
     if (!data.sentences || data.sentences.length === 0) {
       throw new Error('At least one sentence is required');
     }
-    
+
     // Ensure all sentences have required fields
     data.sentences.forEach((sentence, index) => {
       if (!sentence.text || sentence.text.trim().length === 0) {
@@ -3506,7 +4318,7 @@ const articleAPI = {
         sentence.isLong = sentence.wordCount > 15;
       }
     });
-    
+
     try {
       const response = await api.post<{ success: boolean; article: IArticle; message: string }>('/articles', data);
       return response.data;
@@ -3517,42 +4329,42 @@ const articleAPI = {
         data: error.response?.data,
         config: error.config
       });
-      
+
       // Enhanced error message handling
       if (error.response?.data?.error) {
         throw new Error(error.response.data.error);
       }
-      
+
       // Handle specific HTTP status codes with user-friendly messages
       if (error.response?.status === 409) {
         throw new Error(`Article name "${data.articleName}" already exists. Please choose a different name.`);
       }
-      
+
       if (error.response?.status === 400) {
         throw new Error('Invalid article data. Please check your input and try again.');
       }
-      
+
       if (error.response?.status === 401) {
         throw new Error('You are not authorized to create articles. Please log in again.');
       }
-      
+
       if (error.response?.status === 403) {
         throw new Error('You do not have permission to create articles. Contact your administrator.');
       }
-      
+
       if (error.response?.status === 500) {
         throw new Error('Server error occurred. Please try again in a moment.');
       }
-      
+
       // Network or other errors
       if (!error.response) {
         throw new Error('Network error. Please check your internet connection and try again.');
       }
-      
+
       throw error;
     }
   },
-  
+
 
   // Get all articles for teacher
   getAll: async (): Promise<ArticlesResponse> => {
@@ -3663,14 +4475,14 @@ export const useArticle = (articleName: string) => {
  */
 export const useCreateArticle = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: articleAPI.create,
     onSuccess: (data) => {
       // Invalidate articles list to show new article
       queryClient.invalidateQueries({ queryKey: ['articles'] });
       queryClient.invalidateQueries({ queryKey: ['articleStats'] });
-      
+
       // Set the new article in cache
       queryClient.setQueryData(['article', data.article.articleName], data.article);
     },
@@ -3687,12 +4499,12 @@ export const useUpdateArticleMetadata = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ 
-      articleName, 
-      updateData 
-    }: { 
-      articleName: string; 
-      updateData: UpdateArticleRequest 
+    mutationFn: async ({
+      articleName,
+      updateData
+    }: {
+      articleName: string;
+      updateData: UpdateArticleRequest
     }) => {
       const response = await api.put<ArticleResponse>(`/articles/${articleName}`, updateData);
       return response.data;
@@ -3716,12 +4528,12 @@ export const useUpdateArticleSentences = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ 
-      articleName, 
-      sentences 
-    }: { 
-      articleName: string; 
-      sentences: UpdateSentencesRequest 
+    mutationFn: async ({
+      articleName,
+      sentences
+    }: {
+      articleName: string;
+      sentences: UpdateSentencesRequest
     }) => {
       const response = await api.put<ArticleResponse>(`/articles/${articleName}/sentences`, sentences);
       return response.data;
@@ -3743,7 +4555,7 @@ export const useUpdateArticleSentences = () => {
  */
 export const useDeleteArticle = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: articleAPI.delete,
     onSuccess: (_, articleName) => {
@@ -3787,16 +4599,16 @@ export const useSentence = (sentenceId: string) => {
  */
 export const useUpdateSentence = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ sentenceId, data }: { 
-      sentenceId: string; 
-      data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>> 
+    mutationFn: ({ sentenceId, data }: {
+      sentenceId: string;
+      data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>>
     }) => sentenceAPI.update(sentenceId, data),
     onSuccess: (response, variables) => {
       // Update sentence in cache
       queryClient.setQueryData(['sentence', variables.sentenceId], response.sentence);
-      
+
       // Parse articleName from sentenceId to invalidate article
       const lastUnderscoreIndex = variables.sentenceId.lastIndexOf('_');
       if (lastUnderscoreIndex !== -1) {
@@ -3804,6 +4616,42 @@ export const useUpdateSentence = () => {
         queryClient.invalidateQueries({ queryKey: ['article', articleName] });
       }
     }
+  });
+};
+
+const toAbsoluteUrlFromAxios = (url?: string) => {
+  if (!url) return url;
+  try {
+    // If url is already absolute, this succeeds
+    return new URL(url).toString();
+  } catch {
+    // Otherwise, resolve against baseURL
+    const base = api.defaults.baseURL ?? '';
+    return new URL(url, base).toString();
+  }
+};
+
+
+// Add to existing useArticles hook
+export const useArticleWithAudio = (articleName: string) => {
+  return useQuery({
+    queryKey: ['article', articleName, 'audio'],
+    queryFn: async () => {
+      const result = await articleAPI.getByName(articleName);
+
+      result.article.fullAudioUrl = toAbsoluteUrlFromAxios(result.article.fullAudioUrl);
+
+      // // Ensure audio URL is properly formatted
+      // if (result.article.fullAudioUrl) {
+      //   result.article.fullAudioUrl = result.article.fullAudioUrl.startsWith('http')
+      //     ? result.article.fullAudioUrl
+      //     : `${api.defaults.baseURL}/${result.article.fullAudioUrl}`;
+      // }
+
+
+      return result.article;
+    },
+    enabled: !!articleName,
   });
 };
 
@@ -3840,6 +4688,363 @@ export const useDownloadCSVTemplate = () => {
     mutationFn: () => apiDownloadCSVTemplate(),
   });
 };
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useDictationProgress.ts
+
+// src/hooks/useDictationProgress.ts
+
+import { useState, useEffect, useCallback } from 'react';
+import type { DictationSession } from '../components/dictation/FragmentDictation';
+
+interface StoredSession {
+  session: DictationSession;
+  lastUpdated: string;
+  isCompleted: boolean;
+}
+
+const STORAGE_KEY_PREFIX = 'dictation_session_';
+const MAX_STORED_SESSIONS = 10;
+
+export function useDictationProgress(articleName: string) {
+  const storageKey = `${STORAGE_KEY_PREFIX}${articleName}`;
+  
+  const [savedSession, setSavedSession] = useState<DictationSession | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load saved session on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        const parsedSession: StoredSession = JSON.parse(stored);
+        // Convert date strings back to Date objects
+        const session = {
+          ...parsedSession.session,
+          startTime: new Date(parsedSession.session.startTime),
+          progress: parsedSession.session.progress.map(p => ({
+            ...p,
+            attempts: p.attempts.map(a => ({
+              ...a,
+              timestamp: new Date(a.timestamp)
+            }))
+          }))
+        };
+        setSavedSession(session);
+      }
+    } catch (error) {
+      console.error('Failed to load saved dictation session:', error);
+      localStorage.removeItem(storageKey);
+    }
+    setIsLoading(false);
+  }, [storageKey]);
+
+  // Save session to localStorage
+  const saveSession = useCallback((session: DictationSession) => {
+    try {
+      const storedSession: StoredSession = {
+        session,
+        lastUpdated: new Date().toISOString(),
+        isCompleted: session.completedFragments === session.fragments.length
+      };
+      
+      localStorage.setItem(storageKey, JSON.stringify(storedSession));
+      setSavedSession(session);
+    } catch (error) {
+      console.error('Failed to save dictation session:', error);
+    }
+  }, [storageKey]);
+
+  // Clear saved session
+  const clearSession = useCallback(() => {
+    localStorage.removeItem(storageKey);
+    setSavedSession(null);
+  }, [storageKey]);
+
+  // Get all stored sessions (for dashboard)
+  const getAllSessions = useCallback((): StoredSession[] => {
+    const sessions: StoredSession[] = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(STORAGE_KEY_PREFIX)) {
+        try {
+          const stored = localStorage.getItem(key);
+          if (stored) {
+            sessions.push(JSON.parse(stored));
+          }
+        } catch (error) {
+          console.error('Failed to parse stored session:', error);
+          localStorage.removeItem(key);
+        }
+      }
+    }
+
+    return sessions.sort((a, b) => 
+      new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
+    );
+  }, []);
+
+  // Clean old sessions (keep only recent ones)
+  const cleanOldSessions = useCallback(() => {
+    const allSessions = getAllSessions();
+    if (allSessions.length > MAX_STORED_SESSIONS) {
+      const toRemove = allSessions.slice(MAX_STORED_SESSIONS);
+      toRemove.forEach(session => {
+        const key = `${STORAGE_KEY_PREFIX}${session.session.articleName}`;
+        localStorage.removeItem(key);
+      });
+    }
+  }, [getAllSessions]);
+
+  return {
+    savedSession,
+    isLoading,
+    saveSession,
+    clearSession,
+    getAllSessions,
+    cleanOldSessions
+  };
+}
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useFragmentAudioPlayer.ts
+
+// src/hooks/useFragmentAudioPlayer.ts
+
+import { useRef, useState, useCallback, useEffect } from 'react';
+import { handleAudioError } from '../utils/errorUtils'; // adjust path
+
+
+export interface FragmentTiming {
+  fragmentIndex: number;
+  order: number;
+  text: string;
+  startTime: number;
+  endTime: number;
+  duration: number;
+  wordCount: number;
+}
+
+export interface AudioPlayerState {
+  isPlaying: boolean;
+  isLoading: boolean;
+  currentTime: number;
+  duration: number;
+  playbackRate: number;
+  canPlay: boolean;
+  error: string | null;
+}
+
+export interface AudioPlayerControls {
+  play: () => void;
+  pause: () => void;
+  stop: () => void;
+  seekToFragment: (fragmentIndex: number) => void;
+  replayCurrentFragment: () => void;
+  setPlaybackRate: (rate: number) => void;
+  togglePlayback: () => void;
+}
+
+const PREROLL_SECONDS = 0.05; // Slight preroll for better onset perception
+const MIN_PLAYBACK_RATE = 0.5;
+const MAX_PLAYBACK_RATE = 2.0;
+
+export function useFragmentAudioPlayer(
+  audioUrl: string,
+  fragments: FragmentTiming[] = [],
+  autoStopAtFragmentEnd: boolean = true
+) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentFragmentRef = useRef<number>(-1);
+  const stopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+
+  const [state, setState] = useState<AudioPlayerState>({
+    isPlaying: false,
+    isLoading: false,
+    currentTime: 0,
+    duration: 0,
+    playbackRate: 1.0,
+    canPlay: false,
+    error: null,
+  });
+
+  // Initialize audio element
+  useEffect(() => {
+    if (!audioUrl) return;
+
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous'; // For CORS if needed
+    
+    // Event listeners
+    const updateState = (updates: Partial<AudioPlayerState>) => {
+      setState(prev => ({ ...prev, ...updates }));
+    };
+
+    const handleLoadStart = () => updateState({ isLoading: true, error: null });
+    const handleCanPlay = () => updateState({ canPlay: true, isLoading: false });
+    const handleLoadedMetadata = () => updateState({ duration: audio.duration });
+
+    // const handleError = (e: ErrorEvent) => {
+    //   console.error('Audio error:', e);
+    //   updateState({ 
+    //     error: 'Failed to load audio', 
+    //     isLoading: false, 
+    //     isPlaying: false 
+    //   });
+    // };
+    
+    const handleError = (e: any) => {
+      const friendly = handleAudioError(e?.error ?? new Error('Audio error'));
+      updateState({
+      error: friendly,
+      isLoading: false,
+      isPlaying: false,
+      });
+    };
+
+
+    const handlePlay = () => updateState({ isPlaying: true });
+    const handlePause = () => updateState({ isPlaying: false });
+    const handleEnded = () => {
+      updateState({ isPlaying: false });
+      currentFragmentRef.current = -1;
+    };
+
+    const handleTimeUpdate = () => {
+      updateState({ currentTime: audio.currentTime });
+    };
+
+    // Attach event listeners
+    audio.addEventListener('loadstart', handleLoadStart);
+    audio.addEventListener('canplay', handleCanPlay);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('error', handleError as EventListener);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+
+    audio.src = audioUrl;
+    audioRef.current = audio;
+
+    return () => {
+      // Cleanup
+      if (stopTimeoutRef.current) {
+        clearTimeout(stopTimeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      
+      audio.removeEventListener('loadstart', handleLoadStart);
+      audio.removeEventListener('canplay', handleCanPlay);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('error', handleError as EventListener);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      
+      audio.pause();
+      audio.src = '';
+      audioRef.current = null;
+    };
+  }, [audioUrl]);
+
+  // Auto-stop monitoring for fragment playback
+  const monitorFragmentEnd = useCallback(() => {
+    if (!audioRef.current || currentFragmentRef.current === -1 || !autoStopAtFragmentEnd) {
+      return;
+    }
+
+    const fragment = fragments[currentFragmentRef.current];
+    if (!fragment) return;
+
+    const checkTime = () => {
+      if (!audioRef.current || !state.isPlaying) return;
+
+      if (audioRef.current.currentTime >= fragment.endTime) {
+        audioRef.current.pause();
+        currentFragmentRef.current = -1;
+      } else {
+        animationFrameRef.current = requestAnimationFrame(checkTime);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(checkTime);
+  }, [fragments, autoStopAtFragmentEnd, state.isPlaying]);
+
+  useEffect(() => {
+    if (state.isPlaying && currentFragmentRef.current !== -1) {
+      monitorFragmentEnd();
+    } else if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+  }, [state.isPlaying, monitorFragmentEnd]);
+
+  const controls: AudioPlayerControls = {
+    play: useCallback(() => {
+      if (!audioRef.current || !state.canPlay) return;
+      audioRef.current.play().catch(console.error);
+    }, [state.canPlay]),
+
+    pause: useCallback(() => {
+      if (!audioRef.current) return;
+      audioRef.current.pause();
+    }, []),
+
+    stop: useCallback(() => {
+      if (!audioRef.current) return;
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      currentFragmentRef.current = -1;
+    }, []),
+
+    seekToFragment: useCallback((fragmentIndex: number) => {
+      if (!audioRef.current || !state.canPlay || !fragments[fragmentIndex]) return;
+
+      const fragment = fragments[fragmentIndex];
+      const seekTime = Math.max(0, fragment.startTime - PREROLL_SECONDS);
+      
+      audioRef.current.currentTime = seekTime;
+      currentFragmentRef.current = fragmentIndex;
+    }, [fragments, state.canPlay]),
+
+    replayCurrentFragment: useCallback(() => {
+      if (currentFragmentRef.current !== -1) {
+        controls.seekToFragment(currentFragmentRef.current);
+        if (!state.isPlaying) {
+          controls.play();
+        }
+      }
+    }, [state.isPlaying]),
+
+    setPlaybackRate: useCallback((rate: number) => {
+      if (!audioRef.current) return;
+      
+      const clampedRate = Math.max(MIN_PLAYBACK_RATE, Math.min(MAX_PLAYBACK_RATE, rate));
+      audioRef.current.playbackRate = clampedRate;
+      setState(prev => ({ ...prev, playbackRate: clampedRate }));
+    }, []),
+
+    togglePlayback: useCallback(() => {
+      if (state.isPlaying) {
+        controls.pause();
+      } else {
+        controls.play();
+      }
+    }, [state.isPlaying])
+  };
+
+  return {
+    state,
+    controls,
+    currentFragmentIndex: currentFragmentRef.current,
+    audioRef
+  };
+}
 
 C:\Users\User\Desktop\jink-demo\src\hooks\useGroups.ts
 
@@ -4157,6 +5362,464 @@ const Groups: React.FC = () => {
 
 export default Groups;
 
+C:\Users\User\Desktop\jink-demo\src\pages\student\ArticleList.tsx
+
+// src/pages/student/ArticleList.tsx
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useArticles } from '../../hooks/useArticles';
+import { useDictationProgress } from '../../hooks/useDictationProgress';
+import {LoadingSpinner} from '../../components/common/LoadingSpinner';
+
+interface ArticleCardProps {
+  article: any;
+  progress?: any;
+}
+
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, progress }) => {
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty?.toLowerCase()) {
+      case 'a1': return 'bg-green-100 text-green-800';
+      case 'a2': return 'bg-blue-100 text-blue-800';
+      case 'b1': return 'bg-yellow-100 text-yellow-800';
+      case 'b2': return 'bg-orange-100 text-orange-800';
+      case 'c1': return 'bg-red-100 text-red-800';
+      case 'c2': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusDisplay = () => {
+    if (article.status !== 'ready') {
+      return (
+        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+          Processing Audio...
+        </span>
+      );
+    }
+
+    if (progress?.isCompleted) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+          ??Completed
+        </span>
+      );
+    }
+
+    if (progress && progress.session.completedFragments > 0) {
+      const completionRate = progress.session.completedFragments / progress.session.fragments.length;
+      return (
+        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          {Math.round(completionRate * 100)}% Complete
+        </span>
+      );
+    }
+
+    return (
+      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+        Not Started
+      </span>
+    );
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+            {article.title}
+          </h3>
+          <div className="ml-2 flex-shrink-0">
+            {getStatusDisplay()}
+          </div>
+        </div>
+
+        <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+          {article.originalText.substring(0, 120)}...
+        </p>
+
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            {article.metadata?.difficulty && (
+              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(article.metadata.difficulty)}`}>
+                {article.metadata.difficulty}
+              </span>
+            )}
+            
+            <span className="text-xs text-gray-500">
+              {article.sentences?.length || 0} fragments
+            </span>
+            
+            {article.metadata?.estimatedTime && (
+              <span className="text-xs text-gray-500">
+                ~{article.metadata.estimatedTime} min
+              </span>
+            )}
+          </div>
+
+          {article.metadata?.subject && (
+            <span className="text-xs text-gray-500">
+              {article.metadata.subject}
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="text-xs text-gray-500">
+            Created: {new Date(article.createdAt).toLocaleDateString()}
+          </div>
+
+          <Link
+            to={`/student/practice/${article.articleName}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              article.status === 'ready'
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            {progress?.isCompleted ? 'Practice Again' : progress?.session ? 'Continue' : 'Start Practice'}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const StudentArticleList: React.FC = () => {
+  const { data: articles, isLoading, error } = useArticles();
+  const { getAllSessions } = useDictationProgress(''); // Get all sessions for progress info
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner message="Loading available articles..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Error Loading Articles</h2>
+          <p className="text-gray-600">Please try refreshing the page.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const readyArticles = articles?.filter(article => article.status === 'ready') || [];
+  const processingArticles = articles?.filter(article => article.status !== 'ready') || [];
+  const allSessions = getAllSessions();
+  const sessionsMap = new Map(allSessions.map(s => [s.session.articleName, s]));
+
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dictation Practice</h1>
+        <p className="text-gray-600">
+          Choose an article to practice your listening and typing skills
+        </p>
+      </div>
+
+      {/* Ready Articles */}
+      {readyArticles.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Available for Practice</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {readyArticles.map((article) => (
+              <ArticleCard
+                key={article.articleName}
+                article={article}
+                progress={sessionsMap.get(article.articleName)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Processing Articles */}
+      {processingArticles.length > 0 && (
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Coming Soon</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {processingArticles.map((article) => (
+              <ArticleCard
+                key={article.articleName}
+                article={article}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {(!articles || articles.length === 0) && (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">??</div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Articles Available</h3>
+          <p className="text-gray-600">
+            Your teacher hasn't published any dictation exercises yet. Check back later!
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default StudentArticleList;
+
+C:\Users\User\Desktop\jink-demo\src\pages\student\DictationPractice.tsx
+
+// src/pages/student/DictationPractice.tsx
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useArticle } from '../../hooks/useArticles';
+import { useDictationProgress } from '../../hooks/useDictationProgress';
+import FragmentDictation from '../../components/dictation/FragmentDictation';
+import type { DictationSession, FragmentProgress } from '../../components/dictation/FragmentDictation';
+import SessionResults from '../../components/dictation/SessionResults';
+import {LoadingSpinner} from '../../components/common/LoadingSpinner';
+import type { FragmentTiming } from '../../hooks/useFragmentAudioPlayer';
+
+
+type ViewMode = 'loading' | 'practice' | 'results' | 'resume';
+
+const DictationPracticePage: React.FC = () => {
+  const { articleName } = useParams<{ articleName: string }>();
+  const navigate = useNavigate();
+  
+  const { data: article, isLoading: articleLoading, error: articleError } = useArticle(articleName!);
+  const { 
+    savedSession, 
+    isLoading: progressLoading, 
+    saveSession, 
+    clearSession 
+  } = useDictationProgress(articleName!);
+
+  const [currentView, setCurrentView] = useState<ViewMode>('loading');
+  const [completedSession, setCompletedSession] = useState<DictationSession | null>(null);
+
+  // Determine initial view once data is loaded
+  useEffect(() => {
+    if (articleLoading || progressLoading) {
+      setCurrentView('loading');
+      return;
+    }
+
+    if (articleError || !article) {
+      navigate('/student/articles', { replace: true });
+      return;
+    }
+
+    // Check if there's a saved session to resume
+    if (savedSession && savedSession.completedFragments < savedSession.fragments.length) {
+      setCurrentView('resume');
+    } else if (savedSession && savedSession.completedFragments === savedSession.fragments.length) {
+      // Session was already completed
+      setCompletedSession(savedSession);
+      setCurrentView('results');
+    } else {
+      // Start new session
+      setCurrentView('practice');
+    }
+  }, [article, articleLoading, articleError, savedSession, progressLoading, navigate]);
+
+  // Convert article sentences to fragment timing format
+  const convertToFragmentTiming = (article: any): FragmentTiming[] => {
+    if (!article?.sentences) return [];
+
+    return article.sentences.map((sentence: any, index: number) => ({
+      fragmentIndex: index,
+      order: sentence.order || index + 1,
+      text: sentence.text,
+      startTime: sentence.startTime || 0,
+      endTime: sentence.endTime || 0,
+      duration: sentence.endTime - sentence.startTime || 0,
+      wordCount: sentence.wordCount || sentence.text.split(' ').length
+    }));
+  };
+
+  const handleSessionComplete = (session: DictationSession) => {
+    saveSession(session);
+    setCompletedSession(session);
+    setCurrentView('results');
+  };
+
+const handleProgressUpdate = (progress: FragmentProgress[]) => {
+// If you want to persist the whole session on every update,
+// either lift state up or pass a session object down from FragmentDictation.
+// For now, you can no-op or, better, keep partial progress somewhere.
+// If you have access to the current session in this component,
+// you could merge in the updated progress and call saveSession(updatedSession).
+  console.log('Progress updated:', progress);
+};
+
+  const handleStartNew = () => {
+    clearSession();
+    setCurrentView('practice');
+  };
+
+  const handleResumeSession = () => {
+    setCurrentView('practice');
+  };
+
+  const handleRetrySession = () => {
+    clearSession();
+    setCurrentView('practice');
+  };
+
+  const handleBackToArticles = () => {
+    navigate('/student/articles');
+  };
+
+  // Loading state
+  if (currentView === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner message="Loading dictation exercise..." />
+      </div>
+    );
+  }
+
+  // Article not found or error
+  if (!article) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Article Not Found</h2>
+          <p className="text-gray-600 mb-4">The requested dictation exercise could not be found.</p>
+          <button
+            onClick={handleBackToArticles}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Articles
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Resume session prompt
+  if (currentView === 'resume') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md mx-auto p-6">
+          <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
+            <div className="text-4xl mb-4">??</div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Resume Practice?</h2>
+            <p className="text-gray-600 mb-4">
+              You have an incomplete dictation session for "{article.title}".
+            </p>
+            
+            {savedSession && (
+              <div className="bg-gray-50 rounded-lg p-3 mb-4 text-sm">
+                <div className="flex justify-between mb-1">
+                  <span>Progress:</span>
+                  <span>{savedSession.completedFragments} / {savedSession.fragments.length} fragments</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-blue-600 h-2 rounded-full"
+                    style={{ 
+                      width: `${(savedSession.completedFragments / savedSession.fragments.length) * 100}%` 
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              <button
+                onClick={handleResumeSession}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+              >
+                Resume Session
+              </button>
+              
+              <button
+                onClick={handleStartNew}
+                className="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
+              >
+                Start Over
+              </button>
+
+              <button
+                onClick={handleBackToArticles}
+                className="w-full px-4 py-2 text-gray-600 hover:text-gray-800 text-sm"
+              >
+                Back to Articles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Results view
+  if (currentView === 'results' && completedSession) {
+    return (
+      <SessionResults
+        session={completedSession}
+        onRetry={handleRetrySession}
+        onReturnToList={handleBackToArticles}
+      />
+    );
+  }
+
+  // Main dictation practice view
+  const fragments = convertToFragmentTiming(article);
+
+  // Check if article has audio generated
+  if (!article.fullAudioUrl) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-4xl mb-4">?Žµ</div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Audio Not Ready</h2>
+          <p className="text-gray-600 mb-4">
+            The audio for this article is still being generated. Please try again in a few moments.
+          </p>
+          <div className="space-y-3">
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Refresh Page
+            </button>
+            <button
+              onClick={handleBackToArticles}
+              className="w-full px-4 py-2 text-gray-600 hover:text-gray-800"
+            >
+              Back to Articles
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <FragmentDictation
+      articleName={article.articleName}
+      articleTitle={article.title}
+      fullAudioUrl={article.fullAudioUrl}
+      fragments={fragments}
+      onSessionComplete={handleSessionComplete}
+      onProgressUpdate={handleProgressUpdate}
+      showText={false} // Hide text by default for dictation
+      allowGiveUp={true}
+      // initialSession={savedSession || undefined}
+    />
+  );
+};
+
+export default DictationPracticePage;
+
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleDetail.tsx
 
 // src/pages/teacher/ArticleDetail.tsx
@@ -4165,6 +5828,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
 import  SentencePreview  from '../../components/articles/SentencePreview';
 import type { IArticle, ISentence } from '../../types/article.types';
+import type { FragmentTiming } from '../../types/article.types';
 
 const ArticleDetail: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
@@ -4173,6 +5837,19 @@ const ArticleDetail: React.FC = () => {
   const deleteArticleMutation = useDeleteArticle();
   
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+
+  const convertSentencesToFragmentTiming = (sentences: ISentence[]): FragmentTiming[] => {
+    return sentences.map((sentence, index) => ({
+      fragmentIndex: index,
+      order: sentence.order,
+      text: sentence.text,
+      startTime: sentence.startTime || 0,
+      endTime: sentence.endTime || 0,
+      duration: (sentence.endTime || 0) - (sentence.startTime || 0),
+      wordCount: sentence.wordCount
+    }));
+  };
 
   const handleDelete = async () => {
     if (!article) return;
@@ -5983,6 +7660,20 @@ const TeacherDashboard: React.FC = () => {
                             Edit
                           </Link>
                         )}
+                        {/* Add to existing TeacherDashboard component */}
+                        {article.status === 'ready' && (
+                          <div className="mt-4">
+                            <Link 
+                              to={`/student/practice/${article.articleName}`}
+                              className="text-blue-600 hover:text-blue-800 text-sm"
+                              target="_blank"
+                            >
+                              ?? Preview Student Experience
+                            </Link>
+                          </div>
+                        )}
+
+
                       </div>
                     </div>
                   </div>
@@ -6306,7 +7997,7 @@ export default Home;
 C:\Users\User\Desktop\jink-demo\src\pages\Login.tsx
 
 import type { FormEvent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -6316,14 +8007,13 @@ export default function Login() {
   const { login, user } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  useEffect(() => { 
+            
+            if (!user) 
+              return; 
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-          await login(username, password);
-          if(user)
-            {
-              switch(user.role) {
+            switch (user.role) 
+            { 
                 case "admin":
                   navigate("/admin");
                   break;
@@ -6335,8 +8025,18 @@ export default function Login() {
                   break;
                 default:
                   navigate("/login");
-              }
-            }
+            } 
+        
+        
+        }, [user]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+          await login(username, password);
+
+
+
 
     } catch (err: any) {
       setError(err?.response?.data?.message ?? 'Login failed');
@@ -7018,6 +8718,235 @@ export default function ProtectedRoute() {
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
+C:\Users\User\Desktop\jink-demo\src\services\dictationService.ts
+
+// src/services/dictationService.ts
+
+import type { DictationSession, FragmentProgress } from '../components/dictation/FragmentDictation';
+
+export interface SessionAnalytics {
+  totalTimeSpent: number; // seconds
+  averageScore: number; // 0-1
+  fragmentsCompleted: number;
+  totalFragments: number;
+  completionRate: number; // 0-1
+  averageAttemptsPerFragment: number;
+  difficultFragments: FragmentProgress[]; // fragments with low scores or many attempts
+  strengths: string[];
+  improvements: string[];
+}
+
+export class DictationService {
+  /**
+   * Calculate comprehensive analytics for a dictation session
+   */
+  static analyzeSession(session: DictationSession): SessionAnalytics {
+    const { progress } = session;
+    const totalFragments = progress.length;
+    const completedFragments = progress.filter(p => p.status !== 'pending').length;
+    
+    // Time and score calculations
+    const totalTimeSpent = progress.reduce((sum, p) => sum + p.timeSpent, 0);
+    const averageScore = totalFragments > 0 
+      ? progress.reduce((sum, p) => sum + p.bestScore, 0) / totalFragments 
+      : 0;
+    
+    // Attempt analysis
+    const totalAttempts = progress.reduce((sum, p) => sum + p.attempts.length, 0);
+    const averageAttemptsPerFragment = completedFragments > 0 
+      ? totalAttempts / completedFragments 
+      : 0;
+
+    // Identify difficult fragments (score < 0.7 or attempts > 3)
+    const difficultFragments = progress.filter(p => 
+      p.bestScore < 0.7 || p.attempts.length > 3
+    );
+
+    // Generate strengths and improvement suggestions
+    const strengths: string[] = [];
+    const improvements: string[] = [];
+
+    if (averageScore >= 0.9) {
+      strengths.push("Excellent listening comprehension");
+    } else if (averageScore >= 0.7) {
+      strengths.push("Good overall understanding");
+    }
+
+    if (averageAttemptsPerFragment <= 2) {
+      strengths.push("Quick learning and adaptation");
+    }
+
+    if (averageScore < 0.6) {
+      improvements.push("Focus on listening for key words");
+    }
+
+    if (averageAttemptsPerFragment > 4) {
+      improvements.push("Try slowing down audio playback speed");
+    }
+
+    if (difficultFragments.length > totalFragments * 0.3) {
+      improvements.push("Consider reviewing vocabulary before practice");
+    }
+
+    return {
+      totalTimeSpent,
+      averageScore,
+      fragmentsCompleted: completedFragments,
+      totalFragments,
+      completionRate: completedFragments / totalFragments,
+      averageAttemptsPerFragment,
+      difficultFragments,
+      strengths,
+      improvements
+    };
+  }
+
+  /**
+   * Format time in minutes and seconds
+   */
+  static formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    
+    if (minutes === 0) {
+      return `${remainingSeconds}s`;
+    }
+    
+    return `${minutes}m ${remainingSeconds}s`;
+  }
+
+  /**
+   * Get performance level based on score
+   */
+  static getPerformanceLevel(score: number): {
+    level: string;
+    color: string;
+    description: string;
+  } {
+    if (score >= 0.95) {
+      return {
+        level: 'Excellent',
+        color: 'text-green-600 bg-green-100',
+        description: 'Outstanding performance!'
+      };
+    } else if (score >= 0.85) {
+      return {
+        level: 'Very Good',
+        color: 'text-blue-600 bg-blue-100',
+        description: 'Great job with minor errors'
+      };
+    } else if (score >= 0.70) {
+      return {
+        level: 'Good',
+        color: 'text-yellow-600 bg-yellow-100',
+        description: 'Good understanding, room for improvement'
+      };
+    } else if (score >= 0.50) {
+      return {
+        level: 'Fair',
+        color: 'text-orange-600 bg-orange-100',
+        description: 'Needs more practice'
+      };
+    } else {
+      return {
+        level: 'Needs Improvement',
+        color: 'text-red-600 bg-red-100',
+        description: 'Consider reviewing the material'
+      };
+    }
+  }
+
+  /**
+   * Calculate accuracy trend across fragments
+   */
+  static getAccuracyTrend(progress: FragmentProgress[]): {
+    trend: 'improving' | 'declining' | 'stable';
+    trendValue: number; // -1 to 1, where positive means improving
+  } {
+    if (progress.length < 3) {
+      return { trend: 'stable', trendValue: 0 };
+    }
+
+    const scores = progress
+      .filter(p => p.status !== 'pending')
+      .map(p => p.bestScore);
+
+    if (scores.length < 3) {
+      return { trend: 'stable', trendValue: 0 };
+    }
+
+    // Simple trend calculation: compare first half with second half
+    const midpoint = Math.floor(scores.length / 2);
+    const firstHalf = scores.slice(0, midpoint);
+    const secondHalf = scores.slice(midpoint);
+
+    const firstHalfAvg = firstHalf.reduce((sum, score) => sum + score, 0) / firstHalf.length;
+    const secondHalfAvg = secondHalf.reduce((sum, score) => sum + score, 0) / secondHalf.length;
+
+    const trendValue = secondHalfAvg - firstHalfAvg;
+
+    if (trendValue > 0.1) {
+      return { trend: 'improving', trendValue };
+    } else if (trendValue < -0.1) {
+      return { trend: 'declining', trendValue };
+    } else {
+      return { trend: 'stable', trendValue };
+    }
+  }
+
+  /**
+   * Generate personalized recommendations
+   */
+  static getRecommendations(session: DictationSession): string[] {
+    const analytics = this.analyzeSession(session);
+    const recommendations: string[] = [];
+
+    // Score-based recommendations
+    if (analytics.averageScore < 0.6) {
+      recommendations.push("Try using a slower playback speed (0.75x) to better catch each word");
+      recommendations.push("Focus on listening to one word at a time rather than trying to catch everything");
+    }
+
+    // Attempt-based recommendations  
+    if (analytics.averageAttemptsPerFragment > 4) {
+      recommendations.push("Consider reading the article text first to familiarize yourself with the vocabulary");
+      recommendations.push("Practice with shorter fragments to build confidence");
+    }
+
+    // Time-based recommendations
+    const avgTimePerFragment = analytics.totalTimeSpent / analytics.fragmentsCompleted;
+    if (avgTimePerFragment > 120) { // More than 2 minutes per fragment
+      recommendations.push("Try to trust your first instinct more - overthinking can sometimes hurt performance");
+    }
+
+    // Difficulty-based recommendations
+    if (analytics.difficultFragments.length > analytics.totalFragments * 0.4) {
+      recommendations.push("This article might be challenging - consider starting with an easier difficulty level");
+      recommendations.push("Focus on understanding the main idea rather than every single word");
+    }
+
+    // Positive reinforcements
+    if (analytics.averageScore >= 0.8) {
+      recommendations.push("Great work! Try challenging yourself with faster playback speeds");
+    }
+
+    if (analytics.completionRate === 1 && analytics.averageScore >= 0.7) {
+      recommendations.push("Excellent persistence! You completed the entire article with good accuracy");
+    }
+
+    return recommendations.slice(0, 3); // Return top 3 recommendations
+  }
+}
+
+C:\Users\User\Desktop\jink-demo\src\tests\setupTests.ts
+
+import '@testing-library/jest-dom';
+import 'whatwg-fetch';
+
+// Optional: quiet React Query network errors in tests
+// import { setLogger } from '@tanstack/react-query';
+// setLogger({ log: console.log, warn: console.warn, error: () => {} });
+
 C:\Users\User\Desktop\jink-demo\src\types\article.types.ts
 
 // Complete article.types.ts with all missing types
@@ -7164,10 +9093,92 @@ export interface IArticleMetadata {
   estimatedTime?: number;
 }
 
+
+// Add to existing article.types.ts
+export interface FragmentTiming {
+  fragmentIndex: number;
+  order: number;
+  text: string;
+  startTime: number;
+  endTime: number;
+  duration: number;
+  wordCount: number;
+}
+
+export interface DictationAttempt {
+  attempt: string;
+  result: ComparisonResult;
+  timestamp: Date;
+}
+
+export interface FragmentProgress {
+  fragmentIndex: number;
+  attempts: DictationAttempt[];
+  status: 'pending' | 'correct' | 'given_up';
+  bestScore: number;
+  timeSpent: number;
+}
+
+export interface ComparisonResult {
+score: number; // 0-1
+totalTokens: number;
+correctTokens: number;
+feedback: string; // masked hint
+tokenDiffs: TokenDiff[]; // define TokenDiff as below
+isPerfect: boolean;
+}
+
+export interface TokenDiff {
+original: string;
+attempt: string;
+isCorrect: boolean;
+type: 'match' | 'substitution' | 'insertion' | 'deletion';
+}
+
 // Utility Types
 export type ArticleStatus = IArticle['status'];
 export type SentenceStatus = ISentence['status'];
 export type DifficultyLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
+C:\Users\User\Desktop\jink-demo\src\utils\tests\sentenceFragmentSplitter.test.ts
+
+import {
+  validateArticleName,
+  splitFragmentAt,
+  mergeFragments,
+  validateFragments,
+  smartSplitFragment,
+} from '../../utils/sentenceFragmentSplitter';
+
+
+console.log('ENV', typeof window, typeof document, typeof navigator);
+
+describe('sentenceFragmentSplitter', () => {
+  test('validateArticleName accepts alnum, dash, underscore, 3-50 chars', () => {
+    expect(validateArticleName('abc-DEF_123')).toBe(true);
+    expect(validateArticleName('ab')).toBe(false);
+  });
+
+  test('splitFragmentAt splits on index and trims edges', () => {
+    const parts = splitFragmentAt(['hello world'], 0, 5);
+    expect(parts).toEqual(['hello', 'world']);
+  });
+
+  test('mergeFragments merges consecutive items', () => {
+    const merged = mergeFragments(['a', 'b', 'c'], 1);
+    expect(merged).toEqual(['a', 'b c']);
+  });
+
+  test('smartSplitFragment falls back to middle when no hints', () => {
+    const res = smartSplitFragment(['onetwothree'], 0);
+    expect(res.length).toBe(2);
+  });
+
+  test('validateFragments flags long/short correctly', () => {
+    const data = validateFragments(['short', 'this one is rather too long for comfort'.repeat(1)]);
+    expect(data.totalFragments).toBe(2);
+  });
+});
 
 C:\Users\User\Desktop\jink-demo\src\utils\auth.ts
 
@@ -7198,6 +9209,169 @@ export const isTokenValid = (): boolean => {
   } catch {
     return false;
   }
+};
+
+C:\Users\User\Desktop\jink-demo\src\utils\dictationUtils.ts
+
+// src/utils/dictationUtils.ts
+
+
+import type { TokenDiff, ComparisonResult } from '../types/article.types';
+
+
+/**
+ * Normalize text for comparison - case insensitive, punctuation stripped
+ */
+export function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    // Replace curly quotes with straight quotes
+    .replace(/['']/g, "'")
+    .replace(/[""]/g, '"')
+    // Collapse multiple spaces
+    .replace(/\s+/g, ' ');
+}
+
+/**
+ * Tokenize and clean tokens for comparison
+ */
+export function tokenizeForComparison(text: string): string[] {
+  const normalized = normalizeText(text);
+  
+  return normalized
+    .split(/\s+/)
+    .map(token => 
+      // Strip leading/trailing punctuation but preserve internal punctuation (contractions)
+      token.replace(/^[^\w']+|[^\w']+$/g, '')
+    )
+    .filter(token => token.length > 0);
+}
+
+/**
+ * Simple token-level diff algorithm
+ */
+export function computeTokenDiff(originalTokens: string[], attemptTokens: string[]): TokenDiff[] {
+  const diffs: TokenDiff[] = [];
+  const maxLen = Math.max(originalTokens.length, attemptTokens.length);
+  
+  for (let i = 0; i < maxLen; i++) {
+    const original = originalTokens[i] || '';
+    const attempt = attemptTokens[i] || '';
+    
+    if (i >= originalTokens.length) {
+      // Extra word in attempt (insertion)
+      diffs.push({
+        original: '',
+        attempt,
+        isCorrect: false,
+        type: 'insertion'
+      });
+    } else if (i >= attemptTokens.length) {
+      // Missing word in attempt (deletion)
+      diffs.push({
+        original,
+        attempt: '',
+        isCorrect: false,
+        type: 'deletion'
+      });
+    } else if (original === attempt) {
+      // Perfect match
+      diffs.push({
+        original,
+        attempt,
+        isCorrect: true,
+        type: 'match'
+      });
+    } else {
+      // Substitution
+      diffs.push({
+        original,
+        attempt,
+        isCorrect: false,
+        type: 'substitution'
+      });
+    }
+  }
+  
+  return diffs;
+}
+
+/**
+ * Generate masked hint feedback
+ */
+export function generateMaskedHint(originalTokens: string[], tokenDiffs: TokenDiff[]): string {
+  return originalTokens.map((token, index) => {
+    const diff = tokenDiffs[index];
+    if (diff && diff.isCorrect) {
+      return token;
+    } else {
+      // Mask incorrect/missing words with asterisks matching original length
+      return '*'.repeat(Math.max(token.length, 3));
+    }
+  }).join(' ');
+}
+
+/**
+ * Main comparison function
+ */
+export function compareTexts(original: string, attempt: string): ComparisonResult {
+  const originalTokens = tokenizeForComparison(original);
+  const attemptTokens = tokenizeForComparison(attempt);
+  
+  const tokenDiffs = computeTokenDiff(originalTokens, attemptTokens);
+  
+  const correctTokens = tokenDiffs.filter(diff => 
+    diff.isCorrect && diff.type === 'match'
+  ).length;
+  
+  const totalTokens = Math.max(originalTokens.length, 1); // Avoid division by zero
+  const score = correctTokens / totalTokens;
+  const isPerfect = score === 1 && originalTokens.length === attemptTokens.length;
+  
+  const feedback = generateMaskedHint(originalTokens, tokenDiffs);
+  
+  return {
+    score,
+    totalTokens,
+    correctTokens,
+    feedback,
+    tokenDiffs,
+    isPerfect
+  };
+}
+
+/**
+ * Check if answer is acceptable (perfect or near-perfect for long sentences)
+ */
+export function isAnswerAcceptable(result: ComparisonResult, toleranceMode: boolean = false): boolean {
+  if (result.isPerfect) return true;
+  
+  // For MVP, require perfect match. Later can add tolerance for long sentences
+  if (toleranceMode && result.totalTokens >= 8) {
+    // Allow 1 error for sentences >= 8 words
+    return (result.totalTokens - result.correctTokens) <= 1;
+  }
+  
+  return false;
+}
+
+C:\Users\User\Desktop\jink-demo\src\utils\errorUtils.ts
+
+// Add to existing error handling
+export const handleAudioError = (error: Error) => {
+  console.error('Audio playback error:', error);
+  
+  // Add user-friendly error messages
+  if (error.message.includes('CORS')) {
+    return 'Audio file cannot be loaded due to security restrictions';
+  }
+  
+  if (error.message.includes('network')) {
+    return 'Network error - please check your connection';
+  }
+  
+  return 'Audio playback failed - please try again';
 };
 
 C:\Users\User\Desktop\jink-demo\src\utils\sentenceFragmentSplitter.ts
@@ -7937,6 +10111,16 @@ function App() {
 
   const location = useLocation();
   const hideNavbar = ["/login", "/unauthorized"].includes(location.pathname);
+  // Add to your main index.tsx or App.tsx
+  // Preload audio files for better performance
+  const preloadCriticalAudio = (audioUrls: string[]) => {
+    audioUrls.forEach(url => {
+      const audio = new Audio();
+      audio.preload = 'metadata';
+      audio.src = url;
+    });
+  };
+
   return (
     <>
       {!hideNavbar && <Navbar />}
@@ -8339,6 +10523,28 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+/* Add to your existing CSS */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-clamp: 2; 
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-clamp: 3;
+}
+
+/* Audio player custom styles */
+.audio-player-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 C:\Users\User\Desktop\jink-demo\src\main.tsx
 

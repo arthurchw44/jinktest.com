@@ -17,6 +17,7 @@ import type {
   IArticle
 } from '../types/article.types';
 
+
 // API functions
 const articleAPI = {
   // Suggest article name from title
@@ -39,16 +40,16 @@ const articleAPI = {
 
   create: async (data: CreateArticleRequest): Promise<{ success: boolean; article: IArticle; message: string }> => {
     console.log('Creating article with payload:', data);
-    
+
     // Validate payload before sending
     if (!data.articleName || !data.title || !data.originalText) {
       throw new Error('Missing required fields: articleName, title, or originalText');
     }
-    
+
     if (!data.sentences || data.sentences.length === 0) {
       throw new Error('At least one sentence is required');
     }
-    
+
     // Ensure all sentences have required fields
     data.sentences.forEach((sentence, index) => {
       if (!sentence.text || sentence.text.trim().length === 0) {
@@ -64,7 +65,7 @@ const articleAPI = {
         sentence.isLong = sentence.wordCount > 15;
       }
     });
-    
+
     try {
       const response = await api.post<{ success: boolean; article: IArticle; message: string }>('/articles', data);
       return response.data;
@@ -75,42 +76,42 @@ const articleAPI = {
         data: error.response?.data,
         config: error.config
       });
-      
+
       // Enhanced error message handling
       if (error.response?.data?.error) {
         throw new Error(error.response.data.error);
       }
-      
+
       // Handle specific HTTP status codes with user-friendly messages
       if (error.response?.status === 409) {
         throw new Error(`Article name "${data.articleName}" already exists. Please choose a different name.`);
       }
-      
+
       if (error.response?.status === 400) {
         throw new Error('Invalid article data. Please check your input and try again.');
       }
-      
+
       if (error.response?.status === 401) {
         throw new Error('You are not authorized to create articles. Please log in again.');
       }
-      
+
       if (error.response?.status === 403) {
         throw new Error('You do not have permission to create articles. Contact your administrator.');
       }
-      
+
       if (error.response?.status === 500) {
         throw new Error('Server error occurred. Please try again in a moment.');
       }
-      
+
       // Network or other errors
       if (!error.response) {
         throw new Error('Network error. Please check your internet connection and try again.');
       }
-      
+
       throw error;
     }
   },
-  
+
 
   // Get all articles for teacher
   getAll: async (): Promise<ArticlesResponse> => {
@@ -221,14 +222,14 @@ export const useArticle = (articleName: string) => {
  */
 export const useCreateArticle = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: articleAPI.create,
     onSuccess: (data) => {
       // Invalidate articles list to show new article
       queryClient.invalidateQueries({ queryKey: ['articles'] });
       queryClient.invalidateQueries({ queryKey: ['articleStats'] });
-      
+
       // Set the new article in cache
       queryClient.setQueryData(['article', data.article.articleName], data.article);
     },
@@ -245,12 +246,12 @@ export const useUpdateArticleMetadata = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ 
-      articleName, 
-      updateData 
-    }: { 
-      articleName: string; 
-      updateData: UpdateArticleRequest 
+    mutationFn: async ({
+      articleName,
+      updateData
+    }: {
+      articleName: string;
+      updateData: UpdateArticleRequest
     }) => {
       const response = await api.put<ArticleResponse>(`/articles/${articleName}`, updateData);
       return response.data;
@@ -274,12 +275,12 @@ export const useUpdateArticleSentences = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ 
-      articleName, 
-      sentences 
-    }: { 
-      articleName: string; 
-      sentences: UpdateSentencesRequest 
+    mutationFn: async ({
+      articleName,
+      sentences
+    }: {
+      articleName: string;
+      sentences: UpdateSentencesRequest
     }) => {
       const response = await api.put<ArticleResponse>(`/articles/${articleName}/sentences`, sentences);
       return response.data;
@@ -301,7 +302,7 @@ export const useUpdateArticleSentences = () => {
  */
 export const useDeleteArticle = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: articleAPI.delete,
     onSuccess: (_, articleName) => {
@@ -345,16 +346,16 @@ export const useSentence = (sentenceId: string) => {
  */
 export const useUpdateSentence = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: ({ sentenceId, data }: { 
-      sentenceId: string; 
-      data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>> 
+    mutationFn: ({ sentenceId, data }: {
+      sentenceId: string;
+      data: Partial<Pick<ISentence, 'text' | 'status' | 'individualAudioUrl'>>
     }) => sentenceAPI.update(sentenceId, data),
     onSuccess: (response, variables) => {
       // Update sentence in cache
       queryClient.setQueryData(['sentence', variables.sentenceId], response.sentence);
-      
+
       // Parse articleName from sentenceId to invalidate article
       const lastUnderscoreIndex = variables.sentenceId.lastIndexOf('_');
       if (lastUnderscoreIndex !== -1) {
@@ -362,5 +363,41 @@ export const useUpdateSentence = () => {
         queryClient.invalidateQueries({ queryKey: ['article', articleName] });
       }
     }
+  });
+};
+
+const toAbsoluteUrlFromAxios = (url?: string) => {
+  if (!url) return url;
+  try {
+    // If url is already absolute, this succeeds
+    return new URL(url).toString();
+  } catch {
+    // Otherwise, resolve against baseURL
+    const base = api.defaults.baseURL ?? '';
+    return new URL(url, base).toString();
+  }
+};
+
+
+// Add to existing useArticles hook
+export const useArticleWithAudio = (articleName: string) => {
+  return useQuery({
+    queryKey: ['article', articleName, 'audio'],
+    queryFn: async () => {
+      const result = await articleAPI.getByName(articleName);
+
+      result.article.fullAudioUrl = toAbsoluteUrlFromAxios(result.article.fullAudioUrl);
+
+      // // Ensure audio URL is properly formatted
+      // if (result.article.fullAudioUrl) {
+      //   result.article.fullAudioUrl = result.article.fullAudioUrl.startsWith('http')
+      //     ? result.article.fullAudioUrl
+      //     : `${api.defaults.baseURL}/${result.article.fullAudioUrl}`;
+      // }
+
+
+      return result.article;
+    },
+    enabled: !!articleName,
   });
 };

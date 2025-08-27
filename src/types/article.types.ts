@@ -142,6 +142,48 @@ export interface IArticleMetadata {
   estimatedTime?: number;
 }
 
+
+// Add to existing article.types.ts
+export interface FragmentTiming {
+  fragmentIndex: number;
+  order: number;
+  text: string;
+  startTime: number;
+  endTime: number;
+  duration: number;
+  wordCount: number;
+}
+
+export interface DictationAttempt {
+  attempt: string;
+  result: ComparisonResult;
+  timestamp: Date;
+}
+
+export interface FragmentProgress {
+  fragmentIndex: number;
+  attempts: DictationAttempt[];
+  status: 'pending' | 'correct' | 'given_up';
+  bestScore: number;
+  timeSpent: number;
+}
+
+export interface ComparisonResult {
+score: number; // 0-1
+totalTokens: number;
+correctTokens: number;
+feedback: string; // masked hint
+tokenDiffs: TokenDiff[]; // define TokenDiff as below
+isPerfect: boolean;
+}
+
+export interface TokenDiff {
+original: string;
+attempt: string;
+isCorrect: boolean;
+type: 'match' | 'substitution' | 'insertion' | 'deletion';
+}
+
 // Utility Types
 export type ArticleStatus = IArticle['status'];
 export type SentenceStatus = ISentence['status'];

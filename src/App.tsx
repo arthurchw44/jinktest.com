@@ -28,6 +28,16 @@ function App() {
 
   const location = useLocation();
   const hideNavbar = ["/login", "/unauthorized"].includes(location.pathname);
+  // Add to your main index.tsx or App.tsx
+  // Preload audio files for better performance
+  const preloadCriticalAudio = (audioUrls: string[]) => {
+    audioUrls.forEach(url => {
+      const audio = new Audio();
+      audio.preload = 'metadata';
+      audio.src = url;
+    });
+  };
+
   return (
     <>
       {!hideNavbar && <Navbar />}

@@ -223,6 +223,20 @@ const TeacherDashboard: React.FC = () => {
                             Edit
                           </Link>
                         )}
+                        {/* Add to existing TeacherDashboard component */}
+                        {article.status === 'ready' && (
+                          <div className="mt-4">
+                            <Link 
+                              to={`/student/practice/${article.articleName}`}
+                              className="text-blue-600 hover:text-blue-800 text-sm"
+                              target="_blank"
+                            >
+                              👀 Preview Student Experience
+                            </Link>
+                          </div>
+                        )}
+
+
                       </div>
                     </div>
                   </div>
