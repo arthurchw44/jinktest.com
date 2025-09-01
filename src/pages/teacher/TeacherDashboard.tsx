@@ -1,33 +1,136 @@
-// src/pages/teacher/TeacherDashboard.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useArticles, useArticleStats } from '../../hooks/useArticles';
+import { useAudioStatus } from '../../hooks/useAudioStatus';
 import type { IArticle } from '../../types/article.types';
 
+// Standalone status badge with audio awareness
+const ArticleStatusBadge: React.FC<{ article: IArticle }> = ({ article }) => {
+  const { data: audioStatus } = useAudioStatus(
+    article.articleName,
+    article.status === 'processing' || article.status === 'ready'
+  );
+
+  const hasAudio =
+    audioStatus?.audio?.hasAudio ||
+    (audioStatus?.audio?.totalFragments ?? 0) > 0 ||
+    Boolean(article.fullAudioUrl);
+
+  const getStatusConfig = () => {
+    if (article.status === 'processing') {
+      return { bg: 'bg-blue-100', text: 'text-blue-800', label: '🔄 Generating Audio', title: 'Audio being processed' };
+    }
+    if (article.status === 'error') {
+      return { bg: 'bg-red-100', text: 'text-red-800', label: '❌ Generation Failed', title: 'Audio generation error' };
+    }
+    if (article.status === 'editing') {
+      if (hasAudio) {
+        return { bg: 'bg-green-100', text: 'text-green-800', label: '✅ Ready to Publish', title: 'Audio generated, can publish' };
+      }
+      return { bg: 'bg-yellow-100', text: 'text-yellow-800', label: '📝 Draft', title: 'Needs audio generation' };
+    }
+    if (article.status === 'ready') {
+      return { bg: 'bg-blue-100', text: 'text-blue-800', label: '🎯 Published', title: 'Available to students' };
+    }
+    return { bg: 'bg-gray-100', text: 'text-gray-800', label: article.status, title: '' };
+  };
+
+  const config = getStatusConfig();
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}
+      title={config.title}
+    >
+      {config.label}
+    </span>
+  );
+};
+
+// Row for recent articles list
+const ArticleRow: React.FC<{ article: IArticle }> = ({ article }) => {
+  const { data: audioStatus } = useAudioStatus(
+    article.articleName,
+    article.status === 'processing' || article.status === 'ready'
+  );
+
+  const hasAudio =
+    audioStatus?.audio?.hasAudio ||
+    (audioStatus?.audio?.totalFragments ?? 0) > 0 ||
+    Boolean(article.fullAudioUrl);
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  return (
+    <div className="p-6 hover:bg-gray-50 transition-colors">
+      <div className="flex items-center justify-between">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center space-x-2 mb-1">
+            <h4 className="text-sm font-medium text-gray-900 truncate">{article.title}</h4>
+            <ArticleStatusBadge article={article} />
+          </div>
+          <div className="flex items-center space-x-4 text-xs text-gray-500">
+            <span className="font-mono bg-gray-100 px-2 py-1 rounded">{article.articleName}</span>
+            <span>{article.sentences.length} sentences</span>
+            {article.metadata?.difficulty && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                {article.metadata.difficulty}
+              </span>
+            )}
+            <span>Created {formatDate(article.createdAt)}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 ml-4">
+          <Link
+            to={`/teacher/articles/${article.articleName}`}
+            className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+          >
+            View
+          </Link>
+
+          {article.status === 'editing' && (
+            <Link
+              to={`/teacher/articles/${article.articleName}/edit`}
+              className="text-green-600 hover:text-green-800 text-sm transition-colors"
+            >
+              Edit
+            </Link>
+          )}
+
+          {article.status === 'ready' && (
+            <Link
+              to={`/teacher/practice/${article.articleName}`}
+
+              rel="noopener noreferrer"
+              className="text-purple-600 hover:text-purple-800 text-sm transition-colors"
+              title="Preview student experience"
+            >
+              👁️ Preview
+            </Link>
+          )}
+
+          {article.status === 'editing' && hasAudio && (
+            <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+              Ready to publish
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TeacherDashboard: React.FC = () => {
-  // const navigate = useNavigate();
   const { user } = useAuth();
   const { data: articles, isLoading: articlesLoading } = useArticles();
   const { data: stats, isLoading: statsLoading } = useArticleStats();
 
   const recentArticles = articles?.slice(0, 5) || [];
-  
-  const getStatusBadge = (status: IArticle['status']) => {
-    const statusConfig = {
-      editing: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Editing' },
-      processing: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Processing' },
-      ready: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ready' },
-      error: { bg: 'bg-red-100', text: 'text-red-800', label: 'Error' }
-    };
-    
-    const config = statusConfig[status];
-    return (
-      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
-        {config.label}
-      </span>
-    );
-  };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -46,7 +149,7 @@ const TeacherDashboard: React.FC = () => {
             Manage your dictation exercises and track student progress
           </p>
         </div>
-        
+
         <Link
           to="/teacher/articles/create"
           className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
@@ -61,7 +164,6 @@ const TeacherDashboard: React.FC = () => {
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statsLoading ? (
-          // Loading skeletons
           Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="bg-white p-6 rounded-lg shadow border">
               <div className="animate-pulse">
@@ -88,6 +190,7 @@ const TeacherDashboard: React.FC = () => {
               </div>
             </div>
 
+            {/* Published (status === 'ready') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -99,11 +202,13 @@ const TeacherDashboard: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-green-600">{stats?.byStatus.ready || 0}</div>
-                  <div className="text-sm text-gray-600">Ready for Use</div>
+                  <div className="text-sm text-gray-600">Published</div>
+                  <div className="text-xs text-gray-500">Available to students</div>
                 </div>
               </div>
             </div>
 
+            {/* Drafts (status === 'editing') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -115,11 +220,13 @@ const TeacherDashboard: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-yellow-600">{stats?.byStatus.editing || 0}</div>
-                  <div className="text-sm text-gray-600">In Progress</div>
+                  <div className="text-sm text-gray-600">Drafts</div>
+                  <div className="text-xs text-gray-500">Being edited</div>
                 </div>
               </div>
             </div>
 
+            {/* Processing (status === 'processing') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -132,6 +239,7 @@ const TeacherDashboard: React.FC = () => {
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-purple-600">{stats?.byStatus.processing || 0}</div>
                   <div className="text-sm text-gray-600">Processing</div>
+                  <div className="text-xs text-gray-500">Generating audio</div>
                 </div>
               </div>
             </div>
@@ -154,10 +262,9 @@ const TeacherDashboard: React.FC = () => {
                 </Link>
               </div>
             </div>
-            
+
             <div className="divide-y divide-gray-200">
               {articlesLoading ? (
-                // Loading skeletons
                 Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="p-6 animate-pulse">
                     <div className="flex items-center justify-between">
@@ -169,7 +276,7 @@ const TeacherDashboard: React.FC = () => {
                     </div>
                   </div>
                 ))
-              ) : recentArticles.length === 0 ? (
+              ) : (recentArticles.length === 0) ? (
                 <div className="p-8 text-center">
                   <div className="text-gray-400 mb-4">
                     <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,70 +292,16 @@ const TeacherDashboard: React.FC = () => {
                   </Link>
                 </div>
               ) : (
-                recentArticles.map((article:IArticle) => (
-                  <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h4 className="text-sm font-medium text-gray-900 truncate">
-                            {article.title}
-                          </h4>
-                          {getStatusBadge(article.status)}
-                        </div>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
-                          <span className="font-mono bg-gray-100 px-2 py-1 rounded">
-                            {article.articleName}
-                          </span>
-                          <span>{article.sentences.length} sentences</span>
-                          {article.metadata.difficulty && (
-                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                              {article.metadata.difficulty}
-                            </span>
-                          )}
-                          <span>Created {formatDate(article.createdAt)}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2 ml-4">
-                        <Link
-                          to={`/teacher/articles/${article.articleName}`}
-                          className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
-                        >
-                          View
-                        </Link>
-                        {article.status === 'editing' && (
-                          <Link
-                            to={`/teacher/articles/${article.articleName}/edit`}
-                            className="text-green-600 hover:text-green-800 text-sm transition-colors"
-                          >
-                            Edit
-                          </Link>
-                        )}
-                        {/* Add to existing TeacherDashboard component */}
-                        {article.status === 'ready' && (
-                          <div className="mt-4">
-                            <Link 
-                              to={`/student/practice/${article.articleName}`}
-                              className="text-blue-600 hover:text-blue-800 text-sm"
-                              target="_blank"
-                            >
-                              👀 Preview Student Experience
-                            </Link>
-                          </div>
-                        )}
-
-
-                      </div>
-                    </div>
-                  </div>
+                recentArticles.map((article) => (
+                  <ArticleRow key={article.articleName} article={article} />
                 ))
               )}
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions + Tips */}
         <div className="space-y-6">
-          {/* Actions Card */}
           <div className="bg-white rounded-lg shadow border">
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
@@ -298,7 +351,6 @@ const TeacherDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Tips Card */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
             <div className="p-6">
               <div className="flex items-start">
@@ -308,17 +360,18 @@ const TeacherDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Pro Tips</h4>
+                  <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Workflow Tips</h4>
                   <ul className="text-xs text-blue-800 space-y-1">
-                    <li>• Aim for 15-25 sentences per article</li>
-                    <li>• Keep sentences under 15 words for clarity</li>
-                    <li>• Use descriptive article names like "climate_change_2024"</li>
-                    <li>• Review sentence splitting before creating</li>
+                    <li>• Create → Generate Audio → Review → Publish</li>
+                    <li>• Students only see “Published” articles</li>
+                    <li>• Generate audio before publishing</li>
+                    <li>• Preview audio quality before publishing</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

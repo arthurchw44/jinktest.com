@@ -37,9 +37,9 @@ const ArticleEdit: React.FC = () => {
     if (article) {
       setFormData({
         title: article.title,
-        grade: article.metadata.grade || '',
-        subject: article.metadata.subject || '',
-        difficulty: article.metadata.difficulty || 'A1'
+        grade: article.metadata?.grade || '',
+        subject: article.metadata?.subject || '',
+        difficulty: article.metadata?.difficulty || 'A1'
       });
       
       const sentenceTexts = article.sentences

@@ -5,7 +5,7 @@ import { RoleGuard } from './routes/guards/RoleGuard';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 // import TeacherDashboard from './pages/TeacherDashboard';
-import StudentDashboard from './pages/StudentDashboard';
+// import StudentDashboard from './pages/StudentDashboard';
 import Users from './pages/Users';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
@@ -23,6 +23,12 @@ import { useLocation } from 'react-router-dom';
 import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
 import ArticleEdit from './pages/teacher/ArticleEdit';
 
+import DictationPracticePage from './pages/student/DictationPractice';
+
+import StudentDashboard from './pages/student/StudentDashboard';
+import StudentArticleList from './pages/student/StudentArticleList';
+
+
 
 function App() {
 
@@ -30,13 +36,13 @@ function App() {
   const hideNavbar = ["/login", "/unauthorized"].includes(location.pathname);
   // Add to your main index.tsx or App.tsx
   // Preload audio files for better performance
-  const preloadCriticalAudio = (audioUrls: string[]) => {
-    audioUrls.forEach(url => {
-      const audio = new Audio();
-      audio.preload = 'metadata';
-      audio.src = url;
-    });
-  };
+  // const preloadCriticalAudio = (audioUrls: string[]) => {
+  //   audioUrls.forEach(url => {
+  //     const audio = new Audio();
+  //     audio.preload = 'metadata';
+  //     audio.src = url;
+  //   });
+  // };
 
   return (
     <>
@@ -74,12 +80,19 @@ function App() {
           <Route path="/teacher/articles/create" element={<ArticleUpload />} />
           <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
           <Route path="/teacher/articles/:articleName/edit" element={<ArticleEdit />} />
+          <Route path="/teacher/practice/:articleName" element={<DictationPracticePage />} />
         </Route>
 
         {/* Student routes */}
         <Route element={<RoleGuard allow={["student"]} />}>
           <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/student/articles" element={<StudentArticleList />} />
+           <Route path="student/practice/:articleName" element={<DictationPracticePage />} /> 
         </Route>
+
+
+
 
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />

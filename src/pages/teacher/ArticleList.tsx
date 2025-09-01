@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useArticles, useDeleteArticle, useArticleStats } from '../../hooks/useArticles';
 import type { IArticle } from '../../types/article.types';
+import PublishControls from '../../components/teacher/PublishControls';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ArticleList: React.FC = () => {
   // const navigate = useNavigate();
   const { data: articles, isLoading, error, refetch } = useArticles();
   const { data: stats } = useArticleStats();
   const deleteArticleMutation = useDeleteArticle();
+  const queryClient = useQueryClient();
   
   const [deleteConfirm, setDeleteConfirm] = useState<{
     isOpen: boolean;
@@ -179,9 +182,9 @@ const ArticleList: React.FC = () => {
                       <div className="text-sm text-gray-900">
                         <div>{article.sentences.length} sentences</div>
                         <div className="text-xs text-gray-500">
-                          {article.metadata.grade && `${article.metadata.grade} • `}
-                          {article.metadata.subject && `${article.metadata.subject} • `}
-                          {article.metadata.difficulty}
+                          {article.metadata?.grade && `${article.metadata.grade} • `}
+                          {article.metadata?.subject && `${article.metadata.subject} • `}
+                          {article.metadata?.difficulty}
                         </div>
                       </div>
                     </td>
@@ -218,6 +221,16 @@ const ArticleList: React.FC = () => {
                         >
                           Delete
                         </button>
+                        <div className="mt-4">
+                          <PublishControls 
+                            article={article}
+                            onStatusChange={() => {
+                              // Refresh the articles list
+                              queryClient.invalidateQueries({ queryKey: ['articles'] });
+                            }}
+                          />
+                        </div>
+
                       </div>
                     </td>
                   </tr>

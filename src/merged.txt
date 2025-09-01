@@ -1,3 +1,33 @@
+﻿
+C:\Users\User\Desktop\jink-demo\src\api\apiArticles.ts
+
+import type { AudioStatusResponse, FragmentTimingResponse, SignedAudioUrlResponse } from '../types/audio.types'
+import api from './axios';
+
+// Get audio status and timing information
+export const apiGetAudioStatus = async (articleName: string): Promise<AudioStatusResponse> => {
+  const { data } = await api.get<AudioStatusResponse>(`/articles/${articleName}/audio/status`)
+  return data
+}
+
+// Get specific fragment timing
+export const apiGetFragmentTiming = async (articleName: string, fragmentIndex: number): Promise<FragmentTimingResponse> => {
+  const { data } = await api.get<FragmentTimingResponse>(`/articles/${articleName}/audio/fragment/${fragmentIndex}`)
+  return data
+}
+
+// Get signed URL for audio file (30-minute expiry)
+export const apiGetSignedAudioUrl = async (articleName: string): Promise<SignedAudioUrlResponse> => {
+  const { data } = await api.get<SignedAudioUrlResponse>(`/articles/${articleName}/audio/url`)
+  return data
+}
+
+// Generate audio with quality selection
+export const apiGenerateAudio = async (articleName: string, quality: 'high' | 'medium' | 'low' = 'high') => {
+  const { data } = await api.post(`/articles/${articleName}/generate-audio`, { quality })
+  return data
+}
+
 
 C:\Users\User\Desktop\jink-demo\src\api\apiAuth.ts
 
@@ -128,6 +158,7 @@ export const apiDownloadCSVTemplate = async (): Promise<Blob> => {
   return response.data;
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\api\apiGroups.ts
 
 // src/api/apiGroups.ts
@@ -202,6 +233,7 @@ export const apiManageGroupMembers = async (
   return data.group;
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\api\apiUsers.ts
 
 // src/api/apiUsers.ts
@@ -271,6 +303,7 @@ export const apiResetPassword = async (username: string, newPassword: string): P
   return data;
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\api\axios.ts
 
 // src/api/axios.ts
@@ -297,7 +330,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401 ) {
       // Token expired or invalid - clear and redirect to login
       clearAuthToken();
       window.location.href = '/login';
@@ -311,6 +344,7 @@ api.interceptors.response.use(
 
 
 export default api;
+
 
 C:\Users\User\Desktop\jink-demo\src\assets\react.svg
 
@@ -339,6 +373,7 @@ describe('ArticleNameInput', () => {
     expect(onChange).toHaveBeenCalledWith('climate-2025');
   });
 });
+
 
 C:\Users\User\Desktop\jink-demo\src\components\articles\ArticleNameInput.tsx
 
@@ -412,7 +447,7 @@ export const ArticleNameInput: React.FC<ArticleNameInputProps> = ({
         
         {isValid && value && (
           <div className="absolute right-3 top-3 text-green-600">
-            ??
+            ✓
           </div>
         )}
       </div>
@@ -448,8 +483,8 @@ export const ArticleNameInput: React.FC<ArticleNameInputProps> = ({
       {value && isValid && (
         <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
           <div className="font-medium mb-1">Generated files:</div>
-          <div>??{value}_full_audio.mp3</div>
-          <div>??{value}_sentence_1.mp3, {value}_sentence_2.mp3, ...</div>
+          <div>• {value}_full_audio.mp3</div>
+          <div>• {value}_sentence_1.mp3, {value}_sentence_2.mp3, ...</div>
         </div>
       )}
     </div>
@@ -604,10 +639,10 @@ const SentencePreview: React.FC<SentencePreviewProps> = ({
   };
 
   const getValidationIcon = (validation: ReturnType<typeof getSentenceValidation>) => {
-    if (validation.isLong) return '?��?';
-    if (validation.isShort) return '??';
-    if (validation.isOptimal) return '??;
-    return '??';
+    if (validation.isLong) return '⚠️';
+    if (validation.isShort) return '📏';
+    if (validation.isOptimal) return '✅';
+    return '📝';
   };
 
   return (
@@ -659,7 +694,7 @@ const SentencePreview: React.FC<SentencePreviewProps> = ({
                              text-gray-700 rounded transition-colors"
                     title="Edit this fragment"
                   >
-                    ?��? Edit
+                    ✏️ Edit
                   </button>
                   
                   {index < sentences.length - 1 && (
@@ -669,7 +704,7 @@ const SentencePreview: React.FC<SentencePreviewProps> = ({
                                text-blue-700 rounded transition-colors"
                       title="Merge with next fragment"
                     >
-                      ?? Merge
+                      🔗 Merge
                     </button>
                   )}
                 </div>
@@ -693,14 +728,14 @@ const SentencePreview: React.FC<SentencePreviewProps> = ({
                     className="px-4 py-2 bg-green-600 text-white rounded-md 
                              hover:bg-green-700 transition-colors text-sm"
                   >
-                    ??Save
+                    ✅ Save
                   </button>
                   <button
                     onClick={handleCancelEdit}
                     className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md 
                              hover:bg-gray-400 transition-colors text-sm"
                   >
-                    ??Cancel
+                    ❌ Cancel
                   </button>
                 </div>
               </div>
@@ -848,7 +883,7 @@ export const TextInput: React.FC<TextInputProps> = ({
       {hasError && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-center space-x-2">
-            <span className="text-red-600">??/span>
+            <span className="text-red-600">❌</span>
             <span className="text-sm text-red-700 font-medium">Article Validation Error</span>
           </div>
           <div className="text-sm text-red-600 mt-1">{stats.error}</div>
@@ -905,7 +940,7 @@ export const TextInput: React.FC<TextInputProps> = ({
               <span className={`font-mono text-sm ${
                 stats.fragments.validation.optimalRange ? 'text-green-600' : 'text-yellow-600'
               }`}>
-                {stats.fragments.validation.optimalRange ? '??Yes' : '??No'}
+                {stats.fragments.validation.optimalRange ? '✓ Yes' : '⚠ No'}
               </span>
             </div>
           </div>
@@ -917,17 +952,17 @@ export const TextInput: React.FC<TextInputProps> = ({
         <h4 className="font-medium text-blue-800 mb-2">Article Guidelines</h4>
         <div className="text-sm text-blue-700 space-y-1">
           <div className="flex items-center space-x-2">
-            <span className={stats.text.words >= 20 && stats.text.words <= 1500 ? '?? : '??}>
+            <span className={stats.text.words >= 20 && stats.text.words <= 1500 ? '✅' : '❌'}>
             </span>
             <span>Word count: 20-1500 words (currently {stats.text.words})</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className={stats.fragments.validation.optimalRange ? '?? : '?��?'}>
+            <span className={stats.fragments.validation.optimalRange ? '✅' : '⚠️'}>
             </span>
             <span>Optimal fragments: 15-25 (currently {stats.fragments.count})</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className={stats.fragments.validation.longFragments === 0 ? '?? : '?��?'}>
+            <span className={stats.fragments.validation.longFragments === 0 ? '✅' : '⚠️'}>
             </span>
             <span>Long fragments (&gt;20 words): {stats.fragments.validation.longFragments}</span>
           </div>
@@ -936,7 +971,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         {!hasError && stats.text.words > 0 && (
           <div className="mt-3 pt-3 border-t border-blue-200">
             <div className="text-xs text-blue-600">
-              ?�� <strong>Tip:</strong> After creating the article, you can manually split and merge fragments using the editor.
+              💡 <strong>Tip:</strong> After creating the article, you can manually split and merge fragments using the editor.
               {stats.fragments.validation.longFragments > 0 && 
                 " Some fragments are long - you can split them for better dictation pacing."
               }
@@ -954,7 +989,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         }`}>
           <div className="flex items-center space-x-2">
             <span className="text-lg">
-              {canProceed ? '?? : '?��?'}
+              {canProceed ? '✅' : '⚠️'}
             </span>
             <span className={`text-sm font-medium ${
               canProceed ? 'text-green-800' : 'text-yellow-800'
@@ -1097,6 +1132,7 @@ export const LogoutAllConfirmModal: React.FC<LogoutAllConfirmModalProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\bulk\BulkExport.tsx
 
 // src/components/bulk/BulkExport.tsx
@@ -1196,6 +1232,7 @@ export const BulkExport: React.FC<BulkExportProps> = ({ onCancel }) => {
     </div>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\bulk\BulkImport.tsx
 
@@ -1365,6 +1402,7 @@ export const BulkImport: React.FC<BulkImportProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\bulk\CSVTemplateDownload.tsx
 
 import React from 'react';
@@ -1404,6 +1442,7 @@ export const CSVTemplateDownload: React.FC = () => {
     </button>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\common\ConfirmDialog.tsx
 
@@ -1462,6 +1501,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\common\LoadingSpinner.tsx
 
 import React from 'react';
@@ -1489,6 +1529,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\common\RoleBasedComponent.tsx
 
 import React from 'react';
@@ -1513,6 +1554,7 @@ export const RoleBasedComponent: React.FC<RoleBasedComponentProps> = ({
 
   return <>{children}</>;
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\dictation\FragmentDictation.tsx
 
@@ -1784,9 +1826,9 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
         <h1 className="text-2xl font-bold text-gray-900 mb-2">{articleTitle}</h1>
         <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
           <span>Fragment {session.currentFragmentIndex + 1} of {fragments.length}</span>
-          <span>??/span>
+          <span>•</span>
           <span>{session.completedFragments} completed</span>
-          <span>??/span>
+          <span>•</span>
           <span>Score: {Math.round(session.totalScore * 100)}%</span>
         </div>
       </div>
@@ -1809,7 +1851,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
             disabled={audioState.isLoading || !audioState.canPlay}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
-            {audioState.isPlaying ? '?��?' : '?��?'} Play Fragment
+            {audioState.isPlaying ? '⏸️' : '▶️'} Play Fragment
           </button>
           
           <button
@@ -1817,7 +1859,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
             disabled={audioState.isLoading || !audioState.canPlay}
             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            ?? Replay
+            🔄 Replay
           </button>
 
           <div className="flex items-center space-x-2">
@@ -1887,7 +1929,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
             <div className="text-sm text-gray-600">
               Attempts: {currentProgress.attempts.length}
               {currentProgress.bestScore > 0 && (
-                <span className="ml-2">??Best score: {Math.round(currentProgress.bestScore * 100)}%</span>
+                <span className="ml-2">• Best score: {Math.round(currentProgress.bestScore * 100)}%</span>
               )}
             </div>
           )}
@@ -1902,7 +1944,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
           {lastComparison && !isAnswerAcceptable(lastComparison) && (
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
-                <span className="text-red-600 text-lg">??/span>
+                <span className="text-red-600 text-lg">❌</span>
                 <span className="text-red-700 font-medium">
                   {lastComparison.correctTokens}/{lastComparison.totalTokens} words correct 
                   ({Math.round(lastComparison.score * 100)}%)
@@ -1923,7 +1965,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
           {lastComparison && isAnswerAcceptable(lastComparison) && (
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
-                <span className="text-green-600 text-lg">??/span>
+                <span className="text-green-600 text-lg">✅</span>
                 <span className="text-green-700 font-medium">Perfect! Well done!</span>
               </div>
               
@@ -1936,7 +1978,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
           {showAnswer && (
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
-                <span className="text-blue-600 text-lg">?��</span>
+                <span className="text-blue-600 text-lg">💡</span>
                 <span className="text-blue-700 font-medium">Correct Answer:</span>
               </div>
               
@@ -1955,7 +1997,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
           disabled={session.currentFragmentIndex === 0}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          ??Previous
+          ← Previous
         </button>
 
         <div className="text-center">
@@ -1970,7 +2012,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
           disabled={!canProceed}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLastFragment ? 'Finish' : 'Next'} ??
+          {isLastFragment ? 'Finish' : 'Next'} →
         </button>
       </div>
     </div>
@@ -1978,6 +2020,7 @@ const FragmentDictation: React.FC<FragmentDictationProps> = ({
 };
 
 export default FragmentDictation;
+
 
 C:\Users\User\Desktop\jink-demo\src\components\dictation\SessionResults.tsx
 
@@ -2016,9 +2059,9 @@ const SessionResults: React.FC<SessionResultsProps> = ({
       <div className="text-center bg-white rounded-lg shadow-sm border p-8">
         <div className="mb-4">
           {analytics.completionRate === 1 ? (
-            <div className="text-6xl mb-2">??</div>
+            <div className="text-6xl mb-2">🎉</div>
           ) : (
-            <div className="text-6xl mb-2">??</div>
+            <div className="text-6xl mb-2">📊</div>
           )}
         </div>
         
@@ -2097,19 +2140,19 @@ const SessionResults: React.FC<SessionResultsProps> = ({
               <div className="flex items-center space-x-1">
                 {accuracyTrend.trend === 'improving' && (
                   <>
-                    <span className="text-green-600">??</span>
+                    <span className="text-green-600">📈</span>
                     <span className="text-green-600 text-sm font-medium">Improving</span>
                   </>
                 )}
                 {accuracyTrend.trend === 'declining' && (
                   <>
-                    <span className="text-red-600">??</span>
+                    <span className="text-red-600">📉</span>
                     <span className="text-red-600 text-sm font-medium">Declining</span>
                   </>
                 )}
                 {accuracyTrend.trend === 'stable' && (
                   <>
-                    <span className="text-gray-600">?��?</span>
+                    <span className="text-gray-600">➡️</span>
                     <span className="text-gray-600 text-sm font-medium">Stable</span>
                   </>
                 )}
@@ -2129,14 +2172,14 @@ const SessionResults: React.FC<SessionResultsProps> = ({
             if (!fragment) return null;
 
             let statusColor = 'bg-gray-100 text-gray-600';
-            let statusIcon = '??;
+            let statusIcon = '⏳';
             
             if (progress.status === 'correct') {
               statusColor = 'bg-green-100 text-green-700';
-              statusIcon = '??;
+              statusIcon = '✅';
             } else if (progress.status === 'given_up') {
               statusColor = 'bg-yellow-100 text-yellow-700';
-              statusIcon = '?��';
+              statusIcon = '💡';
             }
 
             return (
@@ -2166,13 +2209,13 @@ const SessionResults: React.FC<SessionResultsProps> = ({
           {analytics.strengths.length > 0 && (
             <div className="bg-green-50 rounded-lg border border-green-200 p-6">
               <h3 className="text-lg font-semibold text-green-800 mb-3 flex items-center">
-                <span className="mr-2">?��</span>
+                <span className="mr-2">💪</span>
                 Strengths
               </h3>
               <ul className="space-y-2">
                 {analytics.strengths.map((strength, index) => (
                   <li key={index} className="text-green-700 text-sm flex items-start">
-                    <span className="text-green-600 mr-2 mt-1">??/span>
+                    <span className="text-green-600 mr-2 mt-1">•</span>
                     {strength}
                   </li>
                 ))}
@@ -2183,13 +2226,13 @@ const SessionResults: React.FC<SessionResultsProps> = ({
           {analytics.improvements.length > 0 && (
             <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
               <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-                <span className="mr-2">?��</span>
+                <span className="mr-2">🎯</span>
                 Areas for Improvement
               </h3>
               <ul className="space-y-2">
                 {analytics.improvements.map((improvement, index) => (
                   <li key={index} className="text-blue-700 text-sm flex items-start">
-                    <span className="text-blue-600 mr-2 mt-1">??/span>
+                    <span className="text-blue-600 mr-2 mt-1">•</span>
                     {improvement}
                   </li>
                 ))}
@@ -2203,13 +2246,13 @@ const SessionResults: React.FC<SessionResultsProps> = ({
       {recommendations.length > 0 && (
         <div className="bg-purple-50 rounded-lg border border-purple-200 p-6">
           <h3 className="text-lg font-semibold text-purple-800 mb-3 flex items-center">
-            <span className="mr-2">?��</span>
+            <span className="mr-2">💡</span>
             Personalized Recommendations
           </h3>
           <ul className="space-y-2">
             {recommendations.map((recommendation, index) => (
               <li key={index} className="text-purple-700 text-sm flex items-start">
-                <span className="text-purple-600 mr-2 mt-1">??/span>
+                <span className="text-purple-600 mr-2 mt-1">→</span>
                 {recommendation}
               </li>
             ))}
@@ -2221,7 +2264,7 @@ const SessionResults: React.FC<SessionResultsProps> = ({
       {analytics.difficultFragments.length > 0 && (
         <div className="bg-orange-50 rounded-lg border border-orange-200 p-6">
           <h3 className="text-lg font-semibold text-orange-800 mb-3 flex items-center">
-            <span className="mr-2">?��?</span>
+            <span className="mr-2">⚠️</span>
             Challenging Fragments
           </h3>
           <p className="text-orange-700 text-sm mb-3">
@@ -2237,7 +2280,7 @@ const SessionResults: React.FC<SessionResultsProps> = ({
                       Fragment {progress.fragmentIndex + 1}
                     </span>
                     <div className="text-xs text-gray-500">
-                      {progress.attempts.length} attempts ??{formatPercentage(progress.bestScore)}% best score
+                      {progress.attempts.length} attempts • {formatPercentage(progress.bestScore)}% best score
                     </div>
                   </div>
                   <p className="text-sm text-gray-800">{fragment?.text}</p>
@@ -2285,9 +2328,9 @@ const SessionResults: React.FC<SessionResultsProps> = ({
         </p>
         <div className="text-xs text-gray-500">
           <span>Total Score: {formatPercentage(analytics.averageScore)}%</span>
-          <span className="mx-2">??/span>
+          <span className="mx-2">•</span>
           <span>Time: {DictationService.formatTime(analytics.totalTimeSpent)}</span>
-          <span className="mx-2">??/span>
+          <span className="mx-2">•</span>
           <span>Completion: {formatPercentage(analytics.completionRate)}%</span>
         </div>
       </div>
@@ -2296,6 +2339,7 @@ const SessionResults: React.FC<SessionResultsProps> = ({
 };
 
 export default SessionResults;
+
 
 C:\Users\User\Desktop\jink-demo\src\components\groups\GroupDetail.tsx
 
@@ -2429,6 +2473,7 @@ export const GroupDetail: React.FC<GroupDetailProps> = ({
     </>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\groups\GroupForm.tsx
 
@@ -2616,6 +2661,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\groups\GroupsList.tsx
 
 import React, { useState } from 'react';
@@ -2700,8 +2746,8 @@ export const GroupsList: React.FC<GroupsListProps> = ({
               
               <div className="text-xs text-gray-500 mb-3">
                 Teacher: {group.teacherUsername}
-                {group.metadata?.grade && ` ??Grade: ${group.metadata.grade}`}
-                {group.metadata?.subject && ` ??Subject: ${group.metadata.subject}`}
+                {group.metadata?.grade && ` • Grade: ${group.metadata.grade}`}
+                {group.metadata?.subject && ` • Subject: ${group.metadata.subject}`}
               </div>
 
               <div className="flex justify-end space-x-2">
@@ -2746,6 +2792,7 @@ export const GroupsList: React.FC<GroupsListProps> = ({
     </div>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\groups\MemberPicker.tsx
 
@@ -2878,6 +2925,7 @@ export const MemberPicker: React.FC<MemberPickerProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\groups\StudentPicker.tsx
 
 import React, { useState, useMemo } from 'react';
@@ -3008,6 +3056,491 @@ export const StudentPicker: React.FC<StudentPickerProps> = ({
     </div>
   );
 };
+
+
+C:\Users\User\Desktop\jink-demo\src\components\student\RecentActivity.tsx
+
+// src/components/student/RecentActivity.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+interface RecentActivityProps {
+  progressData?: {
+    recentSessions: Array<{
+      articleName: string;
+      articleTitle: string;
+      score: number;
+      completionRate: number;
+      timestamp: Date;
+      fragments: number;
+    }>;
+  } | null;
+}
+
+const RecentActivity: React.FC<RecentActivityProps> = ({ progressData }) => {
+  const recentSessions = progressData?.recentSessions || [];
+
+  if (recentSessions.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <div className="text-center py-8 text-gray-500">
+          <div className="text-4xl mb-2">🌟</div>
+          <p>Start practicing to see your recent activity here!</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border p-6">
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+      
+      <div className="space-y-3">
+        {recentSessions.slice(0, 5).map((session, index) => (
+          <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex-1">
+              <Link
+                to={`/student/practice/${session.articleName}`}
+                className="font-medium text-gray-900 hover:text-blue-600"
+              >
+                {session.articleTitle}
+              </Link>
+              <div className="text-sm text-gray-500">
+                {session.fragments} fragments • {Math.round(session.completionRate)}% completed
+              </div>
+            </div>
+            
+            <div className="text-right">
+              <div className={`font-semibold ${
+                session.score >= 80 ? 'text-green-600' : 
+                session.score >= 60 ? 'text-yellow-600' : 'text-red-600'
+              }`}>
+                {Math.round(session.score)}%
+              </div>
+              <div className="text-xs text-gray-500">
+                {new Date(session.timestamp).toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {recentSessions.length > 5 && (
+        <div className="text-center mt-4">
+          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+            View all activity →
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default RecentActivity;
+
+C:\Users\User\Desktop\jink-demo\src\components\student\StudentArticleCard.tsx
+
+// src/components/student/StudentArticleCard.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import type { IArticle } from '../../types/article.types';
+
+interface ArticleProgress {
+  isCompleted: boolean;
+  bestScore: number;
+  completionRate: number;
+  lastAttempt: Date;
+  totalAttempts: number;
+}
+
+interface StudentArticleCardProps {
+  article: IArticle;
+  progress?: ArticleProgress;
+  showQuickStart?: boolean;
+}
+
+const StudentArticleCard: React.FC<StudentArticleCardProps> = ({ 
+  article, 
+  progress, 
+  showQuickStart = false 
+}) => {
+  const getDifficultyColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'A1': return 'bg-green-100 text-green-800';
+      case 'A2': return 'bg-green-100 text-green-800';
+      case 'B1': return 'bg-yellow-100 text-yellow-800';
+      case 'B2': return 'bg-yellow-100 text-yellow-800';
+      case 'C1': return 'bg-red-100 text-red-800';
+      case 'C2': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getProgressColor = (score: number) => {
+    if (score >= 90) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    if (score >= 50) return 'text-orange-600';
+    return 'text-red-600';
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+      {/* Header */}
+      <div className="p-6 pb-4">
+        <div className="flex justify-between items-start mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+            {article.title}
+          </h3>
+          
+          {progress?.isCompleted && (
+            <div className="text-green-600 text-xl ml-2" title="Completed">
+              ✓
+            </div>
+          )}
+        </div>
+
+        {/* Metadata */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {article.metadata?.difficulty && (
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(article.metadata.difficulty)}`}>
+              {article.metadata.difficulty} Level
+            </span>
+          )}
+          
+          {article.metadata?.subject && (
+            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+              {article.metadata.subject}
+            </span>
+          )}
+
+          <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+            {article.sentences?.length || 0} fragments
+          </span>
+        </div>
+
+        {/* Progress Bar (if any progress exists) */}
+        {progress && (
+          <div className="mb-3">
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-gray-600">Progress</span>
+              <span className={`font-medium ${getProgressColor(progress.bestScore)}`}>
+                {Math.round(progress.bestScore)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${progress.completionRate}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Stats */}
+        <div className="flex justify-between text-sm text-gray-600">
+          <span>By {article.teacherUsername}</span>
+          <span>{article.createdAt? formatDate(article.createdAt):""}</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="px-6 pb-6">
+        {progress ? (
+          <div className="space-y-2">
+            {/* Progress Summary */}
+            <div className="text-xs text-gray-500 flex justify-between">
+              <span>{progress.totalAttempts} attempts</span>
+              <span>
+                Last: {new Date(progress.lastAttempt).toLocaleDateString()}
+              </span>
+            </div>
+
+            {/* Action Button */}
+            <Link
+              to={`/student/practice/${article.articleName}`}
+              className={`block w-full px-4 py-2 rounded-lg text-center font-medium transition-colors ${
+                progress.isCompleted
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              {progress.isCompleted ? 'Practice Again' : 'Continue'}
+            </Link>
+          </div>
+        ) : (
+          <Link
+            to={`/student/practice/${article.articleName}`}
+            className="block w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-center font-medium hover:bg-blue-700 transition-colors"
+          >
+            Start Practice
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default StudentArticleCard;
+
+C:\Users\User\Desktop\jink-demo\src\components\student\StudentStats.tsx
+
+// src/components/student/StudentStats.tsx
+import React from 'react';
+
+interface StudentStatsProps {
+  progressData?: {
+    totalArticlesAttempted: number;
+    completedArticles: string[];
+    averageScore: number;
+    totalTimeSpent: number;
+  } | null;
+}
+
+const StudentStats: React.FC<StudentStatsProps> = ({ progressData }) => {
+  const formatTime = (minutes: number) => {
+    if (minutes < 60) return `${Math.round(minutes)}m`;
+    const hours = Math.floor(minutes / 60);
+    const mins = Math.round(minutes % 60);
+    return `${hours}h ${mins}m`;
+  };
+
+  const stats = [
+    {
+      label: 'Articles Attempted',
+      value: progressData?.totalArticlesAttempted || 0,
+      icon: '📚',
+      color: 'text-blue-600'
+    },
+    {
+      label: 'Completed',
+      value: progressData?.completedArticles?.length || 0,
+      icon: '✅',
+      color: 'text-green-600'
+    },
+    {
+      label: 'Average Score',
+      value: progressData?.averageScore ? `${Math.round(progressData.averageScore)}%` : '0%',
+      icon: '🎯',
+      color: 'text-yellow-600'
+    },
+    {
+      label: 'Practice Time',
+      value: formatTime(progressData?.totalTimeSpent || 0),
+      icon: '⏱️',
+      color: 'text-purple-600'
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {stats.map((stat, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-sm border p-6 text-center">
+          <div className="text-2xl mb-2">{stat.icon}</div>
+          <div className={`text-2xl font-bold ${stat.color} mb-1`}>
+            {stat.value}
+          </div>
+          <div className="text-sm text-gray-600">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default StudentStats;
+
+C:\Users\User\Desktop\jink-demo\src\components\teacher\PublishControls.tsx
+
+import React, { useState } from 'react';
+import { useUpdateArticleStatus } from '../../hooks/useArticles';
+import { useAudioStatus } from '../../hooks/useAudioStatus';
+import type { IArticle } from '../../types/article.types';
+
+interface PublishControlsProps {
+  article: IArticle;
+  onStatusChange?: () => void;
+}
+
+const PublishControls: React.FC<PublishControlsProps> = ({ article, onStatusChange }) => {
+  const [showConfirm, setShowConfirm] = useState<'publish' | 'unpublish' | null>(null);
+  const updateStatusMutation = useUpdateArticleStatus();
+  const { data: audioStatus } = useAudioStatus(article.articleName, true);
+
+  // FIXED: Audio availability check (not status-based)
+  const hasAudio = audioStatus?.audio?.hasAudio || 
+                   (audioStatus?.audio?.totalFragments ?? 0) > 0 || 
+                   Boolean(article.fullAudioUrl);
+
+  // FIXED: Clear status logic
+  const isEditing = article.status === 'editing';
+  const isProcessing = article.status === 'processing';
+  const isPublished = article.status === 'ready'; // ONLY means published for students
+  const isError = article.status === 'error';
+
+  // UPDATED: Publishing rules with clear flow
+  // - Can publish: editing status AND has audio AND not processing
+  // - Can unpublish: currently published (ready status)
+  const canPublish = isEditing && hasAudio && !updateStatusMutation.isPending;
+  const canUnpublish = isPublished && !updateStatusMutation.isPending;
+
+  const handlePublish = async () => {
+    try {
+      await updateStatusMutation.mutateAsync({
+        articleName: article.articleName,
+        status: 'ready', // Publish = set to ready
+      });
+      setShowConfirm(null);
+      onStatusChange?.();
+    } catch (error) {
+      console.error('Publishing failed:', error);
+    }
+  };
+
+  const handleUnpublish = async () => {
+    try {
+      await updateStatusMutation.mutateAsync({
+        articleName: article.articleName,
+        status: 'editing', // Unpublish = back to editing
+      });
+      setShowConfirm(null);
+      onStatusChange?.();
+    } catch (error) {
+      console.error('Unpublishing failed:', error);
+    }
+  };
+
+  // Helper function for button tooltip
+  const getPublishTooltip = () => {
+    if (isProcessing) return 'Audio is still processing';
+    if (!hasAudio) return 'Generate audio first';
+    if (isError) return 'Fix audio generation errors first';
+    return undefined;
+  };
+
+  return (
+    <div className="space-y-2">
+      {/* UPDATED: Status Indicator with clearer labels */}
+      <div className={`text-xs px-2 py-1 rounded-full text-center font-medium ${
+        isPublished ? 'bg-green-100 text-green-800' :
+        isProcessing ? 'bg-blue-100 text-blue-800' :
+        isError ? 'bg-red-100 text-red-800' :
+        hasAudio ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+      }`}>
+        {isPublished ? '🎯 Published for Students' :
+         isProcessing ? '🔄 Generating Audio...' :
+         isError ? '❌ Generation Failed' :
+         hasAudio ? '✅ Ready to Publish' : '📝 Draft'
+        }
+      </div>
+
+      {/* Error Message */}
+      {isError && article.processingError && (
+        <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+          Error: {article.processingError}
+        </div>
+      )}
+
+      {/* Publish Button - Only for editing articles with audio */}
+      {!isPublished && (
+        <button
+          onClick={() => setShowConfirm('publish')}
+          disabled={!canPublish}
+          className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            canPublish
+              ? 'bg-green-600 text-white hover:bg-green-700'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          }`}
+          title={getPublishTooltip()}
+        >
+          {updateStatusMutation.isPending ? 'Publishing...' : '🎯 Publish for Students'}
+        </button>
+      )}
+
+      {/* Unpublish Button - Only for published articles */}
+      {isPublished && (
+        <button
+          onClick={() => setShowConfirm('unpublish')}
+          disabled={!canUnpublish}
+          className="w-full px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 text-sm font-medium transition-colors disabled:opacity-60"
+        >
+          {updateStatusMutation.isPending ? 'Unpublishing...' : '📝 Unpublish & Edit'}
+        </button>
+      )}
+
+      {/* Preview Button - Only for published articles */}
+      {isPublished && (
+        <a
+          href={`/student/practice/${article.articleName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full px-4 py-2 border border-blue-300 text-blue-700 rounded-md hover:bg-blue-50 text-sm font-medium text-center transition-colors"
+        >
+          👁️ Preview Student Experience
+        </a>
+      )}
+
+      {/* UPDATED: Audio Ready Indicator - For editing articles with audio */}
+      {isEditing && hasAudio && (
+        <div className="text-xs text-green-600 bg-green-50 p-2 rounded">
+          ✅ Audio generated successfully. Click publish to make available to students.
+        </div>
+      )}
+
+      {/* ADDED: No Audio Warning - For editing articles without audio */}
+      {isEditing && !hasAudio && !isProcessing && (
+        <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded">
+          ⚠️ Generate audio before publishing for students.
+        </div>
+      )}
+
+      {/* Confirmation Modals */}
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-2">
+              {showConfirm === 'publish' ? '🎯 Publish Article' : '📝 Unpublish Article'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {showConfirm === 'publish'
+                ? `Publish "${article.title}" for student practice? Students will be able to access this article immediately.`
+                : `Unpublish "${article.title}" and return to editing? Students will no longer be able to access this article.`}
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(null)}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={showConfirm === 'publish' ? handlePublish : handleUnpublish}
+                disabled={updateStatusMutation.isPending}
+                className={`px-4 py-2 text-white rounded-md disabled:opacity-50 ${
+                  showConfirm === 'publish'
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-orange-600 hover:bg-orange-700'
+                }`}
+              >
+                {showConfirm === 'publish' ? 'Publish' : 'Unpublish'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PublishControls;
+
 
 C:\Users\User\Desktop\jink-demo\src\components\user\ChangePasswordModal.tsx
 
@@ -3250,6 +3783,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     </div>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\user\CreateUserModal.tsx
 
@@ -3526,6 +4060,7 @@ export const CreateUserModal: React.FC<CreateUserModalProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\user\EditUserModal.tsx
 
 import React, { useState, useEffect } from 'react';
@@ -3772,6 +4307,7 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\user\PasswordResetModal.tsx
 
 import React, { useState } from 'react';
@@ -3966,6 +4502,7 @@ export const PasswordResetModal: React.FC<PasswordResetModalProps> = ({
   );
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\components\user\UserStatusToggle.tsx
 
 import React, { useState } from 'react';
@@ -4038,6 +4575,7 @@ export const UserStatusToggle: React.FC<UserStatusToggleProps> = ({
     </div>
   );
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\components\Navbar.tsx
 
@@ -4135,6 +4673,7 @@ export default function Navbar() {
     </nav>
   );
 }
+
 
 C:\Users\User\Desktop\jink-demo\src\context\AuthContext.tsx
 
@@ -4249,6 +4788,7 @@ export const useAuth = () => {
   return context;
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\hooks\useArticles.ts
 
 // src/hooks/useArticles.ts
@@ -4269,7 +4809,9 @@ import type {
   TeacherStatsResponse,
   IArticle
 } from '../types/article.types';
-
+// import { apiGetAudioStatus } from '../api/apiArticles'
+// import { validateAudioStatusResponse } from '../utils/apiValidation'
+// import type { AudioStatusResponse } from '../types/audio.types';
 
 // API functions
 const articleAPI = {
@@ -4655,6 +5197,68 @@ export const useArticleWithAudio = (articleName: string) => {
   });
 };
 
+
+export const useUpdateArticleStatus = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ articleName, status }: { 
+      articleName: string; 
+      status: 'editing' | 'ready' 
+    }) => {
+      const response = await api.put(`/articles/${articleName}/status`, { status });
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      // Update the specific article in cache
+      queryClient.setQueryData(['article', variables.articleName], data.article);
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      queryClient.invalidateQueries({ queryKey: ['studentArticles'] });
+    },
+  });
+};
+
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useAudioStatus.ts
+
+// src/hooks/useAudioStatus.ts
+import { useQuery, type UseQueryResult, type Query } from '@tanstack/react-query';
+import { apiGetAudioStatus } from '../api/apiArticles';
+import type { AudioStatusResponse } from '../types/audio.types';
+
+export const useAudioStatus = (
+  articleName: string,
+  enabled: boolean = true
+): UseQueryResult<AudioStatusResponse, Error> => {
+  return useQuery<AudioStatusResponse, Error, AudioStatusResponse, readonly unknown[]>({
+    queryKey: ['audioStatus', articleName],
+    queryFn: () => apiGetAudioStatus(articleName),
+    enabled: enabled && !!articleName,
+    staleTime: 0,
+    // v5 signature: refetchInterval receives the Query object, not the data value
+    refetchInterval: (q: Query<AudioStatusResponse, Error, AudioStatusResponse, readonly unknown[]>) => {
+      const last = q.state.data; // AudioStatusResponse | undefined
+      const status = last?.article?.status; // 'editing' | 'processing' | 'ready' | 'error'
+      return status === 'processing' ? 5000 : false;
+    },
+    retry: (failureCount, err: any) => {
+      const code = err?.response?.status;
+      if (code === 403 || code === 404) 
+      {
+        console.log('useAudioStatus: Not retrying on error code', code, err?.message);
+        return false;
+      }
+      else
+      {
+        console.log('useAudioStatus: Retrying after error code', code, err?.message);
+      }
+      return failureCount < 3;
+    },
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+};
+
+
 C:\Users\User\Desktop\jink-demo\src\hooks\useBulk.ts
 
 // src/hooks/useBulk.ts
@@ -4688,6 +5292,7 @@ export const useDownloadCSVTemplate = () => {
     mutationFn: () => apiDownloadCSVTemplate(),
   });
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\hooks\useDictationProgress.ts
 
@@ -5046,6 +5651,7 @@ export function useFragmentAudioPlayer(
   };
 }
 
+
 C:\Users\User\Desktop\jink-demo\src\hooks\useGroups.ts
 
 // src/hooks/useGroups.ts
@@ -5143,6 +5749,198 @@ export const useManageGroupMembers = () => {
       queryClient.invalidateQueries({ queryKey: ['group', variables.groupId] });
     },
   });
+};
+
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useStudentArticles.ts
+
+// src/hooks/useStudentArticles.ts
+import { useQuery } from '@tanstack/react-query';
+// import apiClient from '../api/axios';
+// import type { IArticle } from '../types/article.types';
+import api from '../api/axios';
+
+// Student-specific API function
+const apiGetReadyArticles = async () => {
+  const response = await api.get('/articles/ready/list');
+  return response.data;
+};
+
+export const useStudentArticles = () => {
+  return useQuery({
+    queryKey: ['studentArticles'],
+    queryFn: async () => {
+      const result = await apiGetReadyArticles();
+      return result.articles || [];
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: (failureCount, error: any) => {
+      const status = error?.response?.status;
+      if (status === 403) return false; // Don't retry forbidden
+      return failureCount < 2;
+    }
+  });
+};
+
+
+
+C:\Users\User\Desktop\jink-demo\src\hooks\useStudentProgress.ts
+
+// src/hooks/useStudentProgress.ts
+import { useState, useEffect } from 'react';
+
+interface StudentProgressData {
+  totalArticlesAttempted: number;
+  completedArticles: string[];
+  averageScore: number;
+  totalTimeSpent: number;
+  articleProgress: Record<string, {
+    isCompleted: boolean;
+    bestScore: number;
+    completionRate: number;
+    lastAttempt: Date;
+    totalAttempts: number;
+  }>;
+  recentSessions: Array<{
+    articleName: string;
+    articleTitle: string;
+    score: number;
+    completionRate: number;
+    timestamp: Date;
+    fragments: number;
+  }>;
+  lastPracticed?: {
+    articleName: string;
+    timestamp: Date;
+  };
+}
+
+export const useStudentProgress = () => {
+  const [data, setData] = useState<StudentProgressData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // For Phase 1, load from localStorage
+    // In Phase 4, this will connect to backend API
+    const loadProgressFromStorage = () => {
+      try {
+        const allKeys = Object.keys(localStorage);
+        const progressKeys = allKeys.filter(key => key.startsWith('dictation_progress_'));
+        
+        const articleProgress: Record<string, any> = {};
+        const recentSessions: any[] = [];
+        let totalTimeSpent = 0;
+        let totalScore = 0;
+        let totalSessions = 0;
+
+        progressKeys.forEach(key => {
+          const articleName = key.replace('dictation_progress_', '');
+          const progressData = localStorage.getItem(key);
+          
+          if (progressData) {
+            try {
+              const parsed = JSON.parse(progressData);
+              const session = parsed.session || parsed; // Support both formats
+              
+              if (session) {
+                // Calculate article progress
+                const bestScore = session.progress 
+                  ? Math.max(...session.progress.map((p: any) => p.bestScore || 0))
+                  : session.bestScore || 0;
+                
+                const completedFragments = session.progress 
+                  ? session.progress.filter((p: any) => p.status === 'correct').length
+                  : session.completedFragments || 0;
+                
+                const totalFragments = session.fragments 
+                  ? session.fragments.length 
+                  : session.totalFragments || 1;
+                
+                const completionRate = (completedFragments / totalFragments) * 100;
+                const isCompleted = completionRate >= 100;
+                
+                articleProgress[articleName] = {
+                  isCompleted,
+                  bestScore,
+                  completionRate,
+                  lastAttempt: new Date(session.startTime || parsed.lastUpdated || Date.now()),
+                  totalAttempts: session.progress 
+                    ? session.progress.reduce((sum: number, p: any) => sum + (p.attempts?.length || 1), 0)
+                    : 1
+                };
+
+                // Add to recent sessions
+                recentSessions.push({
+                  articleName,
+                  articleTitle: session.articleTitle || articleName,
+                  score: bestScore,
+                  completionRate,
+                  timestamp: new Date(session.startTime || parsed.lastUpdated || Date.now()),
+                  fragments: totalFragments
+                });
+
+                // Calculate totals
+                const sessionDuration = session.endTime 
+                  ? (new Date(session.endTime).getTime() - new Date(session.startTime).getTime()) / (1000 * 60)
+                  : 10; // Default 10 minutes if no end time
+                
+                totalTimeSpent += sessionDuration;
+                totalScore += bestScore;
+                totalSessions++;
+              }
+            } catch (error) {
+              console.warn(`Failed to parse progress for ${articleName}:`, error);
+            }
+          }
+        });
+
+        // Sort recent sessions by timestamp
+        recentSessions.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+        const progressData: StudentProgressData = {
+          totalArticlesAttempted: Object.keys(articleProgress).length,
+          completedArticles: Object.keys(articleProgress).filter(key => articleProgress[key].isCompleted),
+          averageScore: totalSessions > 0 ? totalScore / totalSessions : 0,
+          totalTimeSpent,
+          articleProgress,
+          recentSessions: recentSessions.slice(0, 10),
+          lastPracticed: recentSessions[0] ? {
+            articleName: recentSessions[0].articleName,
+            timestamp: recentSessions[0].timestamp
+          } : undefined
+        };
+
+        setData(progressData);
+      } catch (error) {
+        console.error('Failed to load student progress:', error);
+        // Set empty data on error
+        setData({
+          totalArticlesAttempted: 0,
+          completedArticles: [],
+          averageScore: 0,
+          totalTimeSpent: 0,
+          articleProgress: {},
+          recentSessions: []
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProgressFromStorage();
+
+    // Listen for localStorage changes to update progress in real-time
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.startsWith('dictation_progress_')) {
+        loadProgressFromStorage();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  return { data, isLoading, error: null };
 };
 
 C:\Users\User\Desktop\jink-demo\src\hooks\useUsers.ts
@@ -5260,6 +6058,7 @@ export const useResetPassword = () => {
   });
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\admin\BulkOperations.tsx
 
 // src/pages/admin/BulkOperations.tsx
@@ -5293,6 +6092,7 @@ const BulkOperations: React.FC = () => {
 };
 
 export default BulkOperations;
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\admin\Groups.tsx
 
@@ -5362,6 +6162,7 @@ const Groups: React.FC = () => {
 
 export default Groups;
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\student\ArticleList.tsx
 
 // src/pages/student/ArticleList.tsx
@@ -5402,7 +6203,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, progress }) => {
     if (progress?.isCompleted) {
       return (
         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          ??Completed
+          ✓ Completed
         </span>
       );
     }
@@ -5558,7 +6359,7 @@ const StudentArticleList: React.FC = () => {
       {/* Empty State */}
       {(!articles || articles.length === 0) && (
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">??</div>
+          <div className="text-6xl mb-4">📚</div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">No Articles Available</h3>
           <p className="text-gray-600">
             Your teacher hasn't published any dictation exercises yet. Check back later!
@@ -5571,228 +6372,106 @@ const StudentArticleList: React.FC = () => {
 
 export default StudentArticleList;
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\student\DictationPractice.tsx
 
 // src/pages/student/DictationPractice.tsx
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useArticle } from '../../hooks/useArticles';
 import { useDictationProgress } from '../../hooks/useDictationProgress';
 import FragmentDictation from '../../components/dictation/FragmentDictation';
 import type { DictationSession, FragmentProgress } from '../../components/dictation/FragmentDictation';
-import SessionResults from '../../components/dictation/SessionResults';
-import {LoadingSpinner} from '../../components/common/LoadingSpinner';
-import type { FragmentTiming } from '../../hooks/useFragmentAudioPlayer';
+// import SessionResults from '../../components/dictation/SessionResults';
+// import {LoadingSpinner} from '../../components/common/LoadingSpinner';
+// import type { FragmentTiming } from '../../hooks/useFragmentAudioPlayer';
+// import { useQuery } from '@tanstack/react-query';
+// import { apiGetAudioStatus } from '../../api/apiArticles';
+// import type { AudioStatusResponse } from '../../types/audio.types';
+
+import { useAudioStatus } from '../../hooks/useAudioStatus';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 
-type ViewMode = 'loading' | 'practice' | 'results' | 'resume';
+// type ViewMode = 'loading' | 'practice' | 'results' | 'resume';
 
 const DictationPracticePage: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
   const navigate = useNavigate();
-  
+
+  // Main article data
   const { data: article, isLoading: articleLoading, error: articleError } = useArticle(articleName!);
+  
+  // REAL-TIME AUDIO STATUS MONITORING
   const { 
-    savedSession, 
-    isLoading: progressLoading, 
-    saveSession, 
-    clearSession 
-  } = useDictationProgress(articleName!);
+    data: audioStatus, 
+    isLoading: audioLoading, 
+    error: audioError,
+    isRefetching 
+  } = useAudioStatus(
+    articleName!, 
+    !!article && (article.status === 'processing' || article.status === 'ready')
+  );
+  const { saveSession } = useDictationProgress(articleName!);
 
-  const [currentView, setCurrentView] = useState<ViewMode>('loading');
-  const [completedSession, setCompletedSession] = useState<DictationSession | null>(null);
 
-  // Determine initial view once data is loaded
-  useEffect(() => {
-    if (articleLoading || progressLoading) {
-      setCurrentView('loading');
-      return;
-    }
-
-    if (articleError || !article) {
-      navigate('/student/articles', { replace: true });
-      return;
-    }
-
-    // Check if there's a saved session to resume
-    if (savedSession && savedSession.completedFragments < savedSession.fragments.length) {
-      setCurrentView('resume');
-    } else if (savedSession && savedSession.completedFragments === savedSession.fragments.length) {
-      // Session was already completed
-      setCompletedSession(savedSession);
-      setCurrentView('results');
-    } else {
-      // Start new session
-      setCurrentView('practice');
-    }
-  }, [article, articleLoading, articleError, savedSession, progressLoading, navigate]);
-
-  // Convert article sentences to fragment timing format
-  const convertToFragmentTiming = (article: any): FragmentTiming[] => {
-    if (!article?.sentences) return [];
-
-    return article.sentences.map((sentence: any, index: number) => ({
-      fragmentIndex: index,
-      order: sentence.order || index + 1,
-      text: sentence.text,
-      startTime: sentence.startTime || 0,
-      endTime: sentence.endTime || 0,
-      duration: sentence.endTime - sentence.startTime || 0,
-      wordCount: sentence.wordCount || sentence.text.split(' ').length
-    }));
-  };
 
   const handleSessionComplete = (session: DictationSession) => {
+    // Persist final session and show results view
     saveSession(session);
-    setCompletedSession(session);
-    setCurrentView('results');
+    // Optionally, set a local state for results view if used in this page
+    // setCompletedSession(session); setCurrentView('results');
   };
 
-const handleProgressUpdate = (progress: FragmentProgress[]) => {
-// If you want to persist the whole session on every update,
-// either lift state up or pass a session object down from FragmentDictation.
-// For now, you can no-op or, better, keep partial progress somewhere.
-// If you have access to the current session in this component,
-// you could merge in the updated progress and call saveSession(updatedSession).
-  console.log('Progress updated:', progress);
-};
-
-  const handleStartNew = () => {
-    clearSession();
-    setCurrentView('practice');
+  const handleProgressUpdate = (_progress: FragmentProgress[]) => {
+    // Optional: merge partial progress into a session and persist
+    // For a lightweight MVP, log only; or implement merge if session state is held here
+    // console.log('Progress updated', progress);
+    // If current session state is available, merge and save:
+    // const updatedSession = { ...existingSession, progress: mergedProgressArray };
+    // saveSession(updatedSession);
   };
 
-  const handleResumeSession = () => {
-    setCurrentView('practice');
-  };
-
-  const handleRetrySession = () => {
-    clearSession();
-    setCurrentView('practice');
-  };
-
-  const handleBackToArticles = () => {
-    navigate('/student/articles');
-  };
-
-  // Loading state
-  if (currentView === 'loading') {
+  // Loading state with detailed feedback
+  if (articleLoading || audioLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner message="Loading dictation exercise..." />
-      </div>
-    );
-  }
-
-  // Article not found or error
-  if (!article) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Article Not Found</h2>
-          <p className="text-gray-600 mb-4">The requested dictation exercise could not be found.</p>
-          <button
-            onClick={handleBackToArticles}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Back to Articles
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Resume session prompt
-  if (currentView === 'resume') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="max-w-md mx-auto p-6">
-          <div className="bg-white rounded-lg shadow-sm border p-6 text-center">
-            <div className="text-4xl mb-4">??</div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Resume Practice?</h2>
-            <p className="text-gray-600 mb-4">
-              You have an incomplete dictation session for "{article.title}".
+        <div className="text-center space-y-4">
+          <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
+          <div>
+            <p className="text-lg font-semibold text-gray-900">Loading Exercise</p>
+            <p className="text-sm text-gray-600">
+              {articleLoading ? 'Loading article...' : 'Checking audio status...'}
             </p>
-            
-            {savedSession && (
-              <div className="bg-gray-50 rounded-lg p-3 mb-4 text-sm">
-                <div className="flex justify-between mb-1">
-                  <span>Progress:</span>
-                  <span>{savedSession.completedFragments} / {savedSession.fragments.length} fragments</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full"
-                    style={{ 
-                      width: `${(savedSession.completedFragments / savedSession.fragments.length) * 100}%` 
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="space-y-3">
-              <button
-                onClick={handleResumeSession}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-              >
-                Resume Session
-              </button>
-              
-              <button
-                onClick={handleStartNew}
-                className="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
-              >
-                Start Over
-              </button>
-
-              <button
-                onClick={handleBackToArticles}
-                className="w-full px-4 py-2 text-gray-600 hover:text-gray-800 text-sm"
-              >
-                Back to Articles
-              </button>
-            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // Results view
-  if (currentView === 'results' && completedSession) {
-    return (
-      <SessionResults
-        session={completedSession}
-        onRetry={handleRetrySession}
-        onReturnToList={handleBackToArticles}
-      />
-    );
-  }
-
-  // Main dictation practice view
-  const fragments = convertToFragmentTiming(article);
-
-  // Check if article has audio generated
-  if (!article.fullAudioUrl) {
+  // Error state
+  if (articleError || audioError || !article || !audioStatus || !audioStatus?.audio?.fullAudioUrl || !audioStatus?.fragments) {
+    console.log("article:",article, "audioStatus", audioStatus);
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-6">
-          <div className="text-4xl mb-4">?��</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Audio Not Ready</h2>
+          <div className="text-red-600 mb-4">
+            <ExclamationTriangleIcon className="w-16 h-16 mx-auto" />
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Unable to Load Exercise</h2>
           <p className="text-gray-600 mb-4">
-            The audio for this article is still being generated. Please try again in a few moments.
+            {articleError?.message || audioError?.message || 'Something went wrong'}
           </p>
-          <div className="space-y-3">
+          <div className="space-y-2">
             <button
               onClick={() => window.location.reload()}
               className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              Refresh Page
+              Try Again
             </button>
             <button
-              onClick={handleBackToArticles}
+              onClick={() => navigate('/student/articles')}
               className="w-full px-4 py-2 text-gray-600 hover:text-gray-800"
             >
               Back to Articles
@@ -5803,32 +6482,510 @@ const handleProgressUpdate = (progress: FragmentProgress[]) => {
     );
   }
 
+  // Audio still processing - REAL-TIME STATUS
+  if (article?.status === 'processing') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-blue-600 mb-4">
+            <div className="animate-spin w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Audio Processing</h2>
+          <p className="text-gray-600 mb-4">
+            The audio for this article is being generated. This usually takes 2-3 minutes.
+          </p>
+          
+          {/* REAL-TIME STATUS INDICATOR */}
+          {isRefetching && (
+            <div className="flex items-center justify-center text-blue-600 text-sm mb-4">
+              <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full mr-2"></div>
+              Checking status...
+            </div>
+          )}
+          
+          <div className="space-y-3">
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Check Again
+            </button>
+            <button
+              onClick={() => navigate('/student/articles')}
+              className="w-full px-4 py-2 text-gray-600 hover:text-gray-800"
+            >
+              Back to Articles
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
+// Ready check: require URL and timing
+const fullUrl = audioStatus?.audio?.fullAudioUrl; // ?? audioStatus?.fullAudioUrl ?? article?.fullAudioUrl;
+const fragments = audioStatus?.fragments;
+
+const hasReadyAudio = Boolean(fullUrl) && Array.isArray(fragments) && fragments.length > 0;
+
+  // Audio not ready
+  if (!hasReadyAudio){//(!article?.fullAudioUrl || !audioStatus?.fragments?.length) {
+    console.log(article, audioStatus);
+    console.log(article?.fullAudioUrl, audioStatus?.fragments?.length);
+    
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-yellow-600 mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Audio Not Available</h2>
+          <p className="text-gray-600 mb-4">
+            This article doesn't have audio available yet. Please try another article or check back later.
+          </p>
+          <button
+            onClick={() => navigate('/student/articles')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Articles
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // SUCCESS - Ready for dictation
   return (
     <FragmentDictation
       articleName={article.articleName}
       articleTitle={article.title}
-      fullAudioUrl={article.fullAudioUrl}
-      fragments={fragments}
+      fullAudioUrl={audioStatus.audio.fullAudioUrl}
+      fragments={audioStatus.fragments??[]}
       onSessionComplete={handleSessionComplete}
       onProgressUpdate={handleProgressUpdate}
-      showText={false} // Hide text by default for dictation
+      showText={false}
       allowGiveUp={true}
-      // initialSession={savedSession || undefined}
     />
   );
 };
 
+
 export default DictationPracticePage;
+
+
+C:\Users\User\Desktop\jink-demo\src\pages\student\StudentArticleList.tsx
+
+// src/pages/student/StudentArticleList.tsx
+import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { useStudentArticles } from '../../hooks/useStudentArticles';
+import { useStudentProgress } from '../../hooks/useStudentProgress';
+import StudentArticleCard from '../../components/student/StudentArticleCard';
+import {LoadingSpinner} from '../../components/common/LoadingSpinner';
+import type { IArticle } from '../../types/article.types';
+
+type SortOption = 'recent' | 'difficulty' | 'title' | 'progress';
+type FilterOption = 'all' | 'not-started' | 'in-progress' | 'completed';
+
+const StudentArticleList: React.FC = () => {
+  const { data: articles, isLoading, error } = useStudentArticles();
+  const { data: progressData } = useStudentProgress();
+  
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
+  const [filterBy, setFilterBy] = useState<FilterOption>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter and sort articles
+  const processedArticles = useMemo(() => {
+    if (!articles) return [];
+
+    // Only show ready articles
+    let filtered = articles.filter((article:IArticle) => article.status === 'ready');
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((article:IArticle) =>
+        article.title.toLowerCase().includes(query) ||
+        article.articleName.toLowerCase().includes(query) ||
+        article.metadata?.subject?.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply progress filter
+    if (filterBy !== 'all') {
+      filtered = filtered.filter((article:IArticle) => {
+        const progress = progressData?.articleProgress?.[article.articleName];
+        
+        switch (filterBy) {
+          case 'not-started':
+            return !progress;
+          case 'in-progress':
+            return progress && !progress.isCompleted;
+          case 'completed':
+            return progress?.isCompleted;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Apply sorting
+    filtered.sort((a:IArticle, b:IArticle) => {
+      switch (sortBy) {
+        case 'recent':
+          return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+        case 'difficulty':
+          const difficultyOrder = { 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4, 'C1': 5, 'C2': 6 };
+          const aDiff = difficultyOrder[a.metadata?.difficulty as keyof typeof difficultyOrder] || 0;
+          const bDiff = difficultyOrder[b.metadata?.difficulty as keyof typeof difficultyOrder] || 0;
+          return aDiff - bDiff;
+        case 'title':
+          return a.title.localeCompare(b.title);
+        case 'progress':
+          const aProgress = progressData?.articleProgress?.[a.articleName];
+          const bProgress = progressData?.articleProgress?.[b.articleName];
+          const aScore = aProgress?.bestScore || 0;
+          const bScore = bProgress?.bestScore || 0;
+          return bScore - aScore;
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [articles, progressData, searchQuery, sortBy, filterBy]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner message="Loading practice articles..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="text-red-600 mb-4">⚠️</div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            Unable to Load Articles
+          </h2>
+          <p className="text-gray-600 mb-4">
+            {(error as Error).message || 'Something went wrong loading the articles.'}
+          </p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const totalArticles = articles?.filter((a:IArticle) => a.status === 'ready').length || 0;
+  const completedCount = progressData?.completedArticles?.length || 0;
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Practice Articles</h1>
+          <p className="text-gray-600">
+            {totalArticles} articles available • {completedCount} completed
+          </p>
+        </div>
+        
+        <Link
+          to="/student/dashboard"
+          className="mt-4 md:mt-0 px-4 py-2 text-blue-600 hover:text-blue-700 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+        >
+          ← Back to Dashboard
+        </Link>
+      </div>
+
+      {/* Controls */}
+      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Search */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Search Articles
+            </label>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title or subject..."
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          {/* Sort */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Sort By
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="recent">Most Recent</option>
+              <option value="difficulty">Difficulty Level</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="progress">Your Progress</option>
+            </select>
+          </div>
+
+          {/* Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter By Progress
+            </label>
+            <select
+              value={filterBy}
+              onChange={(e) => setFilterBy(e.target.value as FilterOption)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">All Articles</option>
+              <option value="not-started">Not Started</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Results */}
+      {processedArticles.length === 0 ? (
+        <div className="text-center py-12 bg-white rounded-lg border">
+          <div className="text-6xl mb-4">
+            {searchQuery.trim() || filterBy !== 'all' ? '🔍' : '📚'}
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            {searchQuery.trim() || filterBy !== 'all' 
+              ? 'No Articles Found'
+              : 'No Practice Articles Available'
+            }
+          </h3>
+          <p className="text-gray-600 max-w-md mx-auto">
+            {searchQuery.trim() || filterBy !== 'all'
+              ? 'Try adjusting your search or filter criteria.'
+              : 'Your teachers haven\'t published any exercises yet. Check back later!'
+            }
+          </p>
+          
+          {(searchQuery.trim() || filterBy !== 'all') && (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setFilterBy('all');
+              }}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Clear Filters
+            </button>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Results Count */}
+          <div className="text-sm text-gray-600 mb-4">
+            Showing {processedArticles.length} of {totalArticles} articles
+          </div>
+
+          {/* Articles Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {processedArticles.map((article:IArticle) => (
+              <StudentArticleCard
+                key={article.articleName}
+                article={article}
+                progress={progressData?.articleProgress?.[article.articleName]}
+                showQuickStart={false}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default StudentArticleList;
+
+C:\Users\User\Desktop\jink-demo\src\pages\student\StudentDashboard.tsx
+
+// src/pages/student/StudentDashboard.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useStudentArticles } from '../../hooks/useStudentArticles';
+import { useStudentProgress } from '../../hooks/useStudentProgress';
+import StudentStats from '../../components/student/StudentStats';
+import RecentActivity from '../../components/student/RecentActivity';
+import StudentArticleCard from '../../components/student/StudentArticleCard';
+import {LoadingSpinner} from '../../components/common/LoadingSpinner';
+import type { IArticle } from '../../types/article.types';
+
+
+const StudentDashboard: React.FC = () => {
+  const { user } = useAuth();
+  const { data: articles, isLoading: articlesLoading } = useStudentArticles();
+  
+  const { data: progressData, isLoading: progressLoading } = useStudentProgress();
+
+  if (articlesLoading || progressLoading) {
+    return <LoadingSpinner message="Loading your dashboard..." />;
+  }
+
+  // Filter articles by status
+  const readyArticles = articles?.filter((article:IArticle) => article.status === 'ready') || [];
+  const recentArticles = readyArticles.slice(0, 3); // Show 3 most recent
+  
+  const hasArticles = readyArticles.length > 0;
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
+      {/* Header */}
+      <div className="text-center md:text-left">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Welcome back{user?.fullname ? `, ${user.fullname.split(' ')[0]}` : ''}!
+        </h1>
+        <p className="text-gray-600">
+          Ready to practice your listening and typing skills?
+        </p>
+      </div>
+
+      {/* Quick Stats */}
+      <StudentStats progressData={progressData} />
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column - Recent Activity */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Continue Practice Section */}
+          {hasArticles && (
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Continue Practicing
+                </h2>
+                <Link 
+                  to="/student/articles" 
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  View all articles →
+                </Link>
+              </div>
+              
+              {recentArticles.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="text-gray-400 text-4xl mb-4">📚</div>
+                  <p className="text-gray-600">No articles available yet.</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Check back later for new exercises!
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {recentArticles.map((article:IArticle) => (
+                    <StudentArticleCard
+                      key={article.articleName}
+                      article={article}
+                      progress={progressData?.articleProgress?.[article.articleName]}
+                      showQuickStart={true}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Recent Activity */}
+          <RecentActivity progressData={progressData} />
+        </div>
+
+        {/* Right Column - Quick Actions */}
+        <div className="space-y-6">
+          {/* Quick Actions */}
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="space-y-3">
+              <Link
+                to="/student/articles"
+                className="block w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center font-medium"
+              >
+                📖 Browse Articles
+              </Link>
+              
+              {progressData?.lastPracticed && (
+                <Link
+                  to={`/student/practice/${progressData.lastPracticed.articleName}`}
+                  className="block w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-center font-medium"
+                >
+                  🔄 Continue Last Session
+                </Link>
+              )}
+              
+              <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                📊 View Progress Report
+              </button>
+            </div>
+          </div>
+
+          {/* Tips Section */}
+          <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+            <h3 className="text-lg font-semibold text-blue-900 mb-3">💡 Practice Tips</h3>
+            <ul className="space-y-2 text-sm text-blue-800">
+              <li>• Start with easier articles (A1-A2 level)</li>
+              <li>• Use headphones for better audio quality</li>
+              <li>• Practice regularly for best results</li>
+              <li>• Don't worry about perfect scores initially</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* No Articles State */}
+      {!hasArticles && (
+        <div className="text-center py-12 bg-white rounded-lg border">
+          <div className="text-6xl mb-4">📚</div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            No Practice Articles Available
+          </h3>
+          <p className="text-gray-600 max-w-md mx-auto">
+            Your teachers haven't published any dictation exercises yet. 
+            Check back later or contact your instructor.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default StudentDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleDetail.tsx
 
 // src/pages/teacher/ArticleDetail.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useArticle, useDeleteArticle } from '../../hooks/useArticles';
 import  SentencePreview  from '../../components/articles/SentencePreview';
 import type { IArticle, ISentence } from '../../types/article.types';
-import type { FragmentTiming } from '../../types/article.types';
+// import type { FragmentTiming } from '../../types/article.types';
+
+import { useAudioStatus } from '../../hooks/useAudioStatus';
+import { useMutation } from '@tanstack/react-query';
+import { apiGenerateAudio } from '../../api/apiArticles';
+
+import { useQueryClient } from '@tanstack/react-query';
+import PublishControls from '../../components/teacher/PublishControls';
+
 
 const ArticleDetail: React.FC = () => {
   const { articleName } = useParams<{ articleName: string }>();
@@ -5838,18 +6995,18 @@ const ArticleDetail: React.FC = () => {
   
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-
-  const convertSentencesToFragmentTiming = (sentences: ISentence[]): FragmentTiming[] => {
-    return sentences.map((sentence, index) => ({
-      fragmentIndex: index,
-      order: sentence.order,
-      text: sentence.text,
-      startTime: sentence.startTime || 0,
-      endTime: sentence.endTime || 0,
-      duration: (sentence.endTime || 0) - (sentence.startTime || 0),
-      wordCount: sentence.wordCount
-    }));
-  };
+  const queryClient = useQueryClient();
+  // const convertSentencesToFragmentTiming = (sentences: ISentence[]): FragmentTiming[] => {
+  //   return sentences.map((sentence, index) => ({
+  //     fragmentIndex: index,
+  //     order: sentence.order,
+  //     text: sentence.text,
+  //     startTime: sentence.startTime || 0,
+  //     endTime: sentence.endTime || 0,
+  //     duration: (sentence.endTime || 0) - (sentence.startTime || 0),
+  //     wordCount: sentence.wordCount
+  //   }));
+  // };
 
   const handleDelete = async () => {
     if (!article) return;
@@ -5863,40 +7020,50 @@ const ArticleDetail: React.FC = () => {
     }
   };
 
+// Update the status display function to use strict typing
   const getStatusDisplay = (status: IArticle['status']) => {
-    const statusConfig = {
-      editing: { 
-        bg: 'bg-yellow-100', 
+    const statusConfig: Record<IArticle['status'], {
+      bg: string
+      text: string
+      icon: string
+      label: string
+      description: string
+    }> = {
+      editing: {
+        bg: 'bg-yellow-100',
         text: 'text-yellow-800', 
-        icon: '?��?',
+        icon: '✏️',
         label: 'Editing',
         description: 'Article is being edited and not ready for students yet.'
       },
-      processing: { 
-        bg: 'bg-blue-100', 
-        text: 'text-blue-800', 
-        icon: '??,
+      processing: {
+        bg: 'bg-blue-100',
+        text: 'text-blue-800',
+        icon: '⚙️', 
         label: 'Processing',
         description: 'Audio files are being generated. This may take a few minutes.'
       },
-      ready: { 
-        bg: 'bg-green-100', 
-        text: 'text-green-800', 
-        icon: '??,
-        label: 'Ready',
+      ready: {
+        bg: 'bg-green-100',
+        text: 'text-green-800',
+        icon: '✅',
+        label: 'Ready', 
         description: 'Article is complete and ready for student dictation exercises.'
       },
-      error: { 
-        bg: 'bg-red-100', 
-        text: 'text-red-800', 
-        icon: '??,
+      error: {
+        bg: 'bg-red-100',
+        text: 'text-red-800',
+        icon: '❌',
         label: 'Error',
         description: 'There was an error processing this article.'
       }
-    };
+    }
     
-    return statusConfig[status];
-  };
+    return statusConfig[status]
+  }
+
+
+
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -5942,7 +7109,7 @@ const ArticleDetail: React.FC = () => {
               to="/teacher/articles"
               className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
             >
-              ??Back to Articles
+              ← Back to Articles
             </Link>
           </div>
           
@@ -5978,6 +7145,9 @@ const ArticleDetail: React.FC = () => {
         </div>
       </div>
 
+      {/* ADD THE AUDIO STATUS PANEL */}
+      <AudioStatusPanel article={article} />
+
       {/* Status Card */}
       <div className={`p-4 rounded-lg border ${statusDisplay.bg} ${statusDisplay.text}`}>
         <div className="flex items-center space-x-3">
@@ -5990,6 +7160,7 @@ const ArticleDetail: React.FC = () => {
                 Error: {article.processingError}
               </div>
             )}
+            
           </div>
         </div>
       </div>
@@ -6005,14 +7176,14 @@ const ArticleDetail: React.FC = () => {
               <div>
                 <label className="text-sm font-medium text-gray-700">Grade Level</label>
                 <div className="mt-1 text-sm text-gray-900">
-                  {article.metadata.grade || 'Not specified'}
+                  {article.metadata?.grade || 'Not specified'}
                 </div>
               </div>
               
               <div>
                 <label className="text-sm font-medium text-gray-700">Subject</label>
                 <div className="mt-1 text-sm text-gray-900">
-                  {article.metadata.subject || 'Not specified'}
+                  {article.metadata?.subject || 'Not specified'}
                 </div>
               </div>
               
@@ -6020,7 +7191,7 @@ const ArticleDetail: React.FC = () => {
                 <label className="text-sm font-medium text-gray-700">Difficulty Level</label>
                 <div className="mt-1">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {article.metadata.difficulty || 'Not specified'}
+                    {article.metadata?.difficulty || 'Not specified'}
                   </span>
                 </div>
               </div>
@@ -6028,7 +7199,7 @@ const ArticleDetail: React.FC = () => {
               <div>
                 <label className="text-sm font-medium text-gray-700">Estimated Time</label>
                 <div className="mt-1 text-sm text-gray-900">
-                  {article.metadata.estimatedTime ? `${article.metadata.estimatedTime} minutes` : 'Auto-calculated'}
+                  {article.metadata?.estimatedTime ? `${article.metadata.estimatedTime} minutes` : 'Auto-calculated'}
                 </div>
               </div>
             </div>
@@ -6142,6 +7313,17 @@ const ArticleDetail: React.FC = () => {
                 </Link>
               )}
               
+              <div className="bg-white p-6 rounded-lg shadow border">
+                <h3 className="text-lg font-semibold mb-4">Publishing</h3>
+                <PublishControls 
+                  article={article}
+                  onStatusChange={() => {
+                    // Optionally refresh data
+                    queryClient.invalidateQueries({ queryKey: ['article', article.articleName] });
+                  }}
+                />
+              </div>
+
               <button
                 onClick={() => navigator.clipboard.writeText(article.articleName)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -6193,6 +7375,461 @@ const ArticleDetail: React.FC = () => {
 
 export default ArticleDetail;
 
+
+// const AudioStatusPanel: React.FC<{ article: IArticle }> = ({ article }) => {
+//   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+//   const generateAudioMutation = useMutation({
+//     mutationFn: (articleName: string) => apiGenerateAudio(articleName),
+//   });
+
+//   const queryClient = useQueryClient();
+
+//   // This is where we USE the hook with real-time updates
+//   const { 
+//     data: audioStatus, 
+//     // isLoading, 
+//     error, 
+//     dataUpdatedAt,
+//     isRefetching 
+//   } = useAudioStatus(
+//     article.articleName, 
+//     article.status === 'processing' || article.status === 'ready'
+//   );
+
+//   // Track when data updates to show real-time feedback
+//   useEffect(() => {
+//     if (dataUpdatedAt > lastUpdate.getTime()) {
+//       setLastUpdate(new Date(dataUpdatedAt));
+//     }
+//   }, [dataUpdatedAt, lastUpdate]);
+
+//   const handleGenerateAudio = async () => {
+//     try {
+//       await generateAudioMutation.mutateAsync(article.articleName);
+//       // This will trigger the polling via the hook
+
+//       queryClient.setQueryData<IArticle>(['article', article.articleName], 
+//         prev => prev ? {...prev, status: 'processing', processingError: undefined} : prev);
+
+//       queryClient.invalidateQueries({ queryKey: ['article', article.articleName] });
+
+//     } catch (error) {
+//       console.error('Failed to start audio generation:', error);
+//     }
+//   };
+
+//   return (
+//     <div className="bg-white rounded-lg shadow-sm border p-6">
+//       <div className="flex items-center justify-between mb-4">
+//         <h3 className="text-lg font-semibold">Audio Status</h3>
+        
+//         {/* REAL-TIME UPDATE INDICATOR */}
+//         {isRefetching && (
+//           <div className="flex items-center text-blue-600 text-sm">
+//             <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full mr-2"></div>
+//             Checking status...
+//           </div>
+//         )}
+//       </div>
+
+//       {/* STATUS DISPLAY WITH REAL-TIME UPDATES */}
+//       <div className="space-y-4">
+        
+//         {/* EDITING STATE */}
+//         {article.status === 'editing' && (
+//           <div className="space-y-3">
+//             <div className="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+//               <div className="text-yellow-600 mr-3">⚠️</div>
+//               <div>
+//                 <p className="font-medium text-yellow-800">Ready to Generate Audio</p>
+//                 <p className="text-sm text-yellow-700">Click below to create audio for student practice</p>
+//               </div>
+//             </div>
+            
+//             <button
+//               onClick={handleGenerateAudio}
+//               disabled={generateAudioMutation.isPending}
+//               className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+//             >
+//               {generateAudioMutation.isPending ? (
+//                 <>
+//                   <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+//                   Starting Generation...
+//                 </>
+//               ) : (
+//                 'Generate Audio'
+//               )}
+//             </button>
+//           </div>
+//         )}
+
+//         {/* PROCESSING STATE - REAL-TIME UPDATES */}
+//         {article.status === 'processing' && (
+//           <div className="space-y-3">
+//             <div className="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+//               <div className="text-blue-600 mr-3">
+//                 <div className="animate-spin w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+//               </div>
+//               <div className="flex-1">
+//                 <p className="font-medium text-blue-800">Generating Audio</p>
+//                 <p className="text-sm text-blue-700">
+//                   This usually takes 2-3 minutes. Status updates automatically.
+//                 </p>
+//               </div>
+//             </div>
+            
+//             {/* REAL-TIME STATUS DETAILS */}
+//             {audioStatus && (
+//               <div className="bg-gray-50 p-3 rounded text-sm space-y-1">
+//                 <div className="flex justify-between">
+//                   <span className="text-gray-600">Last checked:</span>
+//                   <span className="font-mono">{lastUpdate.toLocaleTimeString()}</span>
+//                 </div>
+//                 {audioStatus.audio?.totalFragments && (
+//                   <div className="flex justify-between">
+//                     <span className="text-gray-600">Fragments:</span>
+//                     <span>{audioStatus.audio.totalFragments}</span>
+//                   </div>
+//                 )}
+//               </div>
+//             )}
+            
+//             {/* PROGRESS INDICATOR */}
+//             <div className="w-full bg-gray-200 rounded-full h-2">
+//               <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* READY STATE - SUCCESS */}
+//         {article.status === 'ready' && audioStatus && (
+//           <div className="space-y-3">
+//             <div className="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+//               <div className="text-green-600 mr-3">✅</div>
+//               <div>
+//                 <p className="font-medium text-green-800">Audio Ready</p>
+//                 <p className="text-sm text-green-700">Students can now practice this article</p>
+//               </div>
+//             </div>
+            
+//             {/* AUDIO PREVIEW */}
+//             {audioStatus.audio?.fullAudioUrl && (
+//               <div className="space-y-2">
+//                 <label className="text-sm font-medium text-gray-700">Preview Audio:</label>
+//                 <audio 
+//                   controls 
+//                   className="w-full" 
+//                   src={audioStatus.audio.fullAudioUrl}
+//                   preload="metadata"
+//                 >
+//                   Your browser does not support audio playback.
+//                 </audio>
+                
+//                 <div className="flex justify-between text-xs text-gray-500">
+//                   <span>Duration: {audioStatus.audio.totalDuration}s</span>
+//                   <span>Fragments: {audioStatus.audio.totalFragments}</span>
+//                   <span>Size: {Math.round((audioStatus.audio.audioSize || 0) / 1024)} KB</span>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         )}
+
+//         {/* ERROR STATE - DETAILED ERROR HANDLING */}
+//         {(article.status === 'error' || error) && (
+//           <div className="space-y-3">
+//             <div className="flex items-start p-3 bg-red-50 border border-red-200 rounded-lg">
+//               <div className="text-red-600 mr-3 mt-0.5">❌</div>
+//               <div className="flex-1">
+//                 <p className="font-medium text-red-800">Audio Generation Failed</p>
+//                 <p className="text-sm text-red-700 mt-1">
+//                   {article.processingError || error?.message || 'Unknown error occurred'}
+//                 </p>
+//               </div>
+//             </div>
+            
+//             {/* RETRY BUTTON */}
+//             <button
+//               onClick={handleGenerateAudio}
+//               disabled={generateAudioMutation.isPending}
+//               className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+//             >
+//               Try Again
+//             </button>
+            
+//             {/* NETWORK ERROR SPECIFIC HANDLING */}
+//             {error && (
+//               <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+//                 <p><strong>Debug Info:</strong></p>
+//                 <p>Error: {error.message}</p>
+//                 <p>Last attempt: {lastUpdate.toLocaleTimeString()}</p>
+//               </div>
+//             )}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+const AudioStatusPanel: React.FC<{ article: IArticle }> = ({ article }) => {
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const generateAudioMutation = useMutation({
+    mutationFn: (articleName: string) => apiGenerateAudio(articleName),
+  });
+
+  const queryClient = useQueryClient();
+
+  // Real-time audio status monitoring
+  const { 
+    data: audioStatus, 
+    error, 
+    dataUpdatedAt,
+    isRefetching 
+  } = useAudioStatus(
+    article.articleName, 
+    article.status === 'processing' || article.status === 'ready'
+  );
+
+  // Track data updates for real-time feedback
+  useEffect(() => {
+    if (dataUpdatedAt > lastUpdate.getTime()) {
+      setLastUpdate(new Date(dataUpdatedAt));
+    }
+  }, [dataUpdatedAt, lastUpdate]);
+
+  // FIXED: Audio availability detection (not status-based)
+  const hasAudio = audioStatus?.audio?.hasAudio || 
+                   audioStatus?.audio?.totalFragments? audioStatus?.audio?.totalFragments:0 > 0 || 
+                   Boolean(article.fullAudioUrl);
+
+  // FIXED: Clear status logic
+  const isEditing = article.status === 'editing';
+  const isProcessing = article.status === 'processing';  
+  const isPublished = article.status === 'ready'; // ONLY means published
+  const isError = article.status === 'error';
+
+  // FIXED: UI state logic
+  const canGenerateAudio = isEditing && !hasAudio && !isProcessing;
+  const hasAudioButNotPublished = isEditing && hasAudio && !isProcessing;
+  const isPublishedForStudents = isPublished;
+
+  const handleGenerateAudio = async () => {
+    try {
+      await generateAudioMutation.mutateAsync(article.articleName);
+      
+      // Update local cache to show processing state immediately
+      queryClient.setQueryData<IArticle>(['article', article.articleName], 
+        prev => prev ? {...prev, status: 'processing', processingError: undefined} : prev);
+
+      queryClient.invalidateQueries({ queryKey: ['article', article.articleName] });
+    } catch (error) {
+      console.error('Failed to start audio generation:', error);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">Audio Status</h3>
+        
+        {/* Real-time update indicator */}
+        {isRefetching && (
+          <div className="flex items-center text-blue-600 text-sm">
+            <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full mr-2"></div>
+            Checking status...
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        
+        {/* EDITING STATE - NO AUDIO */}
+        {canGenerateAudio && (
+          <div className="space-y-3">
+            <div className="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="text-yellow-600 mr-3">📝</div>
+              <div>
+                <p className="font-medium text-yellow-800">Ready to Generate Audio</p>
+                <p className="text-sm text-yellow-700">Click below to create audio for student practice</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleGenerateAudio}
+              disabled={generateAudioMutation.isPending}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {generateAudioMutation.isPending ? (
+                <>
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Starting Generation...
+                </>
+              ) : (
+                'Generate Audio'
+              )}
+            </button>
+          </div>
+        )}
+
+        {/* PROCESSING STATE - REAL-TIME UPDATES */}
+        {isProcessing && (
+          <div className="space-y-3">
+            <div className="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="text-blue-600 mr-3">
+                <div className="animate-spin w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-blue-800">Generating Audio</p>
+                <p className="text-sm text-blue-700">
+                  This usually takes 2-3 minutes. Status updates automatically.
+                </p>
+              </div>
+            </div>
+            
+            {/* Real-time status details */}
+            {audioStatus && (
+              <div className="bg-gray-50 p-3 rounded text-sm space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Last checked:</span>
+                  <span className="font-mono">{lastUpdate.toLocaleTimeString()}</span>
+                </div>
+                {audioStatus.audio?.totalFragments && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Fragments:</span>
+                    <span>{audioStatus.audio.totalFragments}</span>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Progress indicator */}
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+            </div>
+          </div>
+        )}
+
+        {/* EDITING STATE - HAS AUDIO (READY TO PUBLISH) */}
+        {hasAudioButNotPublished && (
+          <div className="space-y-3">
+            <div className="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+              <div className="text-green-600 mr-3">✅</div>
+              <div>
+                <p className="font-medium text-green-800">Audio Generated Successfully</p>
+                <p className="text-sm text-green-700">Review the audio and publish when ready for students</p>
+              </div>
+            </div>
+            
+            {/* Audio preview */}
+            {(audioStatus?.audio?.fullAudioUrl || article.fullAudioUrl) && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Preview Audio:</label>
+                <audio 
+                  controls 
+                  className="w-full" 
+                  src={audioStatus?.audio?.fullAudioUrl || article.fullAudioUrl!}
+                  preload="metadata"
+                >
+                  Your browser does not support audio playback.
+                </audio>
+                
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Duration: {audioStatus?.audio?.totalDuration || 'N/A'}s</span>
+                  <span>Fragments: {audioStatus?.audio?.totalFragments || article.sentences.length}</span>
+                  <span>Size: {Math.round((audioStatus?.audio?.audioSize || 0) / 1024)} KB</span>
+                </div>
+              </div>
+            )}
+
+            {/* Regenerate option */}
+            <div className="flex space-x-2">
+              <button
+                onClick={handleGenerateAudio}
+                disabled={generateAudioMutation.isPending}
+                className="flex-1 px-3 py-2 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-50 disabled:opacity-50 text-sm"
+              >
+                Regenerate Audio
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* PUBLISHED STATE - FOR STUDENTS */}
+        {isPublishedForStudents && (
+          <div className="space-y-3">
+            <div className="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="text-blue-600 mr-3">🎯</div>
+              <div>
+                <p className="font-medium text-blue-800">Published for Students</p>
+                <p className="text-sm text-blue-700">Students can now access and practice this article</p>
+              </div>
+            </div>
+            
+            {/* Published audio info */}
+            {(audioStatus?.audio?.fullAudioUrl || article.fullAudioUrl) && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Published Audio:</label>
+                <audio 
+                  controls 
+                  className="w-full" 
+                  src={audioStatus?.audio?.fullAudioUrl || article.fullAudioUrl!}
+                  preload="metadata"
+                >
+                  Your browser does not support audio playback.
+                </audio>
+                
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Duration: {audioStatus?.audio?.totalDuration || 'N/A'}s</span>
+                  <span>Fragments: {audioStatus?.audio?.totalFragments || article.sentences.length}</span>
+                  <span>Available to students</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ERROR STATE - DETAILED ERROR HANDLING */}
+        {(isError || error) && (
+          <div className="space-y-3">
+            <div className="flex items-start p-3 bg-red-50 border border-red-200 rounded-lg">
+              <div className="text-red-600 mr-3 mt-0.5">❌</div>
+              <div className="flex-1">
+                <p className="font-medium text-red-800">Audio Generation Failed</p>
+                <p className="text-sm text-red-700 mt-1">
+                  {article.processingError || error?.message || 'Unknown error occurred'}
+                </p>
+              </div>
+            </div>
+            
+            {/* Retry button */}
+            <button
+              onClick={handleGenerateAudio}
+              disabled={generateAudioMutation.isPending}
+              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+            >
+              Try Again
+            </button>
+            
+            {/* Debug info for errors */}
+            {error && (
+              <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+                <p><strong>Debug Info:</strong></p>
+                <p>Error: {error.message}</p>
+                <p>Last attempt: {lastUpdate.toLocaleTimeString()}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+
+
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\ArticleEdit.tsx
 
 import React, { useState, useEffect } from 'react';
@@ -6234,9 +7871,9 @@ const ArticleEdit: React.FC = () => {
     if (article) {
       setFormData({
         title: article.title,
-        grade: article.metadata.grade || '',
-        subject: article.metadata.subject || '',
-        difficulty: article.metadata.difficulty || 'A1'
+        grade: article.metadata?.grade || '',
+        subject: article.metadata?.subject || '',
+        difficulty: article.metadata?.difficulty || 'A1'
       });
       
       const sentenceTexts = article.sentences
@@ -6421,7 +8058,7 @@ const ArticleEdit: React.FC = () => {
         {hasUnsavedChanges && (
           <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-yellow-800 text-sm">
-              ?��? You have unsaved changes. Don't forget to save your work!
+              ⚠️ You have unsaved changes. Don't forget to save your work!
             </p>
           </div>
         )}
@@ -6564,14 +8201,14 @@ const ArticleEdit: React.FC = () => {
                   disabled={!fragmentEditor?.canUndo()}
                   className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 rounded transition-colors"
                 >
-                  ??Undo
+                  ↶ Undo
                 </button>
                 <button
                   onClick={handleRedo}
                   disabled={!fragmentEditor?.canRedo()}
                   className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 rounded transition-colors"
                 >
-                  ??Redo
+                  ↷ Redo
                 </button>
               </div>
             </div>
@@ -6653,12 +8290,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useArticles, useDeleteArticle, useArticleStats } from '../../hooks/useArticles';
 import type { IArticle } from '../../types/article.types';
+import PublishControls from '../../components/teacher/PublishControls';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ArticleList: React.FC = () => {
   // const navigate = useNavigate();
   const { data: articles, isLoading, error, refetch } = useArticles();
   const { data: stats } = useArticleStats();
   const deleteArticleMutation = useDeleteArticle();
+  const queryClient = useQueryClient();
   
   const [deleteConfirm, setDeleteConfirm] = useState<{
     isOpen: boolean;
@@ -6829,9 +8469,9 @@ const ArticleList: React.FC = () => {
                       <div className="text-sm text-gray-900">
                         <div>{article.sentences.length} sentences</div>
                         <div className="text-xs text-gray-500">
-                          {article.metadata.grade && `${article.metadata.grade} ??`}
-                          {article.metadata.subject && `${article.metadata.subject} ??`}
-                          {article.metadata.difficulty}
+                          {article.metadata?.grade && `${article.metadata.grade} • `}
+                          {article.metadata?.subject && `${article.metadata.subject} • `}
+                          {article.metadata?.difficulty}
                         </div>
                       </div>
                     </td>
@@ -6868,6 +8508,16 @@ const ArticleList: React.FC = () => {
                         >
                           Delete
                         </button>
+                        <div className="mt-4">
+                          <PublishControls 
+                            article={article}
+                            onStatusChange={() => {
+                              // Refresh the articles list
+                              queryClient.invalidateQueries({ queryKey: ['articles'] });
+                            }}
+                          />
+                        </div>
+
                       </div>
                     </td>
                   </tr>
@@ -7221,7 +8871,7 @@ const ArticleUpload: React.FC = () => {
                            disabled:opacity-50 disabled:cursor-not-allowed
                            text-gray-700 rounded transition-colors"
                 >
-                  ??Undo
+                  ↶ Undo
                 </button>
                 <button
                   onClick={handleRedo}
@@ -7230,7 +8880,7 @@ const ArticleUpload: React.FC = () => {
                            disabled:opacity-50 disabled:cursor-not-allowed
                            text-gray-700 rounded transition-colors"
                 >
-                  ??Redo
+                  ↷ Redo
                 </button>
               </div>
             </div>
@@ -7433,38 +9083,472 @@ export * from '../../components/articles/TextInput';
 export * from '../../components/articles/SentencePreview';
 export * from '../../components/articles/ArticleNameInput';
 
+C:\Users\User\Desktop\jink-demo\src\pages\teacher\TeacherDashboard copy.tsx
+
+// // src/pages/teacher/TeacherDashboard.tsx
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+// import { useAuth } from '../../context/AuthContext';
+// import { useArticles, useArticleStats } from '../../hooks/useArticles';
+// import type { IArticle } from '../../types/article.types';
+
+// const TeacherDashboard: React.FC = () => {
+//   // const navigate = useNavigate();
+//   const { user } = useAuth();
+//   const { data: articles, isLoading: articlesLoading } = useArticles();
+//   const { data: stats, isLoading: statsLoading } = useArticleStats();
+
+//   const recentArticles = articles?.slice(0, 5) || [];
+  
+//   const getStatusBadge = (status: IArticle['status']) => {
+//     const statusConfig = {
+//       editing: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Editing' },
+//       processing: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Processing' },
+//       ready: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ready' },
+//       error: { bg: 'bg-red-100', text: 'text-red-800', label: 'Error' }
+//     };
+    
+//     const config = statusConfig[status];
+//     return (
+//       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+//         {config.label}
+//       </span>
+//     );
+//   };
+
+//   const formatDate = (dateString?: string) => {
+//     if (!dateString) return 'N/A';
+//     return new Date(dateString).toLocaleDateString();
+//   };
+
+//   return (
+//     <div className="max-w-7xl mx-auto p-6 space-y-8">
+//       {/* Header */}
+//       <div className="flex justify-between items-center">
+//         <div>
+//           <h1 className="text-3xl font-bold text-gray-900">
+//             Welcome back, {user?.fullname || user?.username}!
+//           </h1>
+//           <p className="text-gray-600 mt-1">
+//             Manage your dictation exercises and track student progress
+//           </p>
+//         </div>
+        
+//         <Link
+//           to="/teacher/articles/create"
+//           className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+//         >
+//           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+//           </svg>
+//           Create New Article
+//         </Link>
+//       </div>
+
+//       {/* Quick Stats */}
+//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+//         {statsLoading ? (
+//           // Loading skeletons
+//           Array.from({ length: 4 }).map((_, i) => (
+//             <div key={i} className="bg-white p-6 rounded-lg shadow border">
+//               <div className="animate-pulse">
+//                 <div className="h-8 bg-gray-200 rounded mb-2"></div>
+//                 <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+//               </div>
+//             </div>
+//           ))
+//         ) : (
+//           <>
+//             <div className="bg-white p-6 rounded-lg shadow border">
+//               <div className="flex items-center">
+//                 <div className="flex-shrink-0">
+//                   <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+//                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+//                     </svg>
+//                   </div>
+//                 </div>
+//                 <div className="ml-4">
+//                   <div className="text-2xl font-bold text-gray-900">{stats?.total || 0}</div>
+//                   <div className="text-sm text-gray-600">Total Articles</div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white p-6 rounded-lg shadow border">
+//               <div className="flex items-center">
+//                 <div className="flex-shrink-0">
+//                   <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+//                     <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                     </svg>
+//                   </div>
+//                 </div>
+//                 <div className="ml-4">
+//                   <div className="text-2xl font-bold text-green-600">{stats?.byStatus.ready || 0}</div>
+//                   <div className="text-sm text-gray-600">Ready for Use</div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white p-6 rounded-lg shadow border">
+//               <div className="flex items-center">
+//                 <div className="flex-shrink-0">
+//                   <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+//                     <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+//                     </svg>
+//                   </div>
+//                 </div>
+//                 <div className="ml-4">
+//                   <div className="text-2xl font-bold text-yellow-600">{stats?.byStatus.editing || 0}</div>
+//                   <div className="text-sm text-gray-600">In Progress</div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white p-6 rounded-lg shadow border">
+//               <div className="flex items-center">
+//                 <div className="flex-shrink-0">
+//                   <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+//                     <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+//                     </svg>
+//                   </div>
+//                 </div>
+//                 <div className="ml-4">
+//                   <div className="text-2xl font-bold text-purple-600">{stats?.byStatus.processing || 0}</div>
+//                   <div className="text-sm text-gray-600">Processing</div>
+//                 </div>
+//               </div>
+//             </div>
+//           </>
+//         )}
+//       </div>
+
+//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//         {/* Recent Articles */}
+//         <div className="lg:col-span-2">
+//           <div className="bg-white rounded-lg shadow border">
+//             <div className="px-6 py-4 border-b border-gray-200">
+//               <div className="flex justify-between items-center">
+//                 <h3 className="text-lg font-semibold text-gray-900">Recent Articles</h3>
+//                 <Link
+//                   to="/teacher/articles"
+//                   className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+//                 >
+//                   View all →
+//                 </Link>
+//               </div>
+//             </div>
+            
+//             <div className="divide-y divide-gray-200">
+//               {articlesLoading ? (
+//                 // Loading skeletons
+//                 Array.from({ length: 3 }).map((_, i) => (
+//                   <div key={i} className="p-6 animate-pulse">
+//                     <div className="flex items-center justify-between">
+//                       <div className="flex-1">
+//                         <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+//                         <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+//                       </div>
+//                       <div className="h-6 bg-gray-200 rounded w-16 ml-4"></div>
+//                     </div>
+//                   </div>
+//                 ))
+//               ) : recentArticles.length === 0 ? (
+//                 <div className="p-8 text-center">
+//                   <div className="text-gray-400 mb-4">
+//                     <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+//                     </svg>
+//                   </div>
+//                   <p className="text-gray-600 mb-4">No articles created yet</p>
+//                   <Link
+//                     to="/teacher/articles/create"
+//                     className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+//                   >
+//                     Create Your First Article
+//                   </Link>
+//                 </div>
+//               ) : (
+//                 recentArticles.map((article:IArticle) => (
+//                   <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
+//                     <div className="flex items-center justify-between">
+//                       <div className="flex-1 min-w-0">
+//                         <div className="flex items-center space-x-2 mb-1">
+//                           <h4 className="text-sm font-medium text-gray-900 truncate">
+//                             {article.title}
+//                           </h4>
+//                           {getStatusBadge(article.status)}
+//                         </div>
+//                         <div className="flex items-center space-x-4 text-xs text-gray-500">
+//                           <span className="font-mono bg-gray-100 px-2 py-1 rounded">
+//                             {article.articleName}
+//                           </span>
+//                           <span>{article.sentences.length} sentences</span>
+//                           {article.metadata?.difficulty && (
+//                             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+//                               {article.metadata.difficulty}
+//                             </span>
+//                           )}
+//                           <span>Created {formatDate(article.createdAt)}</span>
+//                         </div>
+//                       </div>
+//                       <div className="flex items-center space-x-2 ml-4">
+//                         <Link
+//                           to={`/teacher/articles/${article.articleName}`}
+//                           className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+//                         >
+//                           View
+//                         </Link>
+//                         {article.status === 'editing' && (
+//                           <Link
+//                             to={`/teacher/articles/${article.articleName}/edit`}
+//                             className="text-green-600 hover:text-green-800 text-sm transition-colors"
+//                           >
+//                             Edit
+//                           </Link>
+//                         )}
+//                         {/* Add to existing TeacherDashboard component */}
+//                         {article.status === 'ready' && (
+//                           <div className="mt-4">
+//                             <Link 
+//                               to={`/teacher/practice/${article.articleName}`}
+//                               className="text-blue-600 hover:text-blue-800 text-sm"
+
+//                             >
+//                               👀 Preview Student Experience
+//                             </Link>
+//                           </div>
+//                         )}
+
+
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))
+//               )}
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Quick Actions */}
+//         <div className="space-y-6">
+//           {/* Actions Card */}
+//           <div className="bg-white rounded-lg shadow border">
+//             <div className="px-6 py-4 border-b border-gray-200">
+//               <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+//             </div>
+//             <div className="p-6 space-y-4">
+//               <Link
+//                 to="/teacher/articles/create"
+//                 className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors"
+//               >
+//                 <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+//                   <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+//                   </svg>
+//                 </div>
+//                 <div className="ml-3">
+//                   <div className="text-sm font-medium text-gray-900">Create Article</div>
+//                   <div className="text-xs text-gray-500">Start a new dictation exercise</div>
+//                 </div>
+//               </Link>
+
+//               <Link
+//                 to="/teacher/articles"
+//                 className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors"
+//               >
+//                 <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+//                   <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+//                   </svg>
+//                 </div>
+//                 <div className="ml-3">
+//                   <div className="text-sm font-medium text-gray-900">Manage Articles</div>
+//                   <div className="text-xs text-gray-500">View and edit existing articles</div>
+//                 </div>
+//               </Link>
+
+//               <div className="flex items-center p-3 border border-gray-200 rounded-lg opacity-50">
+//                 <div className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+//                   <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+//                   </svg>
+//                 </div>
+//                 <div className="ml-3">
+//                   <div className="text-sm font-medium text-gray-400">Student Progress</div>
+//                   <div className="text-xs text-gray-400">Coming in Sprint 2</div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Tips Card */}
+//           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+//             <div className="p-6">
+//               <div className="flex items-start">
+//                 <div className="flex-shrink-0">
+//                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+//                   </svg>
+//                 </div>
+//                 <div className="ml-3">
+//                   <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Pro Tips</h4>
+//                   <ul className="text-xs text-blue-800 space-y-1">
+//                     <li>• Aim for 15-25 sentences per article</li>
+//                     <li>• Keep sentences under 15 words for clarity</li>
+//                     <li>• Use descriptive article names like "climate_change_2024"</li>
+//                     <li>• Review sentence splitting before creating</li>
+//                   </ul>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TeacherDashboard;
+
 C:\Users\User\Desktop\jink-demo\src\pages\teacher\TeacherDashboard.tsx
 
-// src/pages/teacher/TeacherDashboard.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useArticles, useArticleStats } from '../../hooks/useArticles';
+import { useAudioStatus } from '../../hooks/useAudioStatus';
 import type { IArticle } from '../../types/article.types';
 
+// Standalone status badge with audio awareness
+const ArticleStatusBadge: React.FC<{ article: IArticle }> = ({ article }) => {
+  const { data: audioStatus } = useAudioStatus(
+    article.articleName,
+    article.status === 'processing' || article.status === 'ready'
+  );
+
+  const hasAudio =
+    audioStatus?.audio?.hasAudio ||
+    (audioStatus?.audio?.totalFragments ?? 0) > 0 ||
+    Boolean(article.fullAudioUrl);
+
+  const getStatusConfig = () => {
+    if (article.status === 'processing') {
+      return { bg: 'bg-blue-100', text: 'text-blue-800', label: '🔄 Generating Audio', title: 'Audio being processed' };
+    }
+    if (article.status === 'error') {
+      return { bg: 'bg-red-100', text: 'text-red-800', label: '❌ Generation Failed', title: 'Audio generation error' };
+    }
+    if (article.status === 'editing') {
+      if (hasAudio) {
+        return { bg: 'bg-green-100', text: 'text-green-800', label: '✅ Ready to Publish', title: 'Audio generated, can publish' };
+      }
+      return { bg: 'bg-yellow-100', text: 'text-yellow-800', label: '📝 Draft', title: 'Needs audio generation' };
+    }
+    if (article.status === 'ready') {
+      return { bg: 'bg-blue-100', text: 'text-blue-800', label: '🎯 Published', title: 'Available to students' };
+    }
+    return { bg: 'bg-gray-100', text: 'text-gray-800', label: article.status, title: '' };
+  };
+
+  const config = getStatusConfig();
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}
+      title={config.title}
+    >
+      {config.label}
+    </span>
+  );
+};
+
+// Row for recent articles list
+const ArticleRow: React.FC<{ article: IArticle }> = ({ article }) => {
+  const { data: audioStatus } = useAudioStatus(
+    article.articleName,
+    article.status === 'processing' || article.status === 'ready'
+  );
+
+  const hasAudio =
+    audioStatus?.audio?.hasAudio ||
+    (audioStatus?.audio?.totalFragments ?? 0) > 0 ||
+    Boolean(article.fullAudioUrl);
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  return (
+    <div className="p-6 hover:bg-gray-50 transition-colors">
+      <div className="flex items-center justify-between">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center space-x-2 mb-1">
+            <h4 className="text-sm font-medium text-gray-900 truncate">{article.title}</h4>
+            <ArticleStatusBadge article={article} />
+          </div>
+          <div className="flex items-center space-x-4 text-xs text-gray-500">
+            <span className="font-mono bg-gray-100 px-2 py-1 rounded">{article.articleName}</span>
+            <span>{article.sentences.length} sentences</span>
+            {article.metadata?.difficulty && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                {article.metadata.difficulty}
+              </span>
+            )}
+            <span>Created {formatDate(article.createdAt)}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 ml-4">
+          <Link
+            to={`/teacher/articles/${article.articleName}`}
+            className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+          >
+            View
+          </Link>
+
+          {article.status === 'editing' && (
+            <Link
+              to={`/teacher/articles/${article.articleName}/edit`}
+              className="text-green-600 hover:text-green-800 text-sm transition-colors"
+            >
+              Edit
+            </Link>
+          )}
+
+          {article.status === 'ready' && (
+            <Link
+              to={`/teacher/practice/${article.articleName}`}
+
+              rel="noopener noreferrer"
+              className="text-purple-600 hover:text-purple-800 text-sm transition-colors"
+              title="Preview student experience"
+            >
+              👁️ Preview
+            </Link>
+          )}
+
+          {article.status === 'editing' && hasAudio && (
+            <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+              Ready to publish
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TeacherDashboard: React.FC = () => {
-  // const navigate = useNavigate();
   const { user } = useAuth();
   const { data: articles, isLoading: articlesLoading } = useArticles();
   const { data: stats, isLoading: statsLoading } = useArticleStats();
 
   const recentArticles = articles?.slice(0, 5) || [];
-  
-  const getStatusBadge = (status: IArticle['status']) => {
-    const statusConfig = {
-      editing: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Editing' },
-      processing: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Processing' },
-      ready: { bg: 'bg-green-100', text: 'text-green-800', label: 'Ready' },
-      error: { bg: 'bg-red-100', text: 'text-red-800', label: 'Error' }
-    };
-    
-    const config = statusConfig[status];
-    return (
-      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
-        {config.label}
-      </span>
-    );
-  };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -7483,7 +9567,7 @@ const TeacherDashboard: React.FC = () => {
             Manage your dictation exercises and track student progress
           </p>
         </div>
-        
+
         <Link
           to="/teacher/articles/create"
           className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
@@ -7498,7 +9582,6 @@ const TeacherDashboard: React.FC = () => {
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statsLoading ? (
-          // Loading skeletons
           Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="bg-white p-6 rounded-lg shadow border">
               <div className="animate-pulse">
@@ -7525,6 +9608,7 @@ const TeacherDashboard: React.FC = () => {
               </div>
             </div>
 
+            {/* Published (status === 'ready') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -7536,11 +9620,13 @@ const TeacherDashboard: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-green-600">{stats?.byStatus.ready || 0}</div>
-                  <div className="text-sm text-gray-600">Ready for Use</div>
+                  <div className="text-sm text-gray-600">Published</div>
+                  <div className="text-xs text-gray-500">Available to students</div>
                 </div>
               </div>
             </div>
 
+            {/* Drafts (status === 'editing') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -7552,11 +9638,13 @@ const TeacherDashboard: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-yellow-600">{stats?.byStatus.editing || 0}</div>
-                  <div className="text-sm text-gray-600">In Progress</div>
+                  <div className="text-sm text-gray-600">Drafts</div>
+                  <div className="text-xs text-gray-500">Being edited</div>
                 </div>
               </div>
             </div>
 
+            {/* Processing (status === 'processing') */}
             <div className="bg-white p-6 rounded-lg shadow border">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -7569,6 +9657,7 @@ const TeacherDashboard: React.FC = () => {
                 <div className="ml-4">
                   <div className="text-2xl font-bold text-purple-600">{stats?.byStatus.processing || 0}</div>
                   <div className="text-sm text-gray-600">Processing</div>
+                  <div className="text-xs text-gray-500">Generating audio</div>
                 </div>
               </div>
             </div>
@@ -7587,14 +9676,13 @@ const TeacherDashboard: React.FC = () => {
                   to="/teacher/articles"
                   className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
                 >
-                  View all ??
+                  View all →
                 </Link>
               </div>
             </div>
-            
+
             <div className="divide-y divide-gray-200">
               {articlesLoading ? (
-                // Loading skeletons
                 Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="p-6 animate-pulse">
                     <div className="flex items-center justify-between">
@@ -7606,7 +9694,7 @@ const TeacherDashboard: React.FC = () => {
                     </div>
                   </div>
                 ))
-              ) : recentArticles.length === 0 ? (
+              ) : (recentArticles.length === 0) ? (
                 <div className="p-8 text-center">
                   <div className="text-gray-400 mb-4">
                     <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -7622,70 +9710,16 @@ const TeacherDashboard: React.FC = () => {
                   </Link>
                 </div>
               ) : (
-                recentArticles.map((article:IArticle) => (
-                  <div key={article.articleName} className="p-6 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h4 className="text-sm font-medium text-gray-900 truncate">
-                            {article.title}
-                          </h4>
-                          {getStatusBadge(article.status)}
-                        </div>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
-                          <span className="font-mono bg-gray-100 px-2 py-1 rounded">
-                            {article.articleName}
-                          </span>
-                          <span>{article.sentences.length} sentences</span>
-                          {article.metadata.difficulty && (
-                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                              {article.metadata.difficulty}
-                            </span>
-                          )}
-                          <span>Created {formatDate(article.createdAt)}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2 ml-4">
-                        <Link
-                          to={`/teacher/articles/${article.articleName}`}
-                          className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
-                        >
-                          View
-                        </Link>
-                        {article.status === 'editing' && (
-                          <Link
-                            to={`/teacher/articles/${article.articleName}/edit`}
-                            className="text-green-600 hover:text-green-800 text-sm transition-colors"
-                          >
-                            Edit
-                          </Link>
-                        )}
-                        {/* Add to existing TeacherDashboard component */}
-                        {article.status === 'ready' && (
-                          <div className="mt-4">
-                            <Link 
-                              to={`/student/practice/${article.articleName}`}
-                              className="text-blue-600 hover:text-blue-800 text-sm"
-                              target="_blank"
-                            >
-                              ?? Preview Student Experience
-                            </Link>
-                          </div>
-                        )}
-
-
-                      </div>
-                    </div>
-                  </div>
+                recentArticles.map((article) => (
+                  <ArticleRow key={article.articleName} article={article} />
                 ))
               )}
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions + Tips */}
         <div className="space-y-6">
-          {/* Actions Card */}
           <div className="bg-white rounded-lg shadow border">
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
@@ -7735,7 +9769,6 @@ const TeacherDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Tips Card */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
             <div className="p-6">
               <div className="flex items-start">
@@ -7745,17 +9778,18 @@ const TeacherDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h4 className="text-sm font-medium text-blue-900 mb-2">?�� Pro Tips</h4>
+                  <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Workflow Tips</h4>
                   <ul className="text-xs text-blue-800 space-y-1">
-                    <li>??Aim for 15-25 sentences per article</li>
-                    <li>??Keep sentences under 15 words for clarity</li>
-                    <li>??Use descriptive article names like "climate_change_2024"</li>
-                    <li>??Review sentence splitting before creating</li>
+                    <li>• Create → Generate Audio → Review → Publish</li>
+                    <li>• Students only see “Published” articles</li>
+                    <li>• Generate audio before publishing</li>
+                    <li>• Preview audio quality before publishing</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -7764,12 +9798,14 @@ const TeacherDashboard: React.FC = () => {
 
 export default TeacherDashboard;
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\About.tsx
 
 function About() {
   return <h2>About Page</h2>;
 }
 export default About;
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\AdminDashboard.tsx
 
@@ -7987,12 +10023,14 @@ const AdminDashboard: React.FC = () => {
 
 export default AdminDashboard;
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\Home.tsx
 
 function Home() {
   return <h2>Home Page</h2>;
 }
 export default Home;
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\Login.tsx
 
@@ -8021,7 +10059,7 @@ export default function Login() {
                   navigate("/teacher");
                   break;
                 case "student":
-                  navigate("/student");
+                  navigate("/student/dashboard");
                   break;
                 default:
                   navigate("/login");
@@ -8112,6 +10150,7 @@ export default function Login() {
 
 }
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\NotFound.tsx
 
 // import React from 'react';
@@ -8132,6 +10171,7 @@ export default function NotFound() {
   );
 }
 
+
 C:\Users\User\Desktop\jink-demo\src\pages\StudentDashboard.tsx
 
 // import React from 'react';
@@ -8147,20 +10187,6 @@ const StudentDashboard = () => {
 
 export default StudentDashboard;
 
-C:\Users\User\Desktop\jink-demo\src\pages\TeacherDashboard.tsx
-
-// import React from 'react';
-
-const TeacherDashboard = () => {
-  return (
-    <div>
-      <h1>Teacher Dashboard Placeholder</h1>
-      <p>This is a temporary placeholder component as TeacherDashboard is not yet implemented.</p>
-    </div>
-  );
-};
-
-export default TeacherDashboard;
 
 C:\Users\User\Desktop\jink-demo\src\pages\Unauthorized.tsx
 
@@ -8176,6 +10202,7 @@ const UnauthorizedDashboard = () => {
 };
 
 export default UnauthorizedDashboard;
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\UserDetail.tsx
 
@@ -8205,7 +10232,7 @@ export default function UserDetail() {
   });
 
 
-  if (isLoading) return <p>Loading profile??/p>;
+  if (isLoading) return <p>Loading profile…</p>;
   if (error) return <p>Error fetching user.</p>;
 
   return (
@@ -8223,6 +10250,7 @@ export default function UserDetail() {
     </div>
   );
 }
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\UserProfile.tsx
 
@@ -8422,6 +10450,7 @@ const UserProfile: React.FC = () => {
 };
 
 export default UserProfile;
+
 
 C:\Users\User\Desktop\jink-demo\src\pages\Users.tsx
 
@@ -8673,6 +10702,7 @@ const Users: React.FC = () => {
 
 export default Users;
 
+
 C:\Users\User\Desktop\jink-demo\src\routes\guards\RoleGuard.tsx
 
 // src/routes/guards/RoleGuard.tsx
@@ -8707,6 +10737,7 @@ export const RoleGuard = ({ allow }: Props) => {
   return <Outlet />;
 };
 
+
 C:\Users\User\Desktop\jink-demo\src\routes\ProtectedRoute.tsx
 
 import { Navigate, Outlet } from 'react-router-dom';
@@ -8717,6 +10748,7 @@ export default function ProtectedRoute() {
   if (loading) return <p>Loading...</p>;
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
+
 
 C:\Users\User\Desktop\jink-demo\src\services\dictationService.ts
 
@@ -8938,6 +10970,125 @@ export class DictationService {
   }
 }
 
+
+C:\Users\User\Desktop\jink-demo\src\tests\integration\audioStatus.test.ts
+
+// // tests/integration/audioStatus.test.ts
+// import React from 'react';
+// import { render, screen, waitFor, fireEvent } from '@testing-library/react';        
+// import { createTestArticle, mockApiResponse, mockApiError, mockApiSuccess } from '../testUtils';
+// import ArticleDetail from '../../pages/teacher/ArticleDetail';      
+
+// describe('Audio Status Real-Time Updates', () => {
+  
+//   test('Teacher sees real-time audio generation progress', async () => {
+//     // 1. Setup: Create article in editing state
+//     const article = await createTestArticle({ status: 'editing' });
+    
+//     // 2. Navigate to article detail page
+//     render(<ArticleDetail />, { 
+//       route: `/teacher/articles/${article.articleName}` 
+//     });
+    
+//     // 3. Click generate audio button
+//     const generateButton = screen.getByText('Generate Audio');
+//     fireEvent.click(generateButton);
+    
+//     // 4. VERIFY: Button shows "Starting Generation..."
+//     expect(screen.getByText('Starting Generation...')).toBeInTheDocument();
+    
+//     // 5. VERIFY: Status changes to processing
+//     await waitFor(() => {
+//       expect(screen.getByText('Generating Audio')).toBeInTheDocument();
+//     });
+    
+//     // 6. VERIFY: Polling indicator appears
+//     expect(screen.getByText('Checking status...')).toBeInTheDocument();
+    
+//     // 7. SIMULATE: Backend completes audio generation
+//     mockApiResponse('/api/articles/test-article/audio/status', {
+//       article: { status: 'ready' },
+//       audio: { 
+//         fullAudioUrl: 'https://example.com/audio.mp3',
+//         totalFragments: 5,
+//         totalDuration: 120
+//       }
+//     });
+    
+//     // 8. VERIFY: Status updates to ready (polling should detect this)
+//     await waitFor(() => {
+//       expect(screen.getByText('Audio Ready')).toBeInTheDocument();
+//     }, { timeout: 10000 }); // Wait up to 10 seconds for polling
+    
+//     // 9. VERIFY: Audio preview appears
+//     expect(screen.getByText('Preview Audio:')).toBeInTheDocument();
+//     const audioElement = screen.getByRole('audio');
+//     expect(audioElement).toHaveAttribute('src', 'https://example.com/audio.mp3');
+//   });
+
+//   test('Student sees processing status with real-time updates', async () => {
+//     // 1. Setup: Article in processing state
+//     const article = await createTestArticle({ status: 'processing' });
+    
+//     // 2. Navigate to dictation page
+//     render(<DictationPracticePage />, { 
+//       route: `/student/practice/${article.articleName}` 
+//     });
+    
+//     // 3. VERIFY: Processing message appears
+//     expect(screen.getByText('Audio Processing')).toBeInTheDocument();
+//     expect(screen.getByText('This usually takes 2-3 minutes')).toBeInTheDocument();
+    
+//     // 4. VERIFY: Checking status indicator appears
+//     await waitFor(() => {
+//       expect(screen.getByText('Checking status...')).toBeInTheDocument();
+//     });
+    
+//     // 5. SIMULATE: Audio generation completes
+//     mockApiResponse('/api/articles/test-article/audio/status', {
+//       article: { status: 'ready' },
+//       audio: { fullAudioUrl: 'https://example.com/audio.mp3' },
+//       fragments: [
+//         { fragmentIndex: 0, text: 'Hello world', startTime: 0, endTime: 2, duration: 2 }
+//       ]
+//     });
+    
+//     // 6. VERIFY: Page transitions to dictation interface
+//     await waitFor(() => {
+//       expect(screen.getByText('Fragment 1 of 1')).toBeInTheDocument();
+//     }, { timeout: 10000 });
+//   });
+
+//   test('Error states are handled gracefully', async () => {
+//     // 1. Setup: Network error scenario
+//     mockApiError('/api/articles/test-article/audio/status', 500, 'Server Error');
+    
+//     const article = await createTestArticle({ status: 'processing' });
+    
+//     // 2. Navigate to page
+//     render(<DictationPracticePage />, { 
+//       route: `/student/practice/${article.articleName}` 
+//     });
+    
+//     // 3. VERIFY: Error state appears after retries
+//     await waitFor(() => {
+//       expect(screen.getByText('Unable to Load Exercise')).toBeInTheDocument();
+//     }, { timeout: 15000 }); // Account for retry delays
+    
+//     // 4. VERIFY: Retry functionality
+//     const tryAgainButton = screen.getByText('Try Again');
+//     expect(tryAgainButton).toBeInTheDocument();
+    
+//     // 5. Test retry
+//     mockApiSuccess('/api/articles/test-article/audio/status');
+//     fireEvent.click(tryAgainButton);
+    
+//     // Should attempt to reload
+//     expect(window.location.reload).toHaveBeenCalled();
+//   });
+// });
+
+
 C:\Users\User\Desktop\jink-demo\src\tests\setupTests.ts
 
 import '@testing-library/jest-dom';
@@ -8947,42 +11098,42 @@ import 'whatwg-fetch';
 // import { setLogger } from '@tanstack/react-query';
 // setLogger({ log: console.log, warn: console.warn, error: () => {} });
 
+
 C:\Users\User\Desktop\jink-demo\src\types\article.types.ts
 
 // Complete article.types.ts with all missing types
 
-// Core interfaces
+// Core article interface - match backend exactly
 export interface IArticle {
-  articleName: string;  // Unique identifier
-  title: string;
-  originalText: string;
-  teacherUsername: string;
-  metadata: {
-    grade?: string;
-    subject?: string;
-    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-    estimatedTime?: number;
-  };
-  status: 'editing' | 'processing' | 'ready' | 'error';
-  processingError?: string;
-  fullAudioUrl?: string;
-  sentences: ISentence[];
-  createdAt?: string;
-  updatedAt?: string;
+  articleName: string
+  title: string
+  originalText: string
+  teacherUsername: string
+  metadata?: {
+    grade?: string
+    subject?: string
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+    estimatedTime?: number
+  }
+  status: 'editing' | 'processing' | 'ready' | 'error'
+  processingError?: string
+  fullAudioUrl?: string  // Only present after successful generation
+  sentences: ISentence[]
+  createdAt?: string
+  updatedAt?: string
 }
 
+// Sentence interface with optional timing fields
 export interface ISentence {
-  sentenceId: string;  // Generated: articleName_order
-  order: number;
-  text: string;
-  wordCount: number;
-  startTime?: number;
-  endTime?: number;
-  individualAudioUrl?: string;
-  status: 'pending' | 'ready' | 'error';
-  isLong: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  sentenceId: string
+  order: number
+  text: string
+  wordCount: number
+  isLong: boolean
+  startTime?: number      // Only after TTS generation
+  endTime?: number        // Only after TTS generation
+  individualAudioUrl?: string
+  status?: 'pending' | 'ready' | 'error'
 }
 
 // API Request Types
@@ -9086,12 +11237,12 @@ export interface SentenceFormData {
   isLong: boolean;
 }
 
-export interface IArticleMetadata {
-  grade?: string;
-  subject?: string;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  estimatedTime?: number;
-}
+// export interface IArticleMetadata {
+//   grade?: string;
+//   subject?: string;
+//   difficulty?: 'easy' | 'medium' | 'hard';
+//   estimatedTime?: number;
+// }
 
 
 // Add to existing article.types.ts
@@ -9140,6 +11291,59 @@ export type ArticleStatus = IArticle['status'];
 export type SentenceStatus = ISentence['status'];
 export type DifficultyLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 
+C:\Users\User\Desktop\jink-demo\src\types\audio.types.ts
+
+// Audio status response from GET /api/articles/:articleName/audio/status
+export interface AudioStatusResponse {
+  success: boolean
+  article: {
+    articleName: string
+    title: string
+    status: 'editing' | 'processing' | 'ready' | 'error'
+    processingError?: string
+  }
+  audio: {
+    hasAudio: boolean
+    hasTiming: boolean
+    audioSize?: number
+    totalFragments?: number
+    totalDuration?: number
+    fullAudioUrl: string | null
+  }
+  fragments?: FragmentTiming[]
+}
+
+// Fragment timing from audio generation
+export interface FragmentTiming {
+  fragmentIndex: number
+  order: number
+  text: string
+  startTime: number
+  endTime: number
+  duration: number
+  wordCount: number
+}
+
+// Fragment timing response from GET /api/articles/:articleName/audio/fragment/:idx
+export interface FragmentTimingResponse {
+  success: boolean
+  fragment: FragmentTiming
+  audioUrl: string
+  playbackInfo: {
+    startTime: number
+    endTime: number
+    duration: number
+  }
+}
+
+// Signed URL response
+export interface SignedAudioUrlResponse {
+  success: boolean
+  url: string
+  expiresAt: string  // ISO8601
+}
+
+
 C:\Users\User\Desktop\jink-demo\src\utils\tests\sentenceFragmentSplitter.test.ts
 
 import {
@@ -9180,6 +11384,44 @@ describe('sentenceFragmentSplitter', () => {
   });
 });
 
+
+C:\Users\User\Desktop\jink-demo\src\utils\apiValidation.ts
+
+import type { AudioStatusResponse } from '../types/audio.types'
+
+export const validateAudioStatusResponse = (response: any): response is AudioStatusResponse => {
+  if (process.env.NODE_ENV !== 'development') return true
+  
+  try {
+    // Check required structure
+    if (!response.success || typeof response.success !== 'boolean') {
+      console.warn('AudioStatusResponse: missing or invalid success field')
+      return false
+    }
+    
+    if (!response.article || typeof response.article.articleName !== 'string') {
+      console.warn('AudioStatusResponse: missing or invalid article.articleName')
+      return false
+    }
+    
+    if (!['editing', 'processing', 'ready', 'error'].includes(response.article.status)) {
+      console.warn('AudioStatusResponse: invalid article.status', response.article.status)
+      return false
+    }
+    
+    if (!response.audio || typeof response.audio.hasAudio !== 'boolean') {
+      console.warn('AudioStatusResponse: missing or invalid audio.hasAudio')
+      return false
+    }
+    
+    return true
+  } catch (error) {
+    console.warn('AudioStatusResponse validation failed:', error)
+    return false
+  }
+}
+
+
 C:\Users\User\Desktop\jink-demo\src\utils\auth.ts
 
 // src/utils/auth.ts
@@ -9210,6 +11452,7 @@ export const isTokenValid = (): boolean => {
     return false;
   }
 };
+
 
 C:\Users\User\Desktop\jink-demo\src\utils\dictationUtils.ts
 
@@ -9355,6 +11598,7 @@ export function isAnswerAcceptable(result: ComparisonResult, toleranceMode: bool
   
   return false;
 }
+
 
 C:\Users\User\Desktop\jink-demo\src\utils\errorUtils.ts
 
@@ -10034,6 +12278,7 @@ export * from './sentenceFragmentSplitter';
 
 
 
+
 C:\Users\User\Desktop\jink-demo\src\App.css
 
 #root {
@@ -10079,6 +12324,7 @@ C:\Users\User\Desktop\jink-demo\src\App.css
   color: #888;
 }
 
+
 C:\Users\User\Desktop\jink-demo\src\App.tsx
 
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -10088,7 +12334,7 @@ import { RoleGuard } from './routes/guards/RoleGuard';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 // import TeacherDashboard from './pages/TeacherDashboard';
-import StudentDashboard from './pages/StudentDashboard';
+// import StudentDashboard from './pages/StudentDashboard';
 import Users from './pages/Users';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
@@ -10106,6 +12352,12 @@ import { useLocation } from 'react-router-dom';
 import { TeacherDashboard, ArticleList, ArticleUpload, ArticleDetail } from './pages/teacher';
 import ArticleEdit from './pages/teacher/ArticleEdit';
 
+import DictationPracticePage from './pages/student/DictationPractice';
+
+import StudentDashboard from './pages/student/StudentDashboard';
+import StudentArticleList from './pages/student/StudentArticleList';
+
+
 
 function App() {
 
@@ -10113,13 +12365,13 @@ function App() {
   const hideNavbar = ["/login", "/unauthorized"].includes(location.pathname);
   // Add to your main index.tsx or App.tsx
   // Preload audio files for better performance
-  const preloadCriticalAudio = (audioUrls: string[]) => {
-    audioUrls.forEach(url => {
-      const audio = new Audio();
-      audio.preload = 'metadata';
-      audio.src = url;
-    });
-  };
+  // const preloadCriticalAudio = (audioUrls: string[]) => {
+  //   audioUrls.forEach(url => {
+  //     const audio = new Audio();
+  //     audio.preload = 'metadata';
+  //     audio.src = url;
+  //   });
+  // };
 
   return (
     <>
@@ -10157,12 +12409,19 @@ function App() {
           <Route path="/teacher/articles/create" element={<ArticleUpload />} />
           <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
           <Route path="/teacher/articles/:articleName/edit" element={<ArticleEdit />} />
+          <Route path="/teacher/practice/:articleName" element={<DictationPracticePage />} />
         </Route>
 
         {/* Student routes */}
         <Route element={<RoleGuard allow={["student"]} />}>
           <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/student/articles" element={<StudentArticleList />} />
+           <Route path="student/practice/:articleName" element={<DictationPracticePage />} /> 
         </Route>
+
+
+
 
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -10174,6 +12433,7 @@ function App() {
 }
 
 export default App;
+
 
 C:\Users\User\Desktop\jink-demo\src\App2.css
 
@@ -10270,6 +12530,7 @@ body {
 }
 
 
+
 C:\Users\User\Desktop\jink-demo\src\App2.tsx
 
 // import { useState } from 'react'
@@ -10290,6 +12551,7 @@ function App2() {
 }
 
 export default App2
+
 
 C:\Users\User\Desktop\jink-demo\src\Board.tsx
 
@@ -10433,6 +12695,9 @@ export function Game() {
     );
   });
 
+
+
+  
   return (
     <div className="game">
       <div className="game-board">
@@ -10446,6 +12711,7 @@ export function Game() {
 }
 
 export default Square;
+
 
 C:\Users\User\Desktop\jink-demo\src\index.css
 
@@ -10591,6 +12857,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
+
 C:\Users\User\Desktop\jink-demo\src\RouterApp.tsx
 
 
@@ -10650,6 +12917,8 @@ export default function RouterApp() {
   );
 }
 
+
 C:\Users\User\Desktop\jink-demo\src\vite-env.d.ts
 
 /// <reference types="vite/client" />
+

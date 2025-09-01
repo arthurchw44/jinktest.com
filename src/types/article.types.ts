@@ -1,37 +1,36 @@
 // Complete article.types.ts with all missing types
 
-// Core interfaces
+// Core article interface - match backend exactly
 export interface IArticle {
-  articleName: string;  // Unique identifier
-  title: string;
-  originalText: string;
-  teacherUsername: string;
-  metadata: {
-    grade?: string;
-    subject?: string;
-    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-    estimatedTime?: number;
-  };
-  status: 'editing' | 'processing' | 'ready' | 'error';
-  processingError?: string;
-  fullAudioUrl?: string;
-  sentences: ISentence[];
-  createdAt?: string;
-  updatedAt?: string;
+  articleName: string
+  title: string
+  originalText: string
+  teacherUsername: string
+  metadata?: {
+    grade?: string
+    subject?: string
+    difficulty?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+    estimatedTime?: number
+  }
+  status: 'editing' | 'processing' | 'ready' | 'error'
+  processingError?: string
+  fullAudioUrl?: string  // Only present after successful generation
+  sentences: ISentence[]
+  createdAt?: string
+  updatedAt?: string
 }
 
+// Sentence interface with optional timing fields
 export interface ISentence {
-  sentenceId: string;  // Generated: articleName_order
-  order: number;
-  text: string;
-  wordCount: number;
-  startTime?: number;
-  endTime?: number;
-  individualAudioUrl?: string;
-  status: 'pending' | 'ready' | 'error';
-  isLong: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  sentenceId: string
+  order: number
+  text: string
+  wordCount: number
+  isLong: boolean
+  startTime?: number      // Only after TTS generation
+  endTime?: number        // Only after TTS generation
+  individualAudioUrl?: string
+  status?: 'pending' | 'ready' | 'error'
 }
 
 // API Request Types
@@ -135,12 +134,12 @@ export interface SentenceFormData {
   isLong: boolean;
 }
 
-export interface IArticleMetadata {
-  grade?: string;
-  subject?: string;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  estimatedTime?: number;
-}
+// export interface IArticleMetadata {
+//   grade?: string;
+//   subject?: string;
+//   difficulty?: 'easy' | 'medium' | 'hard';
+//   estimatedTime?: number;
+// }
 
 
 // Add to existing article.types.ts

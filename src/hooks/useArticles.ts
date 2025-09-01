@@ -16,7 +16,9 @@ import type {
   TeacherStatsResponse,
   IArticle
 } from '../types/article.types';
-
+// import { apiGetAudioStatus } from '../api/apiArticles'
+// import { validateAudioStatusResponse } from '../utils/apiValidation'
+// import type { AudioStatusResponse } from '../types/audio.types';
 
 // API functions
 const articleAPI = {
@@ -399,5 +401,26 @@ export const useArticleWithAudio = (articleName: string) => {
       return result.article;
     },
     enabled: !!articleName,
+  });
+};
+
+
+export const useUpdateArticleStatus = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ articleName, status }: { 
+      articleName: string; 
+      status: 'editing' | 'ready' 
+    }) => {
+      const response = await api.put(`/articles/${articleName}/status`, { status });
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      // Update the specific article in cache
+      queryClient.setQueryData(['article', variables.articleName], data.article);
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      queryClient.invalidateQueries({ queryKey: ['studentArticles'] });
+    },
   });
 };
