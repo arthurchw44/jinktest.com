@@ -2,7 +2,7 @@
 // src/components/dictation/SessionResults.tsx
 
 import React from 'react';
-import type { DictationSession } from './FragmentDictation';
+import type { DictationSession } from '../../types/dictation.types'
 import { DictationService } from '../../services/dictationService';
 
 // import type { SessionAnalytics } from '../../services/dictationService';
@@ -26,6 +26,16 @@ const SessionResults: React.FC<SessionResultsProps> = ({
   const recommendations = DictationService.getRecommendations(session);
 
   const formatPercentage = (value: number) => Math.round(value * 100);
+
+  // const getDuration = () => {
+  //   if (!session.endTime) return 'N/A';
+    
+  //   const duration = (new Date(session.endTime).getTime() - new Date(session.startTime).getTime()) / 1000;
+  //   const minutes = Math.floor(duration / 60);
+  //   const seconds = Math.floor(duration % 60);
+  //   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  // };
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -151,7 +161,7 @@ const SessionResults: React.FC<SessionResultsProps> = ({
             if (progress.status === 'correct') {
               statusColor = 'bg-green-100 text-green-700';
               statusIcon = '✅';
-            } else if (progress.status === 'given_up') {
+            } else if (progress.status === 'givenup') {
               statusColor = 'bg-yellow-100 text-yellow-700';
               statusIcon = '💡';
             }

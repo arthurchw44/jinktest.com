@@ -10,6 +10,8 @@ export default function Navbar() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   // Add these states inside the Navbar component
   const [showLogoutAllConfirm, setShowLogoutAllConfirm] = useState(false);
+  const [showAdminMenu, setShowAdminMenu] = useState<boolean>(false); 
+
 
   if (loading)return null;
   if (!user) return null; // Or show a minimal login link
@@ -17,7 +19,6 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-200 h-16 flex items-center px-6 justify-between">
       <Link to={`/${user.role}`} className="text-xl font-bold text-blue-700">Your App</Link>
-
       {/* Right side: User profile menu */}
       <div className="relative ml-auto">
         <button
@@ -31,6 +32,56 @@ export default function Navbar() {
             </span>
           </div>
         </button>
+
+{user.role === 'admin' && (
+  <div className="ml-auto">
+    <div className="relative">
+      <button
+        onClick={() => setShowAdminMenu(v => !v)}
+        className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >Admin
+      </button>
+      
+      {showAdminMenu && (
+        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+          <div className="py-1">
+            <Link 
+              to="/admin/users" 
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setShowAdminMenu(false)}
+            >
+              User Management
+            </Link>
+            <Link 
+              to="/admin/articles" 
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setShowAdminMenu(false)}
+            >
+              Article Management
+            </Link>
+            <Link 
+              to="/admin/groups" 
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setShowAdminMenu(false)}
+            >
+              Group Management
+            </Link>
+            <Link 
+              to="/admin/bulk-operations" 
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => setShowAdminMenu(false)}
+            >
+              Bulk Operations
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
+
+
         {/* // Update the user menu dropdown section to include logout all option: */}
         {showUserMenu && (
           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
@@ -89,6 +140,8 @@ export default function Navbar() {
 
 
       </div>
+
+
     </nav>
   );
 }

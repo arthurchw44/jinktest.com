@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useUpdateArticleStatus } from '../../hooks/useArticles';
 import { useAudioStatus } from '../../hooks/useAudioStatus';
 import type { IArticle } from '../../types/article.types';
+import {useAuth} from '../../context/AuthContext'; // adjust relative path as needed
+import { Link } from 'react-router-dom';
 
 interface PublishControlsProps {
   article: IArticle;
@@ -12,6 +14,8 @@ const PublishControls: React.FC<PublishControlsProps> = ({ article, onStatusChan
   const [showConfirm, setShowConfirm] = useState<'publish' | 'unpublish' | null>(null);
   const updateStatusMutation = useUpdateArticleStatus();
   const { data: audioStatus } = useAudioStatus(article.articleName, true);
+
+  const { user } = useAuth();
 
   // FIXED: Audio availability check (not status-based)
   const hasAudio = audioStatus?.audio?.hasAudio || 
@@ -24,6 +28,11 @@ const PublishControls: React.FC<PublishControlsProps> = ({ article, onStatusChan
   const isPublished = article.status === 'ready'; // ONLY means published for students
   const isError = article.status === 'error';
 
+
+    const previewPath =
+    user?.role === 'teacher' || user?.role === 'admin'
+      ? `/teacher/practice/${article.articleName}`
+      : `/student/practice/${article.articleName}`;
   // UPDATED: Publishing rules with clear flow
   // - Can publish: editing status AND has audio AND not processing
   // - Can unpublish: currently published (ready status)
@@ -116,14 +125,12 @@ const PublishControls: React.FC<PublishControlsProps> = ({ article, onStatusChan
 
       {/* Preview Button - Only for published articles */}
       {isPublished && (
-        <a
-          href={`/student/practice/${article.articleName}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to={previewPath}
           className="block w-full px-4 py-2 border border-blue-300 text-blue-700 rounded-md hover:bg-blue-50 text-sm font-medium text-center transition-colors"
         >
           👁️ Preview Student Experience
-        </a>
+        </Link>
       )}
 
       {/* UPDATED: Audio Ready Indicator - For editing articles with audio */}

@@ -2,8 +2,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-interface Props { 
-  allow?: Array<'admin' | 'teacher' | 'student'| 'user'>; 
+type Role = 'admin' | 'teacher' | 'student' | 'user';
+
+interface Props {
+  allow?: Role[];
 }
 
 export const RoleGuard = ({ allow }: Props) => {
@@ -22,8 +24,8 @@ export const RoleGuard = ({ allow }: Props) => {
   // }
 
 
-    // If allow prop is provided, perform role checking
-  if (allow && !allow.includes(user.role)) {
+  // Only enforce role check if an allow list was provided
+  if (allow && !allow.includes(user.role as Role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 

@@ -28,6 +28,11 @@ import DictationPracticePage from './pages/student/DictationPractice';
 import StudentDashboard from './pages/student/StudentDashboard';
 import StudentArticleList from './pages/student/StudentArticleList';
 
+import AdminArticlesDashboard from './pages/admin/AdminArticlesDashboard';
+import AdminArticleDetail from './pages/admin/AdminArticleDetail';
+import StudentAnalytics from './pages/teacher/StudentAnalytics';
+import StudentArticleProgressPage from './pages/student/StudentArticleProgressPage';
+import TeacherAnalytics from './pages/teacher/TeacherAnalytics';
 
 
 function App() {
@@ -70,6 +75,9 @@ function App() {
             <Route path="/admin/users/:username" element={<UserDetail />} />
             <Route path="/admin/groups" element={<Groups />} />
             <Route path="/admin/bulk-operations" element={<BulkOperations />} />
+
+            <Route path="/admin/articles" element={<AdminArticlesDashboard />} />
+            <Route path="/admin/articles/:articleName" element={<AdminArticleDetail />} />
         </Route>
 
         {/* Teacher routes */}
@@ -81,6 +89,8 @@ function App() {
           <Route path="/teacher/articles/:articleName" element={<ArticleDetail />} />
           <Route path="/teacher/articles/:articleName/edit" element={<ArticleEdit />} />
           <Route path="/teacher/practice/:articleName" element={<DictationPracticePage />} />
+          <Route path="/teacher/analytics/students" element={<StudentAnalytics />} />
+          <Route path="/teacher/analytics" element={<TeacherAnalytics />} />
         </Route>
 
         {/* Student routes */}
@@ -89,10 +99,14 @@ function App() {
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/student/articles" element={<StudentArticleList />} />
            <Route path="student/practice/:articleName" element={<DictationPracticePage />} /> 
+           <Route path="/student/progress/:articleName" element={<StudentArticleProgressPage />} />
         </Route>
 
 
-
+        {/* Teacher/Admin preview*/}
+        <Route element={<RoleGuard allow={['teacher', 'admin']} />}>
+          <Route path="/teacher/practice/:articleName" element={<DictationPracticePage />} />
+        </Route>
 
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />

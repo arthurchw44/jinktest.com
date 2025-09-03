@@ -1,7 +1,7 @@
 // src/hooks/useDictationProgress.ts
 
 import { useState, useEffect, useCallback } from 'react';
-import type { DictationSession } from '../components/dictation/FragmentDictation';
+import type { DictationSession } from '../types/dictation.types'
 
 interface StoredSession {
   session: DictationSession;
@@ -9,7 +9,7 @@ interface StoredSession {
   isCompleted: boolean;
 }
 
-const STORAGE_KEY_PREFIX = 'dictation_session_';
+const STORAGE_KEY_PREFIX = 'dictation-session-';
 const MAX_STORED_SESSIONS = 10;
 
 export function useDictationProgress(articleName: string) {
@@ -49,11 +49,14 @@ export function useDictationProgress(articleName: string) {
   const saveSession = useCallback((session: DictationSession) => {
     try {
       const storedSession: StoredSession = {
-        session,
+        session: {
+          ...session,
+          // Ensure endTime is preserved if provided
+          endTime: session.endTime || session.startTime, // Fallback to startTime if no endTime
+        },
         lastUpdated: new Date().toISOString(),
-        isCompleted: session.completedFragments === session.fragments.length
+        isCompleted: session.completedFragments >= session.fragments.length,
       };
-      
       localStorage.setItem(storageKey, JSON.stringify(storedSession));
       setSavedSession(session);
     } catch (error) {

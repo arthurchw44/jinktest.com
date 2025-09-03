@@ -1,6 +1,6 @@
 // src/services/dictationService.ts
 
-import type { DictationSession, FragmentProgress } from '../components/dictation/FragmentDictation';
+import type { DictationSession, FragmentProgress } from '../types/dictation.types' ;
 
 export interface SessionAnalytics {
   totalTimeSpent: number; // seconds

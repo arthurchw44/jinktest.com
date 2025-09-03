@@ -42,7 +42,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, progress }) => {
     }
 
     if (progress && progress.session.completedFragments > 0) {
-      const completionRate = progress.session.completedFragments / progress.session.fragments.length;
+      const completionRate = (progress.session.completedFragments / progress.session.fragments.length);
       return (
         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
           {Math.round(completionRate * 100)}% Complete
